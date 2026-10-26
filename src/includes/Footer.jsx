@@ -87,7 +87,7 @@ export default function Footer() {
                             </div>
                         </div>
                     </div>
-                    <p className='mb-0'><span className='brand'>ParcelX</span> © Copyright 2026, All Rights Reserved</p>
+                    <p className='mb-0'>© Copyright 2026, All Rights Reserved</p>
                 </div>
             </div>
         </div>
