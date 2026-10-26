@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -6,12 +6,10 @@ import {
   Boxes,
   BrainCircuit,
   CheckCircle2,
-  ChevronDown,
   CircleDollarSign,
   Clock3,
   Database,
   FileText,
-  Menu,
   MessageCircle,
   PackageCheck,
   Search,
@@ -25,7 +23,10 @@ import {
   Zap
 } from "lucide-react";
 import "../styles/parcelx-iq.css";
-import parcelXLogo from "../images/ParcelX_Logo.svg";
+import Header from "../includes/Header.jsx";
+import Footer from "../includes/Footer.jsx";
+import Faq from "../component/Faq.jsx";
+import MainTestimonial from "../component/slider/MainTestimonial.jsx";
 
 const registerUrl = "https://seller.parcelx.in/register";
 const demoUrl = "mailto:hello@parcelx.in?subject=ParcelX%20IQ%20Demo";
@@ -99,20 +100,20 @@ const useCases = [
 
 const faqs = [
   {
-    q: "What is ParcelX IQ?",
-    a: "ParcelX IQ is an AI-powered shipping intelligence assistant that helps you understand shipment data, spot patterns, and make more informed shipping decisions."
+    question: "What is ParcelX IQ?",
+    answer: "ParcelX IQ is an AI-powered shipping intelligence assistant that helps you understand shipment data, spot patterns, and make more informed shipping decisions."
   },
   {
-    q: "How is it different from a standard dashboard?",
-    a: "Alongside performance metrics, ParcelX IQ is designed to surface insights in plain language so teams can understand what changed, why it matters, and where to look next."
+    question: "How is it different from a standard dashboard?",
+    answer: "Alongside performance metrics, ParcelX IQ is designed to surface insights in plain language so teams can understand what changed, why it matters, and where to look next."
   },
   {
-    q: "Can I get insights into RTO and courier performance?",
-    a: "The experience shown here brings together use cases such as RTO risk, courier performance, NDR analysis, delivery-time trends and shipping cost optimisation."
+    question: "Can I get insights into RTO and courier performance?",
+    answer: "The experience shown here brings together use cases such as RTO risk, courier performance, NDR analysis, delivery-time trends and shipping cost optimisation."
   },
   {
-    q: "Who can use ParcelX IQ?",
-    a: "It is designed for e-commerce sellers, D2C teams, marketplaces and businesses that want a clearer view of their shipping operations."
+    question: "Who can use ParcelX IQ?",
+    answer: "It is designed for e-commerce sellers, D2C teams, marketplaces and businesses that want a clearer view of their shipping operations."
   }
 ];
 
@@ -207,8 +208,6 @@ function InsightVisual() {
 }
 
 export default function ParcelXIQ() {
-  const [openFaq, setOpenFaq] = useState(0);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const previousTitle = document.title;
@@ -216,37 +215,23 @@ export default function ParcelXIQ() {
     return () => { document.title = previousTitle; };
   }, []);
 
-  const closeMenu = () => setMenuOpen(false);
 
   return (
     <main className="iq-page">
-      <header className="iq-header">
-        <div className="iq-nav-shell">
-          <a className="iq-logo" href={import.meta.env.BASE_URL} aria-label="ParcelX home">
-            <img src={parcelXLogo} alt="ParcelX" />
-            <span className="iq-logo-divider" />
-            <span className="iq-logo-product">IQ</span>
-          </a>
-          <button className="iq-menu-toggle" type="button" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen}>
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
-          <nav className={menuOpen ? "iq-nav-links is-open" : "iq-nav-links"} aria-label="Main navigation">
-            <a className="active" href="#top" onClick={closeMenu}>Home</a>
-            <a href="#features" onClick={closeMenu}>Features</a>
-            <a href="#use-cases" onClick={closeMenu}>Use Cases</a>
-            <a href="#integrations" onClick={closeMenu}>Integrations</a>
-            <a href="#faq" onClick={closeMenu}>FAQ</a>
-            <div className="iq-mobile-nav-actions">
-              <a href="https://seller.parcelx.in/" className="iq-button iq-button-light">Login</a>
-              <ButtonLink href={registerUrl}>Get Started</ButtonLink>
-            </div>
-          </nav>
-          <div className="iq-nav-actions">
-            <a href="https://seller.parcelx.in/" className="iq-button iq-button-light">Login</a>
-            <ButtonLink href={registerUrl}>Get Started</ButtonLink>
-          </div>
-        </div>
-      </header>
+      <Header
+        homeHref={import.meta.env.BASE_URL}
+        customLinks={[
+          { label: "Home", href: "#top", active: true },
+          { label: "Features", href: "#features" },
+          { label: "Use Cases", href: "#use-cases" },
+          { label: "Integrations", href: "#integrations" },
+          { label: "FAQ", href: "#faq" }
+        ]}
+        nav_button="Get Started"
+        nav_button2="Login"
+        loginHref="https://seller.parcelx.in/"
+        signupHref={registerUrl}
+      />eader>
 
       <section className="iq-hero" id="top">
         <div className="iq-hero-shell">
@@ -327,30 +312,28 @@ export default function ParcelXIQ() {
         </div>
       </section>
 
-      <section className="iq-proof-section iq-section-shell">
-        <div className="iq-testimonial-mark">“</div>
-        <div className="iq-testimonial">
-          <p>“ParcelX IQ helps bring our shipping performance into focus. The team can see patterns sooner and spend more time acting on insights instead of piecing reports together.”</p>
-          <div className="iq-testimonial-person"><span className="iq-testimonial-avatar">RM</span><span><b>Rohit Mehta</b><small>E-commerce business owner</small></span></div>
-        </div>
-        <div className="iq-proof-metrics">
-          <div><span className="iq-proof-icon orange"><ArrowUpRight size={20} /></span><b>28%</b><span>Lower RTO in 2 months*</span></div>
-          <div><span className="iq-proof-icon green"><Zap size={20} /></span><b>40%</b><span>Faster issue resolution*</span></div>
-          <small>*Figures are presented as sample proof-point content from the design reference, not independently verified results.</small>
-        </div>
-      </section>
-
-      <section className="iq-faq-cta iq-section-shell" id="faq">
-        <div className="iq-faq-panel">
-          <div className="iq-eyebrow"><MessageCircle size={13} /> FREQUENTLY ASKED QUESTIONS</div>
-          <h2>Find answers to your questions</h2>
-          <div className="iq-faq-list">
-            {faqs.map((faq, index) => <article className={openFaq === index ? "iq-faq-item is-open" : "iq-faq-item"} key={faq.q}>
-              <button type="button" onClick={() => setOpenFaq(openFaq === index ? -1 : index)} aria-expanded={openFaq === index}><span>{faq.q}</span><ChevronDown size={17} /></button>
-              {openFaq === index && <p>{faq.a}</p>}
-            </article>)}
+      <section className="iq-shared-testimonials" aria-label="ParcelX customer testimonials">
+        <div className="iq-section-shell iq-section-heading">
+          <div>
+            <div className="iq-eyebrow"><Sparkles size={13} /> CUSTOMER STORIES</div>
+            <h2>Shipping teams grow with ParcelX</h2>
+            <p>Feedback from businesses using the ParcelX shipping platform.</p>
           </div>
         </div>
+        <MainTestimonial />
+      </section>
+
+      <div className="iq-shared-faq" id="faq">
+        <Faq
+          title={{
+            highlight: "Frequently Asked Questions:",
+            text: " Find answers about ParcelX IQ"
+          }}
+          faqs={faqs}
+        />
+      </div>
+
+      <section className="iq-final-cta-shell iq-section-shell" id="get-started">
         <div className="iq-final-cta">
           <div className="iq-final-cta-icon"><BarChart3 size={27} /></div>
           <div className="iq-eyebrow iq-eyebrow-dark"><Sparkles size={13} /> READY TO GET STARTED?</div>
@@ -361,14 +344,22 @@ export default function ParcelXIQ() {
         </div>
       </section>
 
-      <footer className="iq-footer">
-        <div className="iq-footer-inner">
-          <div className="iq-footer-brand"><a className="iq-logo" href={import.meta.env.BASE_URL}><img src="/src/images/ParcelX_Logo.svg" alt="ParcelX" /><span className="iq-logo-divider" /><span className="iq-logo-product">IQ</span></a><p>Shipping intelligence that helps your business make better decisions.</p><small>© {new Date().getFullYear()} ParcelX. All rights reserved.</small></div>
-          <div className="iq-footer-links"><b>Explore</b><a href="#features">Features</a><a href="#use-cases">Use Cases</a><a href="#integrations">Integrations</a><a href="#faq">FAQs</a></div>
-          <div className="iq-footer-links"><b>Get in touch</b><a href={demoUrl}>Book a demo</a><a href="https://seller.parcelx.in/">Login to ParcelX</a><a href="https://www.parcelx.in/">ParcelX website</a></div>
-          <a className="iq-footer-top" href="#top" aria-label="Back to top"><ArrowUpRight size={19} /></a>
-        </div>
-      </footer>
+      <Footer
+        homeHref={import.meta.env.BASE_URL}
+        description="ParcelX IQ turns shipping data into clearer insights, helping e-commerce teams make more informed shipping decisions."
+        quickLinks={[
+          { label: "Features", href: "#features" },
+          { label: "Use Cases", href: "#use-cases" },
+          { label: "Integrations", href: "#integrations" },
+          { label: "FAQs", href: "#faq" }
+        ]}
+        usefulLinks={[
+          { label: "ParcelX Website", href: "https://www.parcelx.in/" },
+          { label: "Seller Login", href: "https://seller.parcelx.in/" },
+          { label: "Get Started", href: registerUrl },
+          { label: "Book a Demo", href: demoUrl }
+        ]}
+      />ooter>
     </main>
   );
 }
