@@ -1,87 +1,74 @@
-import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-import logo from "../images/ParcelX_Logo.svg";
-import "./Header.css";
+import React, { useEffect, useState } from 'react';
+import logo from '../images/ParcelX_Logo.svg';
+import {NavLink } from "react-router-dom";
+function Header({item="About", item1="Features", item2="Videsh", item3="Pacex",item4="Career", item5="Courier Partners", item6="Channel Integration", item7="Pricing", item8="Tracking", item9="Contact", nav_button="Sign Up", nav_button2="Login"}) {
+    const [scrolled, setScrolled] = useState(false);
 
-function Header({
-  item = "About",
-  item1 = "Features",
-  item2 = "Videsh",
-  item3 = "Pacex",
-  item4 = "Career",
-  item5 = "Courier Partners",
-  item6 = "Channel Integration",
-  item7 = "Pricing",
-  item8 = "Tracking",
-  item9 = "Contact",
-  nav_button = "Sign Up",
-  nav_button2 = "Login",
-}) {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 50); // trigger after 50px scroll
+        };
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+        window.addEventListener("scroll", handleScroll);
 
-  const links = [
-    [item, "/about"], [item1, "/features"], [item2, "/parcel-videsh"],
-    [item3, "/pacex"], [item4, "/career"], [item5, "/courier-partners"],
-    [item6, "/channel-integration"], [item7, "/pricing"], [item8, "/tracking"],
-    [item9, "/contact-us"],
-  ];
-
-  const closeMenu = () => setMenuOpen(false);
-
-  return (
-    <header className={`px-header ${scrolled ? "header-top" : ""}`}>
-      <nav className="px-navbar" aria-label="Main navigation">
-        <div className="px-nav-inner">
-          <NavLink className="px-brand" to="/" onClick={closeMenu} aria-label="ParcelX home">
-            <img src={logo} width="150" alt="ParcelX" />
-          </NavLink>
-
-          <button
-            className={`px-menu-toggle ${menuOpen ? "is-open" : ""}`}
-            type="button"
-            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            <span /><span /><span />
-          </button>
-
-          <div className={`px-nav-collapse ${menuOpen ? "is-open" : ""}`}>
-            <ul className="px-nav-links">
-              {links.map(([label, to]) => (
-                <li key={to}>
-                  <NavLink
-                    to={to}
-                    onClick={closeMenu}
-                    className={({ isActive }) => isActive ? "px-nav-link nav-active" : "px-nav-link"}
-                  >
-                    {label}
-                  </NavLink>
-                </li>
-              ))}
-              <li className="px-mobile-actions">
-                <NavLink to="/dashboard" onClick={closeMenu} className="px-btn px-btn-secondary">{nav_button2}</NavLink>
-                <NavLink to="/dashboard" onClick={closeMenu} className="px-btn px-btn-primary">{nav_button}</NavLink>
-              </li>
-            </ul>
-          </div>
-
-          <div className="px-desktop-actions">
-            <NavLink to="/dashboard" className="px-btn px-btn-secondary">{nav_button2}</NavLink>
-            <NavLink to="/dashboard" className="px-btn px-btn-primary">{nav_button}</NavLink>
-          </div>
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+    return (
+        <div className={`sticky-top ${scrolled ? "header-top" : ""}`}>
+            <nav className="navbar navbar-expand-lg navbar-light ">
+                <div className="container-fluid px-0">
+                    <NavLink className="navbar-brand" to="/">
+                        <img src={logo} className="img-fluid" width={150} alt="Logo" />
+                    </NavLink>
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"aria-label="Toggle navigation" >
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                            <li className="nav-item">
+                                <NavLink className={(e)=>{return e.isActive?"nav-active": ""}}  aria-current="page" to="/about">{item}</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className={(e)=>{return e.isActive?"nav-active": ""}}  to="/features">{item1}</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className={(e)=>{return e.isActive?"nav-active": ""}}  to="/parcel-videsh">{item2}</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className={(e)=>{return e.isActive?"nav-active": ""}}  to="/pacex">{item3}</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className={(e)=>{return e.isActive?"nav-active": ""}}  to="/career">{item4}</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className={(e)=>{return e.isActive?"nav-active": ""}}  to="/courier-partners">{item5}</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className={(e)=>{return e.isActive?"nav-active": ""}}  to="/channel-integration">{item6}</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className={(e)=>{return e.isActive?"nav-active": ""}}  to="/pricing">{item7}</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className={(e)=>{return e.isActive?"nav-active": ""}}  to="/tracking">{item8}</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className={(e)=>{return e.isActive?"nav-active": ""}}  to="/contact-us">{item9}</NavLink>
+                            </li>
+                            <li className='d-lg-none d-block'>
+                                <NavLink  to='/dashboard' className="btn btn-secondary me-2" type="submit">{nav_button2}</NavLink>
+                                <NavLink  to='/dashboard' className="btn btn-primary" type="submit">{nav_button}</NavLink>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className='d-lg-block d-none'>
+                        <NavLink  to='/dashboard' className="btn btn-secondary me-2" type="submit">{nav_button2}</NavLink>
+                        <NavLink  to='/dashboard' className="btn btn-primary" type="submit">{nav_button}</NavLink>
+                    </div>
+                </div>
+            </nav> 
         </div>
-      </nav>
-    </header>
-  );
+    );
 }
 
-export default Header;
+export default Header
