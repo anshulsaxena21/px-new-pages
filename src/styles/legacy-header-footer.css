@@ -534,3 +534,46 @@ body {
     margin-top: 68px;
   }
 }
+
+
+/* Mobile-only fixes:
+   1. Don't let the desktop CTA wrapper override Bootstrap's d-none utility.
+   2. Keep mobile CTAs inside the collapsed hamburger navigation.
+   3. Prevent the newsletter input from growing to its desktop flex-basis height. */
+@media (max-width: 991.98px) {
+  .sticky-top .navbar > .container-fluid > .d-lg-block.d-none {
+    display: none !important;
+  }
+
+  .sticky-top .navbar-collapse.collapse:not(.show) {
+    display: none !important;
+  }
+
+  .sticky-top .navbar-collapse.collapse.show {
+    display: block !important;
+  }
+
+  .sticky-top .navbar-nav .nav-item.d-lg-none {
+    display: block !important;
+  }
+
+  .sticky-top .navbar-nav .nav-item.d-lg-none .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .footer-bg form.d-flex .form-control {
+    flex: 0 0 auto;
+    width: 100%;
+    height: 48px;
+    min-height: 48px;
+    box-sizing: border-box;
+  }
+
+  .footer-bg form.d-flex .footer-btn {
+    flex: 0 0 auto;
+  }
+}
