@@ -1628,3 +1628,16 @@
     margin-top: 24px !important;
   }
 }
+
+
+/* Restore the Figma hero's vertical rhythm: title clears the sticky header,
+   while the metrics divider stays at the reference position. */
+@media (min-width: 1001px) {
+  .fulfillment-page .hero-reference-layout.section-wrap {
+    margin-top: 88px !important;
+  }
+
+  .fulfillment-page .hero-reference-divider {
+    margin-top: 60px;
+  }
+}
