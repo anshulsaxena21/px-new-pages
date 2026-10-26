@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import logo from '../images/ParcelX_Logo.svg';
 import {NavLink } from "react-router-dom";
+import { Collapse } from "bootstrap";
 function Header({item="About", item1="Features", item2="Videsh", item3="Pacex",item4="Career", item5="Courier Partners", item6="Channel Integration", item7="Pricing", item8="Tracking", item9="Contact", nav_button="Sign Up", nav_button2="Login", customLinks=null, loginHref="/dashboard", signupHref="/dashboard", homeHref=null}) {
     const [scrolled, setScrolled] = useState(false);
 
@@ -26,7 +27,7 @@ function Header({item="About", item1="Features", item2="Videsh", item3="Pacex",i
                             {customLinks ? <>
                                 {customLinks.map((link) => (
                                     <li className="nav-item" key={link.label}>
-                                        <a className={link.active ? "nav-active" : ""} href={link.href} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">{link.label}</a>
+                                        <a className={link.active ? "nav-active" : ""} href={link.href} onClick={() => { if (window.innerWidth < 992) { const nav = document.getElementById("navbarSupportedContent"); if (nav) Collapse.getOrCreateInstance(nav).hide(); } }}>{link.label}</a>
                                     </li>
                                 ))}
                                 <li className="d-lg-none d-block">
