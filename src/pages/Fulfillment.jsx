@@ -72,6 +72,37 @@ export default function Fulfillment(){
     </div>
   </section>
   <section className="benefits section-wrap section-space" id="benefits"><div className="benefits-reference-heading"><h2>The Smarter Way to Store, Sell &amp; Ship</h2><p>Deliver faster, reduce costs, minimise RTOs, and unlock powerful insights — all from our unified platform.</p></div><div className="feature-grid">{features.map(({icon:Icon,title,text})=><article className="feature-card" key={title}><div className="feature-top"><span className="feature-icon"><Icon size={52} strokeWidth={1.45}/></span></div><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+  <section className="dashboard-section dashboard-reference-section" id="dashboard">
+    <div className="dashboard-reference-copy">
+      <h2>Powerful Dashboard for Complete Control</h2>
+      <p className="dashboard-reference-intro">Everything you need to manage, track, and scale — in one unified view.</p>
+      <div className="dashboard-reference-list">
+        <article>
+          <h3>Unified Overview</h3>
+          <p>All orders, inventory, warehouses, returns, and billing in one dashboard.</p>
+        </article>
+        <article>
+          <h3>Real-Time Inventory</h3>
+          <p>Live stock visibility with instant sync and low-stock alerts.</p>
+        </article>
+        <article>
+          <h3>Smart Insights</h3>
+          <p>Sales heatmaps, courier performance, COD trends &amp; RTO analytics.</p>
+        </article>
+        <article>
+          <h3>Order Tracking Hub</h3>
+          <p>Track every shipment in real time — for you and your customers.</p>
+        </article>
+      </div>
+    </div>
+    <div className="dashboard-reference-visual">
+      <Image
+        src={A("fulfillment-dashboard-laptop.png")}
+        alt="ParcelX dashboard on a laptop showing shipping and fulfillment analytics"
+        className="dashboard-reference-laptop"
+      />
+    </div>
+  </section>
   <section className="workflow-section" id="workflow">
     <div className="workflow-flow">
       <svg className="workflow-connector" viewBox="0 0 1565 885" preserveAspectRatio="none" aria-hidden="true">
@@ -87,7 +118,7 @@ export default function Fulfillment(){
     </div>
   </section>
   <section className="technology-section section-space" id="technology"><div className="section-wrap technology-layout"><div className="technology-copy"><div className="eyebrow">TECHNOLOGY THAT WORKS FOR YOU</div><h2>Less guesswork.<br/><span>More getting-things-done.</span></h2><p>Make informed decisions with connected tools that bring your inventory, orders and fulfilment activity into view.</p><ul><li><Check/> Visibility across your fulfillment workflow</li><li><Check/> A more organised inventory operation</li><li><Check/> A smoother path from order to dispatch</li></ul><a className="button button-dark" href="#contact">Explore fulfillment <ArrowUpRight size={18}/></a></div><div className="technology-visual"><div className="tech-glow"></div><Image src={A("fulfillment-technology-person-dashboard.png")} alt="Fulfillment team member using a dashboard" className="tech-person"/><div className="dashboard-card"><div className="dashboard-top"><span>FULFILLMENT OVERVIEW</span><span className="dashboard-status">● Live view</span></div><div className="dashboard-title">Operations at a glance</div><div className="dashboard-stats"><div><small>Orders processed</small><strong>2,480</strong><em>↗ On track</em></div><div><small>Inventory status</small><strong>98.4%</strong><em>↗ In sync</em></div></div><div className="chart-bars">{[35,52,43,68,54,77,63,88,72,95,81,100].map((h,i)=><i key={i} style={{height:h+"%"}}/>)}</div><div className="chart-labels"><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span></div></div><div className="tech-badge"><span><Zap size={16}/></span> Smarter by design</div></div></div></section>
-  <section className="dashboard-section section-space"><div className="section-wrap dashboard-layout"><div className="dashboard-visual"><div className="dashboard-halo"></div><Image src={A("fulfillment-dashboard-laptop.png")} alt="ParcelX fulfillment dashboard on a laptop" className="laptop-image"/><div className="dashboard-mini"><span className="mini-check"><Check size={15}/></span><div><strong>Inventory synced</strong><small>Everything in its place</small></div></div></div><div className="dashboard-copy"><div className="eyebrow">YOUR BUSINESS, IN FOCUS</div><h2>Know what’s happening.<br/><span>And what’s next.</span></h2><p>When the details are easier to see, it’s easier to make the next move. Bring your fulfilment activity into a clearer view and keep your team aligned.</p><div className="dashboard-points"><div><span><Clock3/></span><div><strong>Stay in the loop</strong><p>Keep track of the work moving through your operation.</p></div></div><div><span><BarChart3/></span><div><strong>Make confident decisions</strong><p>Use operational visibility to plan your next stage of growth.</p></div></div></div><a className="text-link orange-link" href="#contact">Let’s talk about your needs <ArrowRight size={17}/></a></div></div></section>
+  
   <section className="testimonial-section section-space"><div className="section-wrap testimonial-inner"><div className="testimonial-mark">“</div><div className="eyebrow">BUILT AROUND YOUR GROWTH</div><blockquote>“Great fulfillment is the kind your customer never has to think about — it just works.”</blockquote><div className="testimonial-bottom"><div className="testimonial-avatar">PX</div><div><strong>ParcelX Fulfillment</strong><p>Helping brands deliver better experiences</p></div><div className="testimonial-stars">★★★★★</div></div></div></section>
   <div className="fulfillment-faq-section">
    <Faq
