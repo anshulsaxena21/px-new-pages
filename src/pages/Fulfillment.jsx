@@ -16,13 +16,13 @@ const features = [
   {icon: PieChart, title:"Result", text:"Experience measurable growth through lower RTOs, faster delivery, higher customer satisfaction, and streamlined operations."}
 ];
 const steps = [
-  ["01","Send inventory","Send your products to a ParcelX fulfilment centre."],
-  ["02","Inbound & QC","Inventory is received, scanned and quality checked."],
-  ["03","Smart storage","Products are organised for accurate, efficient picking."],
-  ["04","Order sync","Orders flow into fulfilment from your connected store."],
-  ["05","Pick & pack","Every order is picked and packed with care."],
-  ["06","Ship smart","Courier allocation helps balance speed and cost."],
-  ["07","Delivered","Your customer gets the order and tracking updates."]
+  { id: "send-inventory", image: "workflow-send-inventory.svg", title: "Send Inventory", text: "Ship your products to the nearest ParcelX warehouse." },
+  { id: "inbound-qc", image: "workflow-inbound-qc.svg", title: "Inbound & QC", text: "We receive, scan and quality-check every SKU." },
+  { id: "smart-storage", image: "workflow-smart-storage.svg", title: "Smart Storage", text: "Items are organised and stored with real-time tracking." },
+  { id: "order-sync", image: "workflow-order-sync.svg", title: "Order Sync", text: "" },
+  { id: "pick-pack", image: "workflow-pick-pack.svg", title: "Pick & Pack", text: "Orders are picked and packed with speed and accuracy." },
+  { id: "ship-smart", image: "workflow-ship-smart.svg", title: "Ship Smart", text: "The best courier is auto-assigned for fast, low-cost delivery." },
+  { id: "delivered", image: "workflow-delivered.svg", title: "Delivered", text: "Your customer receives the order with real-time updates." }
 ];
 const faqs = [
   {
@@ -72,7 +72,20 @@ export default function Fulfillment(){
     </div>
   </section>
   <section className="benefits section-wrap section-space" id="benefits"><div className="benefits-reference-heading"><h2>The Smarter Way to Store, Sell &amp; Ship</h2><p>Deliver faster, reduce costs, minimise RTOs, and unlock powerful insights — all from our unified platform.</p></div><div className="feature-grid">{features.map(({icon:Icon,title,text})=><article className="feature-card" key={title}><div className="feature-top"><span className="feature-icon"><Icon size={52} strokeWidth={1.45}/></span></div><h3>{title}</h3><p>{text}</p></article>)}</div></section>
-  <section className="workflow-section section-space" id="workflow"><div className="section-wrap"><div className="section-heading"><div><div className="eyebrow">SIMPLE BY DESIGN</div><h2>One flow. <span>Seven steps.</span></h2></div><p>From inbound inventory to doorstep delivery, each step is designed to keep the whole journey clear.</p></div><div className="workflow-track">{steps.map(([n,title,text])=><article className="workflow-step" key={n}><div className="step-top"><span>{n}</span><div className="step-icon">{[<Warehouse/>,<ShieldCheck/>,<Boxes/>,<RefreshCw/>,<PackageCheck/>,<Truck/>,<MapPin/>][Number(n)-1]}</div></div><h3>{title}</h3><p>{text}</p></article>)}</div><div className="workflow-note"><span><Check size={17}/></span> Clear visibility from inventory intake to final delivery.</div></div></section>
+  <section className="workflow-section" id="workflow">
+    <div className="workflow-flow">
+      <svg className="workflow-connector" viewBox="0 0 1565 885" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M 211 182 H 1428 V 613 H 211" fill="none" stroke="#ffddcc" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+      {steps.map((step) => (
+        <article className={`workflow-flow-node workflow-node-${step.id}`} key={step.id}>
+          <img className="workflow-flow-art" src={A(step.image)} alt="" />
+          <h3>{step.title}</h3>
+          {step.text && <p>{step.text}</p>}
+        </article>
+      ))}
+    </div>
+  </section>
   <section className="technology-section section-space" id="technology"><div className="section-wrap technology-layout"><div className="technology-copy"><div className="eyebrow">TECHNOLOGY THAT WORKS FOR YOU</div><h2>Less guesswork.<br/><span>More getting-things-done.</span></h2><p>Make informed decisions with connected tools that bring your inventory, orders and fulfilment activity into view.</p><ul><li><Check/> Visibility across your fulfillment workflow</li><li><Check/> A more organised inventory operation</li><li><Check/> A smoother path from order to dispatch</li></ul><a className="button button-dark" href="#contact">Explore fulfillment <ArrowUpRight size={18}/></a></div><div className="technology-visual"><div className="tech-glow"></div><Image src={A("fulfillment-technology-person-dashboard.png")} alt="Fulfillment team member using a dashboard" className="tech-person"/><div className="dashboard-card"><div className="dashboard-top"><span>FULFILLMENT OVERVIEW</span><span className="dashboard-status">● Live view</span></div><div className="dashboard-title">Operations at a glance</div><div className="dashboard-stats"><div><small>Orders processed</small><strong>2,480</strong><em>↗ On track</em></div><div><small>Inventory status</small><strong>98.4%</strong><em>↗ In sync</em></div></div><div className="chart-bars">{[35,52,43,68,54,77,63,88,72,95,81,100].map((h,i)=><i key={i} style={{height:h+"%"}}/>)}</div><div className="chart-labels"><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span></div></div><div className="tech-badge"><span><Zap size={16}/></span> Smarter by design</div></div></div></section>
   <section className="dashboard-section section-space"><div className="section-wrap dashboard-layout"><div className="dashboard-visual"><div className="dashboard-halo"></div><Image src={A("fulfillment-dashboard-laptop.png")} alt="ParcelX fulfillment dashboard on a laptop" className="laptop-image"/><div className="dashboard-mini"><span className="mini-check"><Check size={15}/></span><div><strong>Inventory synced</strong><small>Everything in its place</small></div></div></div><div className="dashboard-copy"><div className="eyebrow">YOUR BUSINESS, IN FOCUS</div><h2>Know what’s happening.<br/><span>And what’s next.</span></h2><p>When the details are easier to see, it’s easier to make the next move. Bring your fulfilment activity into a clearer view and keep your team aligned.</p><div className="dashboard-points"><div><span><Clock3/></span><div><strong>Stay in the loop</strong><p>Keep track of the work moving through your operation.</p></div></div><div><span><BarChart3/></span><div><strong>Make confident decisions</strong><p>Use operational visibility to plan your next stage of growth.</p></div></div></div><a className="text-link orange-link" href="#contact">Let’s talk about your needs <ArrowRight size={17}/></a></div></div></section>
   <section className="testimonial-section section-space"><div className="section-wrap testimonial-inner"><div className="testimonial-mark">“</div><div className="eyebrow">BUILT AROUND YOUR GROWTH</div><blockquote>“Great fulfillment is the kind your customer never has to think about — it just works.”</blockquote><div className="testimonial-bottom"><div className="testimonial-avatar">PX</div><div><strong>ParcelX Fulfillment</strong><p>Helping brands deliver better experiences</p></div><div className="testimonial-stars">★★★★★</div></div></div></section>
