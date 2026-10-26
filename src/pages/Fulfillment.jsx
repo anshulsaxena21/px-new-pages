@@ -26,20 +26,20 @@ const steps = [
 ];
 const faqs = [
   {
-    question: "What is ParcelX Fulfillment?",
-    answer: "ParcelX Fulfillment helps brands manage inventory storage, order processing, picking, packing and shipping through a connected workflow."
+    question: "What is ParcelX PaceX?",
+    answer: "ParcelX PaceX is a premium fast delivery service designed for businesses that need quick and reliable shipping. It offers Same Day Delivery (SDD) and Next Day Delivery (NDD), helping you deliver orders faster, improve customer satisfaction, and stay ahead in a competitive market."
   },
   {
-    question: "Can I connect my online store?",
-    answer: "The page is designed for an integrated workflow. Contact our team to confirm the supported platforms and onboarding steps for your business."
+    question: "Who should use ParcelX PaceX?",
+    answer: "ParcelX PaceX is ideal for e-commerce businesses, D2C brands, and sellers who need reliable same-day or next-day delivery to meet urgent customer expectations."
   },
   {
-    question: "Can fulfillment scale during peak sales?",
-    answer: "The service is designed to help growing brands handle changing order volumes with a more structured operation."
+    question: "How fast are orders processed?",
+    answer: "Orders are processed quickly so eligible shipments can be dispatched for Same Day Delivery (SDD) or Next Day Delivery (NDD), depending on serviceability, pickup timing, and the selected courier partner."
   },
   {
-    question: "How can I get started?",
-    answer: "Talk to our team about your order volumes, inventory, locations and shipping requirements. We’ll help you identify the next steps."
+    question: "Can I choose courier partners for fast delivery?",
+    answer: "Available courier partners depend on pickup and delivery pincodes and service requirements. ParcelX helps you choose a suitable option for fast, reliable delivery."
   }
 ];
 const articles = [
@@ -63,8 +63,8 @@ export default function Fulfillment(){
   <div className="fulfillment-faq-section">
    <Faq
     title={{
-      highlight: "Things you might",
-      text: " want to know."
+      highlight: "Frequently Asked Question:",
+      text: " Find answers to our most asked questions"
     }}
     faqs={faqs}
    />
