@@ -138,9 +138,7 @@ export default function Fulfillment(){
     faqs={faqs}
    />
   </div>
-  
-  <section className="contact-section section-wrap" id="contact"><div className="contact-panel"><div className="contact-decoration decoration-one"></div><div className="contact-decoration decoration-two"></div><div className="contact-content"><div className="eyebrow light-eyebrow"><span></span> READY WHEN YOU ARE</div><h2>Let’s get your<br/>orders moving.</h2><p>Tell us where you want to go. We’ll help you explore a fulfillment setup that fits your business.</p><a className="button button-light" href="https://parcelx.in/" target="_blank" rel="noreferrer">Talk to ParcelX <ArrowUpRight size={18}/></a></div><div className="contact-art"><div className="contact-box box-back"></div><div className="contact-box box-front"><span>PX</span><div className="box-tape"></div></div><div className="contact-ring ring-one"></div><div className="contact-ring ring-two"></div></div></div></section>
-  
+
  <Footer />
  </main>;
 }
