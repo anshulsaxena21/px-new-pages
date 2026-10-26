@@ -268,3 +268,255 @@
     display: none;
   }
 }
+
+
+/* HERO — matched to the supplied 1571 × 641 reference. */
+.fulfillment-page .hero-reference-layout.section-wrap {
+  position: relative;
+  display: block;
+  width: calc(100% - 128px);
+  max-width: none;
+  min-height: 600px;
+  margin: 92px 0 0 64px;
+  padding: 0 0 56px;
+  overflow: visible;
+}
+
+.fulfillment-page .hero-reference-copy {
+  position: relative;
+  z-index: 1;
+  width: 995px;
+  max-width: calc(100% - 430px);
+  padding: 0;
+  margin: 0;
+}
+
+.fulfillment-page .hero-reference-title {
+  margin: 0 0 31px;
+  color: #080808;
+  font-size: 44px;
+  font-weight: 400;
+  letter-spacing: -1.15px;
+  line-height: 1.22;
+  white-space: nowrap;
+}
+
+.fulfillment-page .hero-reference-lede {
+  max-width: 995px;
+  margin: 0 0 35px;
+  color: #111;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.62;
+  letter-spacing: -0.24px;
+}
+
+.fulfillment-page .hero-reference-actions {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.fulfillment-page .hero-reference-cta {
+  min-width: 185px;
+  height: 55px;
+  padding: 0 26px;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 12px;
+  background: #000;
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1;
+  text-transform: none;
+}
+
+.fulfillment-page .hero-reference-cta:hover {
+  background: #000;
+  color: #fff;
+}
+
+.fulfillment-page .hero-reference-divider {
+  width: 995px;
+  max-width: 100%;
+  height: 1px;
+  margin-top: 84px;
+  background: #d8d8d8;
+}
+
+.fulfillment-page .hero-reference-metrics {
+  display: grid;
+  width: 995px;
+  max-width: 100%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  padding-top: 33px;
+}
+
+.fulfillment-page .hero-reference-metric {
+  min-width: 0;
+  text-align: center;
+}
+
+.fulfillment-page .hero-reference-metric strong {
+  display: block;
+  margin: 0 0 15px;
+  color: #ff5018;
+  font-size: 68px;
+  font-weight: 500;
+  letter-spacing: -2.2px;
+  line-height: 1;
+}
+
+.fulfillment-page .hero-reference-metric p {
+  margin: 0;
+  color: #172033;
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.fulfillment-page .hero-reference-visual {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  padding: 0;
+  pointer-events: none;
+}
+
+.fulfillment-page .hero-reference-warehouse {
+  position: absolute;
+  top: -54px;
+  left: 1043px;
+  display: block;
+  width: 464px;
+  max-width: none;
+  height: 531px;
+  object-fit: contain;
+  object-position: center;
+}
+
+@media (max-width: 1350px) and (min-width: 701px) {
+  .fulfillment-page .hero-reference-layout.section-wrap {
+    width: calc(100% - 80px);
+    margin-left: 40px;
+  }
+
+  .fulfillment-page .hero-reference-copy {
+    width: min(72%, 900px);
+    max-width: 72%;
+  }
+
+  .fulfillment-page .hero-reference-title {
+    font-size: clamp(33px, 3.25vw, 43px);
+    letter-spacing: -0.9px;
+  }
+
+  .fulfillment-page .hero-reference-lede {
+    font-size: 16px;
+  }
+
+  .fulfillment-page .hero-reference-divider,
+  .fulfillment-page .hero-reference-metrics {
+    width: 100%;
+  }
+
+  .fulfillment-page .hero-reference-warehouse {
+    left: auto;
+    right: -38px;
+    width: clamp(330px, 32vw, 430px);
+    height: auto;
+    top: -15px;
+  }
+
+  .fulfillment-page .hero-reference-metric strong {
+    font-size: clamp(46px, 5vw, 62px);
+  }
+
+  .fulfillment-page .hero-reference-metric p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 700px) {
+  .fulfillment-page .hero-reference-layout.section-wrap {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 40px);
+    min-height: 0;
+    margin: 78px 20px 0;
+    padding: 0 0 32px;
+    gap: 28px;
+  }
+
+  .fulfillment-page .hero-reference-copy {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .fulfillment-page .hero-reference-title {
+    white-space: normal;
+    margin-bottom: 18px;
+    font-size: clamp(31px, 8.2vw, 42px);
+    line-height: 1.13;
+    letter-spacing: -1.2px;
+  }
+
+  .fulfillment-page .hero-reference-lede {
+    margin-bottom: 22px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .fulfillment-page .hero-reference-cta {
+    min-width: 160px;
+    height: 48px;
+    border-radius: 10px;
+    font-size: 15px;
+  }
+
+  .fulfillment-page .hero-reference-divider {
+    width: 100%;
+    margin-top: 35px;
+  }
+
+  .fulfillment-page .hero-reference-metrics {
+    width: 100%;
+    padding-top: 25px;
+    gap: 12px;
+  }
+
+  .fulfillment-page .hero-reference-metric strong {
+    margin-bottom: 8px;
+    font-size: clamp(32px, 9vw, 48px);
+    letter-spacing: -1.2px;
+  }
+
+  .fulfillment-page .hero-reference-metric p {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .fulfillment-page .hero-reference-visual {
+    position: relative;
+    inset: auto;
+    order: 2;
+    width: 100%;
+    height: 300px;
+    overflow: visible;
+  }
+
+  .fulfillment-page .hero-reference-warehouse {
+    top: 0;
+    left: auto;
+    right: -12px;
+    width: min(100%, 330px);
+    height: 300px;
+    object-fit: contain;
+  }
+}
