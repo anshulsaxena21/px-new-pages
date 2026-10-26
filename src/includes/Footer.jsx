@@ -2,7 +2,7 @@ import React from 'react'
 import logo from '../images/ParcelX_Logo.svg'
 import {NavLink } from "react-router-dom";
 import SubscribeForm from '../component/forms/SubscribeForm';
-export default function Footer() {
+export default function Footer({ homeHref = null, description = "ParcelX offers AI-based smoother, easier, reliable and smartest platform to manage your end to end shipping needs for your business.", quickLinks = null, usefulLinks = null }) {
   return (
     <div>
       <footer>
@@ -11,10 +11,8 @@ export default function Footer() {
                 <div className='col-md-11 mx-auto'>
                     <div className='row mb-5'>
                         <div className='col-md-6'>
-                            <NavLink className="navbar-brand" to="/">
-                                <img src={logo} alt='footer logo' className='img-fluid footer-logo' />
-                            </NavLink>
-                            <p>ParcelX offers AI-based smoother, easier, reliable and smartest platform to manage your end to end shipping needs for your business.</p>
+                            {homeHref ? <a className="navbar-brand" href={homeHref}><img src={logo} alt='footer logo' className='img-fluid footer-logo' /></a> : <NavLink className="navbar-brand" to="/"><img src={logo} alt='footer logo' className='img-fluid footer-logo' /></NavLink>}
+                            <p>{description}</p>
                             <h5 className='subtitle'>Subscribe to our Newsletter!</h5>
                             {/* <div className="d-flex">
                                 <input className="form-control me-3" placeholder="Enter Email id" type="text" />
@@ -53,6 +51,8 @@ export default function Footer() {
                             <div className='footer-link'>
                                 <ul className="social-link">
                                     <h5 className='link-heading'>Quick Links</h5>
+                                    {quickLinks ? quickLinks.map((link) => <li className="nav-item" key={link.label}><a className="nav-link" href={link.href}>{link.label}</a></li>) : <>
+                                    <h5 className='link-heading'>Quick Links</h5>
                                     <li className="nav-item">
                                         <NavLink className="nav-link" aria-current="page" to="features">Features</NavLink>
                                     </li>
@@ -65,8 +65,12 @@ export default function Footer() {
                                     <li className="nav-item">
                                         <NavLink className="nav-link" to="contact-us">Contact</NavLink>
                                     </li>
+                                
+                                    </>}
                                 </ul>
                                 <ul className="social-link">
+                                    <h5 className='link-heading'>Useful Links</h5>
+                                    {usefulLinks ? usefulLinks.map((link) => <li className="nav-item" key={link.label}><a className="nav-link" href={link.href}>{link.label}</a></li>) : <>
                                     <h5 className='link-heading'>Useful Links</h5>
                                     <li className="nav-item">
                                         <NavLink className="nav-link" aria-current="page" to="privacy">Privacy Policy</NavLink>
@@ -83,6 +87,8 @@ export default function Footer() {
                                     <li className="nav-item">
                                         <NavLink className="nav-link" to="policy-compliance">Compliance</NavLink>
                                     </li>
+                                
+                                    </>}
                                 </ul>
                             </div>
                         </div>
