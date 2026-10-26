@@ -656,3 +656,12 @@ body {
     height: 40px;
   }
 }
+
+
+/* Match the supplied mobile header reference: compact ParcelX wordmark. */
+@media (max-width: 575.98px) {
+  .sticky-top .navbar-brand img {
+    width: 125px;
+    max-width: 125px;
+  }
+}
