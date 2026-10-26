@@ -1622,7 +1622,7 @@
 .fulfillment-page .hero-reference-metrics {
   display: grid;
   width: 100%;
-  max-width: 908px;
+  max-width: 100%;
   grid-template-columns: repeat(3,minmax(0,1fr));
   gap: clamp(12px, 2vw, 30px);
   padding-top: clamp(24px, 2.6vw, 36px);
