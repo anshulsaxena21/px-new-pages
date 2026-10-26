@@ -43,11 +43,7 @@ const faqs = [
     answer: "Available courier partners depend on pickup and delivery pincodes and service requirements. ParcelX helps you choose a suitable option for fast, reliable delivery."
   }
 ];
-const articles = [
-  ["FULFILMENT GUIDE","A smarter way to manage e-commerce orders","Learn how connected fulfilment can simplify everyday operations.","fulfillment-hero-warehouse.png"],
-  ["OPERATIONS","Make every shipment work harder","Small improvements in packing and dispatch can make a big difference.","fulfillment-dashboard-laptop.png"],
-  ["GROWTH","Build a better delivery experience","Create a smoother journey from checkout to customer doorstep.","fulfillment-technology-background.png"]
-];
+
 function Image({src,alt,className=""}) { const [failed,setFailed] = useState(false); return failed ? <div className={`image-fallback ${className}`} aria-label={alt}><div className="fallback-grid"><PackageCheck size={56}/><span>ParcelX Fulfillment</span></div></div> : <img className={className} src={src} alt={alt} onError={()=>setFailed(true)}/>; }
 
 export default function Fulfillment(){
@@ -142,7 +138,7 @@ export default function Fulfillment(){
     faqs={faqs}
    />
   </div>
-  <section className="resources-section section-space" id="resources"><div className="section-wrap"><div className="section-heading"><div><div className="eyebrow">THE PARCELX JOURNAL</div><h2>Ideas for your <span>next move.</span></h2></div><a className="text-link orange-link" href="#contact">Explore more insights <ArrowRight size={17}/></a></div><div className="article-grid">{articles.map(([tag,title,desc,img],i)=><article className="article-card" key={title}><div className="article-image"><Image src={A(img)} alt="" className="article-photo"/><span className="article-index">0{i+1}</span></div><div className="article-content"><div className="article-tag">{tag}</div><h3>{title}</h3><p>{desc}</p><a href="#contact" aria-label={`Learn more: ${title}`}><ArrowUpRight size={18}/></a></div></article>)}</div></div></section>
+  
   <section className="contact-section section-wrap" id="contact"><div className="contact-panel"><div className="contact-decoration decoration-one"></div><div className="contact-decoration decoration-two"></div><div className="contact-content"><div className="eyebrow light-eyebrow"><span></span> READY WHEN YOU ARE</div><h2>Let’s get your<br/>orders moving.</h2><p>Tell us where you want to go. We’ll help you explore a fulfillment setup that fits your business.</p><a className="button button-light" href="https://parcelx.in/" target="_blank" rel="noreferrer">Talk to ParcelX <ArrowUpRight size={18}/></a></div><div className="contact-art"><div className="contact-box box-back"></div><div className="contact-box box-front"><span>PX</span><div className="box-tape"></div></div><div className="contact-ring ring-one"></div><div className="contact-ring ring-two"></div></div></div></section>
   
  <Footer />
