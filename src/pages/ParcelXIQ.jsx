@@ -19,7 +19,6 @@ import {
   TrendingDown,
   TrendingUp,
   Truck,
-  X,
   Zap
 } from "lucide-react";
 import "../styles/parcelx-iq.css";
@@ -359,7 +358,7 @@ export default function ParcelXIQ() {
           { label: "Get Started", href: registerUrl },
           { label: "Book a Demo", href: demoUrl }
         ]}
-      />ooter>
+      />
     </main>
   );
 }
