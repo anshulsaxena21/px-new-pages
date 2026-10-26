@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ArrowUpRight, ArrowRight, Check, Boxes, PackageCheck, Warehouse, Truck, RefreshCw, BarChart3, ShieldCheck, Play, Zap, Clock3, MapPin, Headphones, TrendingUp, PanelsTopLeft, Package, FolderHeart, PieChart } from "lucide-react";
+import { ArrowUpRight, ArrowRight, Check, Boxes, PackageCheck, Warehouse, Truck, RefreshCw, BarChart3, ShieldCheck, Play, Zap, Clock3, MapPin } from "lucide-react";
 import "./Fulfillment.css";
 import Header from "../includes/Header.jsx";
 import Footer from "../includes/Footer.jsx";
@@ -9,12 +9,12 @@ import MainTestimonial from "../component/slider/MainTestimonial.jsx";
 const imageAssets = import.meta.glob("../images/fullfillment/*", { eager: true, query: "?url", import: "default" });
 const A = (name) => imageAssets[`../images/fullfillment/${name}`] || "";
 const features = [
-  {icon: Headphones, title:"Support", text:"Seamless assistance whenever you need it from onboarding to daily operations, our team ensures smooth fulfilment without slowdowns."},
-  {icon: TrendingUp, title:"Sales", text:"Boost conversions with faster deliveries, lower shipping costs, and smarter fulfilment that helps you sell more, effortlessly."},
-  {icon: PanelsTopLeft, title:"Onboarding", text:"Get started quickly with guided setup, effortless integrations, and a zero-stress transition into ParcelX’s fulfilment ecosystem."},
-  {icon: Package, title:"Product", text:"Organise, track, and manage your entire product catalogue with precision — from storage to dispatch, every SKU stays in control."},
-  {icon: FolderHeart, title:"Quality", text:"Every order is picked, packed, and processed with strict QC checks — ensuring your customers always receive the best."},
-  {icon: PieChart, title:"Result", text:"Experience measurable growth through lower RTOs, faster delivery, higher customer satisfaction, and streamlined operations."}
+  {icon:"icon-support.svg", title:"Support", text:"Seamless assistance whenever you need it from onboarding to daily operations, our team ensures smooth fulfilment without slowdowns."},
+  {icon:"icon-sales.svg", title:"Sales", text:"Boost conversions with faster deliveries, lower shipping costs, and smarter fulfilment that helps you sell more, effortlessly."},
+  {icon:"icon-onboarding.svg", title:"Onboarding", text:"Get started quickly with guided setup, effortless integrations, and a zero-stress transition into ParcelX’s fulfilment ecosystem."},
+  {icon:"icon-product.svg", title:"Product", text:"Organise, track, and manage your entire product catalogue with precision — from storage to dispatch, every SKU stays in control."},
+  {icon:"icon-quality.svg", title:"Quality", text:"Every order is picked, packed, and processed with strict QC checks — ensuring your customers always receive the best."},
+  {icon:"icon-result.svg", title:"Result", text:"Experience measurable growth through lower RTOs, faster delivery, higher customer satisfaction, and streamlined operations."}
 ];
 const steps = [
   { id: "send-inventory", image: "workflow-send-inventory.svg", title: "Send Inventory", text: "Ship your products to the nearest ParcelX warehouse." },
@@ -68,7 +68,7 @@ export default function Fulfillment(){
       <Image src={A("fulfillment-hero-warehouse.png")} alt="Warehouse shelving stocked with parcels ready for fulfillment" className="hero-reference-warehouse"/>
     </div>
   </section>
-  <section className="benefits section-wrap section-space" id="benefits"><div className="benefits-reference-heading"><h2>The Smarter Way to Store, Sell &amp; Ship</h2><p>Deliver faster, reduce costs, minimise RTOs, and unlock powerful insights — all from our unified platform.</p></div><div className="feature-grid">{features.map(({icon:Icon,title,text})=><article className="feature-card" key={title}><div className="feature-top"><span className="feature-icon"><Icon size={52} strokeWidth={1.45}/></span></div><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+  <section className="benefits section-wrap section-space" id="benefits"><div className="benefits-reference-heading"><h2>The Smarter Way to Store, Sell &amp; Ship</h2><p>Deliver faster, reduce costs, minimise RTOs, and unlock powerful insights — all from our unified platform.</p></div><div className="feature-grid">{features.map(({icon,title,text})=><article className="feature-card" key={title}><div className="feature-top"><span className="feature-icon"><img src={A(icon)} alt="" /></span></div><h3>{title}</h3><p>{text}</p></article>)}</div></section>
   <section className="technology-edge-section" id="technology">
     <Image src={A("fulfillment-technology-background.png")} alt="" className="technology-edge-background"/>
     <div className="technology-edge-art" aria-hidden="true">
