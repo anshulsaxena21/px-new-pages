@@ -509,3 +509,28 @@ body {
     margin-top: 64px;
   }
 }
+
+
+/* Keep Contact visually separate from the desktop action buttons. */
+@media (min-width: 992px) {
+  .sticky-top .navbar-nav .nav-item:nth-child(10) {
+    margin-right: clamp(16px, 1.25vw, 26px);
+  }
+}
+
+/* The original header is fixed, so reserve its full height before the hero. */
+.fulfillment-page > .sticky-top + .hero {
+  margin-top: 92px;
+}
+
+@media (max-width: 991.98px) {
+  .fulfillment-page > .sticky-top + .hero {
+    margin-top: 74px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .fulfillment-page > .sticky-top + .hero {
+    margin-top: 68px;
+  }
+}
