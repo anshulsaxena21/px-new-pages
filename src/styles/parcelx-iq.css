@@ -554,3 +554,203 @@
 @media (prefers-reduced-motion: reduce) {
   .iq-page *, .iq-page *::before, .iq-page *::after { scroll-behavior:auto !important; transition:none !important; animation:none !important; }
 }
+
+
+/* Shared ParcelX components used on the IQ landing page */
+.iq-page > .sticky-top {
+  position: fixed;
+  z-index: 1030;
+  top: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px solid rgba(232, 233, 237, .85);
+  background: rgba(255, 255, 255, .91);
+  box-shadow: 0 1px 0 rgba(20, 20, 20, .035);
+  backdrop-filter: blur(18px);
+}
+.iq-page > .sticky-top .navbar {
+  width: min(calc(100% - var(--iq-gutter)*2), var(--iq-max));
+  min-height: 78px;
+  margin: 0 auto;
+  padding: 10px 0;
+}
+.iq-page > .sticky-top .navbar-brand { margin-right: 22px; }
+.iq-page > .sticky-top .navbar-brand img { width: 132px; max-width: 132px; }
+.iq-page > .sticky-top .navbar-nav { gap: clamp(15px, 1.8vw, 27px); }
+.iq-page > .sticky-top .navbar-nav .nav-item > a:not(.btn) {
+  padding: 8px 0;
+  color: #4d5564;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.iq-page > .sticky-top .navbar-nav .nav-item > a:not(.btn):hover,
+.iq-page > .sticky-top .navbar-nav .nav-item > a.nav-active { color: var(--iq-orange); }
+.iq-page > .sticky-top .navbar .btn {
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.iq-page > .sticky-top .navbar .btn-primary {
+  border-color: var(--iq-orange);
+  background: linear-gradient(135deg,#ff6a21,#ff5509);
+}
+.iq-page > .sticky-top .navbar .btn-secondary {
+  border-color: #e5e7eb;
+  color: #252b37;
+  background: #fff;
+}
+.iq-page > .sticky-top .navbar .btn-secondary:hover { background: #f8f9fb; }
+.iq-page > .sticky-top .navbar-toggler { border-color: #e8eaf0; border-radius: 10px; }
+.iq-page .iq-hero { padding-top: 124px; }
+.iq-page > .sticky-top .navbar-nav .nav-item.d-lg-none { width:100%; padding-top:14px; }
+.iq-page > .sticky-top .navbar-nav .nav-item.d-lg-none .btn { margin-bottom:7px; }
+
+/* The shared FAQ component retains its accordion and illustration; only its
+   spacing, typography and surface styling are tuned for the IQ page. */
+.iq-page .iq-shared-faq {
+  padding: clamp(58px, 6.5vw, 92px) 0 22px;
+  scroll-margin-top: 100px;
+}
+.iq-page .iq-shared-faq > section { padding: 0; background: transparent; }
+.iq-page .iq-shared-faq > section > .col-md-11 {
+  width: min(calc(100% - var(--iq-gutter)*2), var(--iq-max));
+  max-width: none;
+  margin-inline: auto !important;
+  padding: 0;
+}
+.iq-page .iq-shared-faq .heading {
+  margin: 0 0 27px;
+  color: #171e2d;
+  font-size: clamp(29px, 3vw, 42px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -1.4px;
+}
+.iq-page .iq-shared-faq .heading span { color: var(--iq-orange); }
+.iq-page .iq-shared-faq .row { --bs-gutter-x: 28px; align-items: flex-start; }
+.iq-page .iq-shared-faq .accordion { border-radius: 15px; overflow: hidden; }
+.iq-page .iq-shared-faq .accordion-item {
+  border: 0;
+  border-bottom: 1px solid #e9ebf0;
+  background: transparent;
+}
+.iq-page .iq-shared-faq .accordion-item:last-child { border-bottom: 0; }
+.iq-page .iq-shared-faq .accordion-button {
+  gap: 16px;
+  padding: 17px 15px;
+  color: #2c3442;
+  background: #fff;
+  box-shadow: none;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.iq-page .iq-shared-faq .accordion-button::after {
+  width: 16px;
+  height: 16px;
+  background-size: 13px;
+  filter: none;
+}
+.iq-page .iq-shared-faq .accordion-button:not(.collapsed) {
+  color: #eb5a17;
+  background: #fff8f3;
+}
+.iq-page .iq-shared-faq .accordion-body {
+  padding: 0 15px 17px;
+  color: #707b8c;
+  background: #fff8f3;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.iq-page .iq-shared-faq .image-box {
+  position: relative;
+  width: 100%;
+  min-height: 270px;
+  overflow: visible;
+  border-radius: 20px;
+  background: linear-gradient(140deg,#fff6ef,#fff);
+}
+.iq-page .iq-shared-faq .image-box > img:first-child {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 270px;
+  border-radius: 20px;
+  object-fit: cover;
+}
+.iq-page .iq-shared-faq .image-box .img-box {
+  position: absolute;
+  right: -4%;
+  bottom: -4%;
+  width: 43%;
+  max-height: 58%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 18px rgba(25,35,53,.12));
+}
+
+/* Shared customer testimonial carousel sits inside the IQ visual system. */
+.iq-page .iq-shared-testimonials { padding: 25px 0 0; }
+.iq-page .iq-shared-testimonials > .iq-section-shell { margin-bottom: 20px; }
+.iq-page .iq-shared-testimonials .iq-section-heading h2 { margin-top: 14px; }
+.iq-page .iq-shared-testimonials .section03.pb-0 { padding-top: 0; background: transparent; }
+.iq-page .iq-shared-testimonials .marquee-card { border-radius: 18px; }
+
+/* Reuse the shared footer but keep its layout in the IQ page's modern gutters. */
+.iq-page .footer-bg {
+  margin-top: 20px;
+  padding: 45px 0 17px;
+  border-radius: 25px 25px 0 0;
+}
+.iq-page .footer-bg .container-fluid > .col-md-11 {
+  width: min(calc(100% - var(--iq-gutter)*2), var(--iq-max));
+}
+.iq-page .footer-bg .footer-logo { width: 120px; margin-bottom: 18px; }
+.iq-page .footer-bg .col-md-6:first-child > p {
+  max-width: 510px;
+  margin-bottom: 17px;
+  color: #697386;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.iq-page .footer-bg .subtitle { margin-bottom: 13px; font-size: 15px; }
+.iq-page .footer-bg .social { gap: 11px; margin-bottom: 25px; }
+.iq-page .footer-bg .social-media { width: 40px; height: 40px; }
+.iq-page .footer-bg .social-media i { font-size: 14px; }
+.iq-page .footer-bg .footer-link { gap: clamp(24px, 4vw, 60px); }
+.iq-page .footer-bg .link-heading { font-size: 14px; font-weight: 700; }
+.iq-page .footer-bg .social-link .nav-link { font-size: 13px; }
+.iq-page .footer-bg .col-md-11 > p.mb-0 { padding-top: 16px; color: #9299a6; font-size: 11px; }
+
+@media (max-width: 980px) {
+  .iq-page > .sticky-top .navbar { min-height: 70px; }
+  .iq-page > .sticky-top .navbar-brand img { width: 118px; max-width: 118px; }
+  .iq-page > .sticky-top .navbar-collapse { padding-top: 8px; }
+  .iq-page > .sticky-top .navbar-nav { align-items: stretch !important; gap: 0; }
+  .iq-page > .sticky-top .navbar-nav .nav-item > a:not(.btn) {
+    display: block;
+    padding: 12px 2px;
+    border-bottom: 1px solid #f0f1f4;
+    font-size: 14px;
+  }
+  .iq-page > .sticky-top .navbar-nav .nav-item.d-lg-none { border: 0; }
+  .iq-page .iq-hero { padding-top: 108px; }
+  .iq-page .iq-shared-faq .image-box { margin-top: 15px; }
+}
+@media (max-width: 680px) {
+  .iq-page > .sticky-top .navbar { min-height: 66px; }
+  .iq-page > .sticky-top .navbar-brand img { width: 108px; max-width: 108px; }
+  .iq-page .iq-hero { padding-top: 94px; }
+  .iq-page .iq-shared-faq { padding-top: 50px; }
+  .iq-page .iq-shared-faq .heading { font-size: 30px; letter-spacing: -1px; }
+  .iq-page .iq-shared-faq .row { --bs-gutter-x: 0; }
+  .iq-page .iq-shared-faq .accordion-button { padding: 15px 12px; font-size: 13px; }
+  .iq-page .iq-shared-faq .accordion-body { padding: 0 12px 15px; font-size: 12px; }
+  .iq-page .iq-shared-testimonials { padding-top: 8px; }
+  .iq-page .footer-bg { margin-top: 5px; padding-top: 33px; }
+  .iq-page .footer-bg .container-fluid > .col-md-11 { width: calc(100% - 36px); }
+  .iq-page .footer-bg .footer-logo { width: 112px; margin-bottom: 12px; }
+}
