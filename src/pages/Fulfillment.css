@@ -1521,204 +1521,74 @@
 
 
 
-/* Figma-aligned fulfillment hero — desktop reference at 1568–1776px. */
-@media (min-width: 1001px) {
-  .fulfillment-page .hero-reference-layout.section-wrap {
-    width: calc(100% - 8.4%);
-    min-height: 0;
-    margin: 24px 0 0 4.2%;
-    padding: 0 0 54px;
-  }
-
-  .fulfillment-page .hero-reference-copy {
-    width: 66%;
-    max-width: 66%;
-  }
-
-  .fulfillment-page .hero-reference-title {
-    margin: 0 0 34px;
-    font-size: clamp(38px, 2.75vw, 46px);
-    font-weight: 400;
-    letter-spacing: -1.55px;
-    line-height: 1.2;
-    white-space: nowrap;
-  }
-
-  .fulfillment-page .hero-reference-lede {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 0 42px;
-    font-size: clamp(16px, 1.08vw, 19px);
-    letter-spacing: -0.2px;
-    line-height: 1.62;
-  }
-
-  .fulfillment-page .hero-reference-cta {
-    min-width: 185px;
-    height: 64px;
-    padding-inline: 27px;
-    border-radius: 13px;
-    font-size: 19px;
-  }
-
-  .fulfillment-page .hero-reference-divider {
-    width: min(100%, 1000px);
-    margin-top: 97px;
-  }
-
-  .fulfillment-page .hero-reference-metrics {
-    width: min(100%, 1000px);
-    padding-top: 45px;
-  }
-
-  .fulfillment-page .hero-reference-metric strong {
-    margin-bottom: 24px;
-    font-size: clamp(60px, 4.5vw, 80px);
-    letter-spacing: -2.8px;
-    font-weight: 500;
-  }
-
-  .fulfillment-page .hero-reference-metric p {
-    font-size: clamp(16px, 1.15vw, 20px);
-  }
-
-  .fulfillment-page .hero-reference-visual {
-    inset: 0 -4.2% 0 auto;
-    width: 47%;
-    height: 610px;
-  }
-
-  .fulfillment-page .hero-reference-warehouse {
-    top: 10px;
-    right: 0;
-    left: auto;
-    width: clamp(410px, 32vw, 570px);
-    height: 560px;
-    object-fit: contain;
-    object-position: top right;
-  }
-}
-
-@media (min-width: 1001px) and (max-width: 1250px) {
-  .fulfillment-page .hero-reference-title {
-    font-size: clamp(34px, 3.1vw, 40px);
-    letter-spacing: -1.1px;
-  }
-
-  .fulfillment-page .hero-reference-copy {
-    width: 68%;
-    max-width: 68%;
-  }
-
-  .fulfillment-page .hero-reference-warehouse {
-    width: 400px;
-    height: 500px;
-  }
-
-  .fulfillment-page .hero-reference-divider,
-  .fulfillment-page .hero-reference-metrics {
-    width: 94%;
-  }
-}
 
 
 
-
-
-/* Figma reference: fulfillment hero. Values below scale from the 1440px design. */
+/* Corrective hero layout: preserve the existing page structure and keep all
+   hero content below the fixed/sticky navigation without overlapping section 2. */
 .fulfillment-page .hero-reference-layout.section-wrap {
+  position: relative;
   box-sizing: border-box;
-  width: min(100% - 128px, 1312px);
+  width: min(calc(100% - 128px), 1312px);
   max-width: 1312px;
+  margin: 0 auto;
+  padding: 28px 0 48px;
   min-height: 0;
-  margin: 28px auto 0;
-  padding: 0 0 56px;
-  display: grid;
-  grid-template-columns: minmax(0, 908px) minmax(0, 1fr);
-  column-gap: 28px;
-  align-items: start;
 }
 .fulfillment-page .hero-reference-copy {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
+  position: relative;
+  z-index: 2;
+  width: min(100%, 908px);
+  max-width: 908px;
 }
 .fulfillment-page .hero-reference-title {
   margin: 0 0 16px;
-  font-family: "Product Sans", "Instrument Sans", sans-serif;
-  font-size: clamp(30px, 2.78vw, 40px);
-  font-weight: 400;
-  line-height: 2;
+  font-size: clamp(32px, 2.78vw, 40px);
+  line-height: 1.25;
   letter-spacing: -0.8px;
+  font-weight: 400;
   white-space: normal;
-  color: #080808;
 }
 .fulfillment-page .hero-reference-lede {
-  width: 100%;
   max-width: 882px;
   margin: 0 0 32px;
-  font-family: "Product Sans", "Instrument Sans", sans-serif;
   font-size: 16px;
-  font-weight: 400;
   line-height: 1.6;
-  letter-spacing: 0;
-  color: #111;
 }
 .fulfillment-page .hero-reference-cta {
-  min-width: 0;
-  height: auto;
   min-height: 48px;
+  height: auto;
   padding: 14px 24px;
   border-radius: 10px;
-  gap: 4px;
   font-size: 18px;
-  line-height: 1.4;
-  box-shadow: 0 4px 20px rgba(0,0,0,.25);
 }
 .fulfillment-page .hero-reference-divider {
-  width: 100%;
-  max-width: 908px;
+  width: min(100%, 908px);
   margin-top: 60px;
 }
 .fulfillment-page .hero-reference-metrics {
-  width: 100%;
-  max-width: 908px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 48px;
+  width: min(100%, 908px);
   padding-top: 32px;
-}
-.fulfillment-page .hero-reference-metric {
-  text-align: left;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
 }
 .fulfillment-page .hero-reference-metric strong {
-  margin: 0 0 12px;
-  font-family: Inter, sans-serif;
-  font-size: 60px;
-  font-weight: 600;
-  line-height: 72px;
+  margin-bottom: 12px;
+  font-size: clamp(44px, 4.17vw, 60px);
+  line-height: 1.2;
   letter-spacing: -1.2px;
-  background: linear-gradient(90deg, #ff360d, #fe6600);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 .fulfillment-page .hero-reference-metric p {
-  margin: 0;
-  font-family: "Product Sans", "Instrument Sans", sans-serif;
   font-size: 18px;
   line-height: 28px;
-  color: #101828;
 }
 .fulfillment-page .hero-reference-visual {
-  position: absolute;
   top: 0;
   right: -64px;
   width: min(42%, 560px);
-  height: 610px;
-  pointer-events: none;
+  height: 540px;
 }
 .fulfillment-page .hero-reference-warehouse {
-  position: absolute;
   top: 0;
   right: 0;
   width: 100%;
@@ -1726,78 +1596,56 @@
   object-fit: contain;
   object-position: top right;
 }
-@media (max-width: 1200px) and (min-width: 901px) {
+@media (min-width: 1001px) {
   .fulfillment-page .hero-reference-layout.section-wrap {
-    width: calc(100% - 80px);
-    grid-template-columns: minmax(0, 1fr) 36%;
-    column-gap: 16px;
-    margin-top: 28px;
-  }
-  .fulfillment-page .hero-reference-title {
-    font-size: clamp(30px, 3vw, 36px);
-    line-height: 1.35;
-    letter-spacing: -0.7px;
-  }
-  .fulfillment-page .hero-reference-visual {
-    right: -40px;
-    width: 39%;
-    height: 500px;
-  }
-  .fulfillment-page .hero-reference-metrics {
-    gap: 20px;
-  }
-  .fulfillment-page .hero-reference-metric strong {
-    font-size: 52px;
-    line-height: 1.2;
+    margin-top: 0;
+    padding-top: 28px;
   }
 }
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .fulfillment-page .hero-reference-layout.section-wrap {
-    display: flex;
-    flex-direction: column;
-    width: calc(100% - 40px);
-    margin: 28px auto 0;
-    padding-bottom: 32px;
-    gap: 24px;
+    width: calc(100% - 56px);
+    padding-top: 28px;
+    padding-bottom: 36px;
   }
   .fulfillment-page .hero-reference-copy {
     width: 100%;
     max-width: 100%;
   }
+  .fulfillment-page .hero-reference-visual {
+    right: -24px;
+    width: 40%;
+    height: 420px;
+  }
+  .fulfillment-page .hero-reference-divider,
+  .fulfillment-page .hero-reference-metrics {
+    width: min(100%, 908px);
+  }
+}
+@media (max-width: 700px) {
+  .fulfillment-page .hero-reference-layout.section-wrap {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 32px);
+    margin: 0 auto;
+    padding-top: 24px;
+    padding-bottom: 28px;
+    gap: 20px;
+  }
   .fulfillment-page .hero-reference-title {
-    margin-bottom: 16px;
-    font-size: clamp(30px, 5.8vw, 40px);
-    line-height: 1.2;
-    letter-spacing: -0.7px;
-    white-space: normal;
+    font-size: clamp(29px, 8vw, 36px);
+    line-height: 1.18;
   }
   .fulfillment-page .hero-reference-lede {
     margin-bottom: 24px;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.6;
-  }
-  .fulfillment-page .hero-reference-divider {
-    margin-top: 32px;
-  }
-  .fulfillment-page .hero-reference-metrics {
-    padding-top: 24px;
-    gap: 16px;
-  }
-  .fulfillment-page .hero-reference-metric strong {
-    margin-bottom: 8px;
-    font-size: clamp(34px, 7vw, 52px);
-    line-height: 1.15;
-    letter-spacing: -1px;
-  }
-  .fulfillment-page .hero-reference-metric p {
-    font-size: 14px;
-    line-height: 1.4;
   }
   .fulfillment-page .hero-reference-visual {
     position: relative;
     inset: auto;
     width: 100%;
-    height: clamp(240px, 58vw, 420px);
+    height: clamp(220px, 62vw, 340px);
     order: 2;
   }
   .fulfillment-page .hero-reference-warehouse {
@@ -1806,36 +1654,33 @@
     height: 100%;
     object-position: center;
   }
-}
-@media (max-width: 520px) {
-  .fulfillment-page .hero-reference-layout.section-wrap {
-    width: calc(100% - 32px);
-    margin-top: 20px;
-  }
-  .fulfillment-page .hero-reference-title {
-    font-size: 30px;
-    line-height: 1.18;
-  }
-  .fulfillment-page .hero-reference-cta {
-    min-height: 46px;
-    padding: 12px 20px;
-    font-size: 16px;
+  .fulfillment-page .hero-reference-divider {
+    margin-top: 12px;
   }
   .fulfillment-page .hero-reference-metrics {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-  .fulfillment-page .hero-reference-metric {
-    text-align: left;
+    padding-top: 20px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
   }
   .fulfillment-page .hero-reference-metric strong {
-    font-size: 42px;
+    font-size: clamp(30px, 8vw, 42px);
     line-height: 1.1;
+    margin-bottom: 8px;
   }
   .fulfillment-page .hero-reference-metric p {
-    font-size: 16px;
+    font-size: 12px;
+    line-height: 1.35;
   }
-  .fulfillment-page .hero-reference-visual {
-    height: 260px;
+}
+@media (max-width: 420px) {
+  .fulfillment-page .hero-reference-metrics {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .fulfillment-page .hero-reference-metric strong {
+    font-size: 40px;
+  }
+  .fulfillment-page .hero-reference-metric p {
+    font-size: 15px;
   }
 }
