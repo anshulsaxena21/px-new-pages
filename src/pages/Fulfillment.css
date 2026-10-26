@@ -1850,19 +1850,20 @@
 }
 .fulfillment-page .technology-edge-copy p:last-child { margin-bottom: 0; }
 
-/* 4. DASHBOARD / PRODUCT DETAIL */
+/* 4. DASHBOARD / PRODUCT DETAIL — 40px medium heading and edge-to-edge visual. */
 .fulfillment-page .dashboard-reference-section {
   position: relative;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, .95fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 48vw);
   align-items: center;
-  gap: clamp(28px, 4vw, 64px);
-  width: min(calc(100% - var(--page-gutter)*2), var(--content-max));
+  gap: clamp(28px, 3.4vw, 56px);
+  width: 100%;
+  max-width: none;
   height: auto;
   min-height: 0;
-  margin: var(--section-gap) auto 0;
-  padding: 0;
+  margin: var(--section-gap) 0 0;
+  padding: 0 0 0 var(--page-gutter);
   overflow: visible;
   background: #fff;
 }
@@ -1871,20 +1872,21 @@
   z-index: 2;
   width: 100%;
   max-width: 720px;
+  min-width: 0;
   margin: 0;
   padding: 0;
 }
 .fulfillment-page .dashboard-reference-copy h2 {
   margin: 0 0 18px;
   color: #080808;
-  font-size: clamp(30px, 3vw, 44px);
-  font-weight: 400;
-  letter-spacing: -1.4px;
-  line-height: 1.18;
+  font-size: 40px;
+  font-weight: 500;
+  letter-spacing: -1.1px;
+  line-height: 1.2;
   white-space: normal;
 }
 .fulfillment-page .dashboard-reference-intro {
-  margin: 0 0 28px;
+  margin: 0 0 26px;
   color: #42434a;
   font-size: clamp(14px, 1.1vw, 17px);
   line-height: 1.6;
@@ -1917,9 +1919,11 @@
   position: relative;
   z-index: 1;
   width: 100%;
+  min-width: 0;
   height: auto;
   margin: 0;
   padding: 0;
+  overflow: visible;
   pointer-events: none;
 }
 .fulfillment-page .dashboard-reference-laptop {
@@ -1928,10 +1932,11 @@
   top: auto;
   right: auto;
   width: 100%;
-  max-width: 720px;
+  max-width: none;
   height: auto;
+  margin: 0;
   object-fit: contain;
-  object-position: center;
+  object-position: right center;
 }
 
 /* 5. WORKFLOW — keep seven steps legible and connected on desktop,
@@ -2002,7 +2007,9 @@
   .fulfillment-page .benefits .feature-card { padding-right: 22px; padding-left: 22px; }
   .fulfillment-page .technology-edge-section { height: 330px; }
   .fulfillment-page .technology-edge-copy { width: 47%; right: 26px; }
-  .fulfillment-page .dashboard-reference-section { grid-template-columns: minmax(0,1fr) minmax(0,.85fr); }
+  .fulfillment-page .dashboard-reference-section { grid-template-columns: minmax(0,1fr) minmax(0,44vw); gap: 28px; padding-left: var(--page-gutter); }
+  .fulfillment-page .dashboard-reference-copy h2 { font-size: 40px; font-weight: 500; }
+  .fulfillment-page .dashboard-reference-visual { width: 100%; }
   .fulfillment-page .workflow-flow { height: 570px; }
   .fulfillment-page .workflow-flow-node { width: 25%; }
   .fulfillment-page .workflow-node-order-sync { top: 195px; }
@@ -2044,8 +2051,10 @@
   .fulfillment-page .technology-edge-art { position: relative; inset: auto; width: calc(100% + 36px); height: auto; min-height: 170px; margin: 12px -18px 0; overflow: hidden; }
   .fulfillment-page .technology-edge-warehouse { top: 4%; left: 0; width: 30%; height: 90%; }
   .fulfillment-page .technology-edge-person { position: relative; left: 0; bottom: auto; width: 100%; height: auto; }
-  .fulfillment-page .dashboard-reference-section { display: flex; flex-direction: column; align-items: stretch; gap: 22px; width: calc(100% - 40px); margin-top: var(--section-gap); }
-  .fulfillment-page .dashboard-reference-copy h2 { font-size: clamp(29px, 7vw, 36px); letter-spacing: -1px; }
+  .fulfillment-page .dashboard-reference-section { display: flex; flex-direction: column; align-items: stretch; gap: 22px; width: 100%; margin-top: var(--section-gap); padding: 0 0 0 var(--page-gutter); }
+  .fulfillment-page .dashboard-reference-copy h2 { font-size: clamp(30px, 7vw, 40px); font-weight: 500; letter-spacing: -1px; }
+  .fulfillment-page .dashboard-reference-visual { width: calc(100% + var(--page-gutter)); margin-right: 0; align-self: stretch; }
+  .fulfillment-page .dashboard-reference-laptop { width: 100%; max-width: none; object-position: right center; }
   .fulfillment-page .dashboard-reference-intro { font-size: 14px; margin-bottom: 22px; }
   .fulfillment-page .dashboard-reference-list { gap: 16px; }
   .fulfillment-page .dashboard-reference-list h3 { font-size: 15px; }
