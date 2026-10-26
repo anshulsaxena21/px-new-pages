@@ -577,3 +577,82 @@ body {
     flex: 0 0 auto;
   }
 }
+
+
+/* Mobile footer layout matched to the supplied responsive reference. */
+@media (max-width: 575.98px) {
+  .footer-bg {
+    width: calc(100% - 30px);
+    margin: 0 15px;
+    padding: 30px 0 20px;
+    border-radius: 26px 26px 0 0;
+  }
+
+  .footer-bg .container-fluid > .col-md-11 {
+    width: calc(100% - 20px);
+    margin-inline: auto !important;
+  }
+
+  .footer-bg .footer-logo {
+    width: 125px;
+    margin-bottom: 12px;
+  }
+
+  .footer-bg .col-md-6:first-child > p {
+    margin-bottom: 15px;
+    font-size: 15.5px;
+    line-height: 1.85;
+  }
+
+  .footer-bg .subtitle {
+    margin-bottom: 12px;
+    font-size: 18px;
+    line-height: 1.4;
+  }
+
+  .footer-bg form.d-flex {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 19px;
+    width: 100%;
+  }
+
+  .footer-bg form.d-flex .form-control,
+  .footer-bg form.d-flex .form-control.me-3 {
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
+    height: 59px;
+    min-height: 59px;
+    margin-right: 0 !important;
+    padding: 10px 14px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    font-size: 14px;
+  }
+
+  .footer-bg form.d-flex .footer-btn {
+    flex: 0 0 106px;
+    width: 106px;
+    min-width: 106px;
+    min-height: 59px;
+    padding: 10px 8px;
+    border-radius: 12px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .footer-bg .social {
+    justify-content: flex-start;
+    gap: 13px;
+    margin-top: 20px;
+    margin-bottom: 28px;
+  }
+
+  .footer-bg .social-media {
+    width: 40px;
+    height: 40px;
+  }
+}
