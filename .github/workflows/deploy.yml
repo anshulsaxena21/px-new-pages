@@ -19,17 +19,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
+          package-manager-cache: false
       - name: Install dependencies
-        run: npm install
+        run: npm install --include=optional
+      - name: Ensure Rollup native binary is installed
+        shell: bash
+        run: |
+          if ! node -e "require.resolve('@rollup/rollup-linux-x64-gnu')" >/dev/null 2>&1; then
+            ROLLUP_VERSION="$(node -p "require('rollup/package.json').version")"
+            echo "Rollup Linux binary missing; installing matching version $ROLLUP_VERSION"
+            npm install --no-save --include=optional --no-audit --no-fund "@rollup/rollup-linux-x64-gnu@$ROLLUP_VERSION"
+          fi
+          node -e "require('@rollup/rollup-linux-x64-gnu')"
       - name: Build
         run: npm run build
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 
