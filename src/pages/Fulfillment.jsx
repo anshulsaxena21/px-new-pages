@@ -55,7 +55,7 @@ export default function Fulfillment(){
       <h1 className="hero-reference-title">Smart, Seamless Warehousing &amp; Fulfillment partner</h1>
       <p className="hero-reference-lede">Store smarter, ship faster, and scale without limits — with ParcelX’s tech-enabled fulfilment, real-time inventory sync, lightning-fast dispatch, and multi-channel order management.</p>
       <div className="hero-actions hero-reference-actions">
-        <a className="button button-dark hero-reference-cta" href="#contact">Get Started <ArrowUpRight size={18}/></a>
+        <a className="button button-dark hero-reference-cta" href="https://seller.parcelx.in/register">Get Started <ArrowUpRight size={18}/></a>
       </div>
       <div className="hero-reference-divider" aria-hidden="true"></div>
       <div className="hero-reference-metrics" aria-label="Fulfillment statistics">
