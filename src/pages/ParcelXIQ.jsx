@@ -242,15 +242,6 @@ export default function ParcelXIQ() {
         <div className="iq-hero-bottom-glow" />
       </section>
 
-      <section className="iq-integrations" id="integrations">
-        <div className="iq-section-shell">
-          <p className="iq-integrations-title">BUILT TO WORK WITH YOUR SHIPPING ECOSYSTEM</p>
-          <div className="iq-integrations-row">
-            {integrations.map((brand) => <div className={"iq-brand iq-brand-" + brand.name.toLowerCase()} key={brand.name}>{brand.label}</div>)}
-            <span className="iq-integrations-more">And more platforms</span>
-          </div>
-        </div>
-      </section>
 
       <section className="iq-data-section iq-section-shell">
         <InsightVisual />
