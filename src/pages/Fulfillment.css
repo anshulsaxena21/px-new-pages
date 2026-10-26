@@ -352,7 +352,7 @@
   max-width: 100%;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: start;
-  padding-top: 33px;
+  padding-top: 40px;
 }
 
 .fulfillment-page .hero-reference-metric {
@@ -362,7 +362,7 @@
 
 .fulfillment-page .hero-reference-metric strong {
   display: block;
-  margin: 0 0 15px;
+  margin: 0 0 23px;
   color: #ff5018;
   font-size: 68px;
   font-weight: 500;
@@ -391,12 +391,12 @@
 
 .fulfillment-page .hero-reference-warehouse {
   position: absolute;
-  top: -54px;
-  left: 1043px;
+  top: -73px;
+  left: 1024px;
   display: block;
   width: 464px;
   max-width: none;
-  height: 531px;
+  height: 552px;
   object-fit: contain;
   object-position: center;
 }
