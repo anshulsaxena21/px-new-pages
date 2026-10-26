@@ -7,6 +7,7 @@ import {
   BrainCircuit,
   CheckCircle2,
   CircleDollarSign,
+  ChevronDown,
   Clock3,
   Database,
   FileText,
