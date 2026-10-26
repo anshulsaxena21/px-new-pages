@@ -218,20 +218,7 @@ export default function ParcelXIQ() {
 
   return (
     <main className="iq-page">
-      <Header
-        homeHref={import.meta.env.BASE_URL}
-        customLinks={[
-          { label: "Home", href: "#top", active: true },
-          { label: "Features", href: "#features" },
-          { label: "Use Cases", href: "#use-cases" },
-          { label: "Integrations", href: "#integrations" },
-          { label: "FAQ", href: "#faq" }
-        ]}
-        nav_button="Get Started"
-        nav_button2="Login"
-        loginHref="https://seller.parcelx.in/"
-        signupHref={registerUrl}
-      />eader>
+      <Header />eader>
 
       <section className="iq-hero" id="top">
         <div className="iq-hero-shell">
