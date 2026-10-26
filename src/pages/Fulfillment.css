@@ -1620,3 +1620,11 @@
     width: 94%;
   }
 }
+
+
+/* Keep the hero close to the navigation, as in the Figma reference. */
+@media (min-width: 1001px) {
+  .hero-reference-layout.section-wrap {
+    margin-top: 24px !important;
+  }
+}
