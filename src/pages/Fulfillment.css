@@ -3,41 +3,57 @@
 @media(max-width:700px){.section-wrap{width:calc(100% - 40px)}.site-header{height:70px;padding-inline:20px}.brand{font-size:21px}.mobile-menu{display:block;padding:7px}.nav-links{display:none;position:absolute;top:69px;left:0;right:0;background:#fff;border-bottom:1px solid #eee;padding:18px 20px 24px;align-items:stretch;gap:0;flex-direction:column;box-shadow:0 12px 20px #00000008}.nav-links.open{display:flex}.nav-links>a{padding:13px 4px}.nav-links .nav-cta{justify-content:center;margin-top:8px;padding:14px}.hero{grid-template-columns:1fr;padding-top:54px;padding-bottom:35px;gap:22px;min-height:unset}.hero-copy{padding:0}h1{font-size:clamp(43px,12vw,61px);letter-spacing:-2.8px;margin-bottom:19px}.hero-lede{font-size:14px;line-height:1.7}.hero-actions{gap:18px;flex-wrap:wrap}.hero-trust{margin-top:30px}.hero-visual{padding:12px 8px 14px 6px}.hero-image-frame{height:300px}.floating-top{right:-4px}.floating-bottom{left:-4px;bottom:30px}.floating-card{padding:10px}.floating-icon{width:31px;height:31px}.metrics{grid-template-columns:1fr 1fr;gap:23px 10px;padding:25px 0}.metric-intro{grid-column:1/-1;font-size:14px}.metric{padding-left:15px}.metric:nth-child(2){border-left:0;padding-left:0}.metric strong{font-size:30px}.metric p{font-size:10px}.section-space{padding-block:70px}.section-heading{display:block;margin-bottom:30px}.section-heading h2,.technology-copy h2,.dashboard-copy h2{font-size:39px;letter-spacing:-2px}.section-heading>p{font-size:13px;margin-top:17px}.feature-grid{grid-template-columns:1fr}.feature-card{min-height:190px;padding:23px}.feature-top{margin-bottom:19px}.feature-card p{max-width:unset;padding-right:10px}.workflow-track{grid-template-columns:repeat(2,minmax(0,1fr));gap:25px 17px}.workflow-step h3{font-size:13px}.workflow-step p{font-size:11px}.step-top{margin-bottom:14px}.step-icon{width:43px;height:43px}.technology-layout,.dashboard-layout{grid-template-columns:1fr;gap:30px}.technology-copy{order:1}.technology-visual{height:350px;order:2}.tech-person{max-width:82%;height:88%}.dashboard-card{width:61%;padding:12px;bottom:15px}.dashboard-title{font-size:11px;margin:10px 0}.dashboard-stats{gap:6px}.dashboard-stats>div{padding:7px}.dashboard-stats strong{font-size:15px}.tech-badge{top:10px}.dashboard-layout .dashboard-visual{height:300px;order:2}.dashboard-layout .dashboard-copy{order:1}.laptop-image{max-height:275px}.dashboard-mini{bottom:0;right:0}.testimonial-inner blockquote{font-size:27px;letter-spacing:-.7px}.testimonial-stars{display:none}.faq-layout{grid-template-columns:1fr;gap:28px}.faq-image{height:260px}.faq-item button{font-size:12px;padding:18px 0}.faq-contact{align-items:flex-start;flex-direction:column;gap:10px}.article-grid{grid-template-columns:1fr;gap:17px}.article-image{height:220px}.article-content{padding:20px}.article-content h3{font-size:19px}.contact-section{padding-bottom:55px}.contact-panel{min-height:480px;align-items:flex-start;padding:37px 25px;border-radius:11px}.contact-content h2{font-size:48px;letter-spacing:-2.5px}.contact-content p{font-size:12px}.contact-art{width:100%;height:205px;top:auto;bottom:0;right:0;opacity:.65}.contact-box{width:130px;height:110px}.box-back{right:45px;top:55px}.box-front{right:120px;top:75px}.box-front>span{font-size:42px}.contact-ring{width:260px;height:260px}.ring-two{width:330px;height:330px}.site-footer{grid-template-columns:1fr;gap:15px;padding-bottom:25px}.site-footer>p,.site-footer .footer-links,.site-footer>small{grid-column:1;grid-row:auto;justify-self:start}.footer-links{flex-wrap:wrap;gap:14px}.site-footer>p{font-size:11px}.site-footer>small{margin-top:5px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
 
-/* Styling wrapper for the original shared Faq.jsx component.
-   Keep component markup and accordion behavior unchanged. */
+/* FAQ section styled to match the supplied reference screenshot.
+   Faq.jsx markup and Bootstrap collapse behavior remain unchanged. */
 .fulfillment-faq-section > section {
-  padding: 96px 0 104px;
-  background: linear-gradient(112deg, #fff7f1 0%, #fff 54%, #fff6f2 100%);
+  padding: 10px 0 56px;
+  background: #fff;
+  color: #171717;
 }
 
 .fulfillment-faq-section .col-md-11 {
-  width: min(1280px, calc(100% - 96px));
+  width: calc(100% - 80px);
   max-width: none;
-  margin-inline: auto;
+  margin: 0 auto;
 }
 
 .fulfillment-faq-section .heading {
-  max-width: 740px;
-  margin: 0 0 32px;
-  color: #171717;
-  font-size: clamp(36px, 4.1vw, 54px);
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -2.3px;
+  max-width: 1600px;
+  margin: 0 0 24px;
+  color: #353535;
+  font-size: clamp(38px, 3.15vw, 54px);
+  font-weight: 700;
+  line-height: 1.46;
+  letter-spacing: -1.4px;
 }
 
 .fulfillment-faq-section .heading span {
-  color: #ff6600;
+  display: inline;
+  background: linear-gradient(100deg, #ff5424 0%, #ff2e78 48%, #f000c5 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 .fulfillment-faq-section .row {
-  align-items: center;
+  display: grid;
+  grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr);
+  align-items: start;
+  gap: clamp(32px, 3.3vw, 62px);
+  margin: 0;
+}
+
+.fulfillment-faq-section .row > [class*="col-"] {
+  width: auto;
+  min-width: 0;
+  padding: 0;
 }
 
 .fulfillment-faq-section .accordion {
   width: 100%;
   --bs-accordion-bg: transparent;
-  --bs-accordion-border-color: #eee7e2;
+  --bs-accordion-border-color: #e7e9ed;
   --bs-accordion-btn-focus-box-shadow: none;
   --bs-accordion-active-bg: transparent;
   --bs-accordion-active-color: #171717;
@@ -46,7 +62,7 @@
 .fulfillment-faq-section .accordion-item {
   min-width: 0;
   border: 0;
-  border-bottom: 1px solid #eee7e2;
+  border-bottom: 1px solid #e5e7eb;
   border-radius: 0;
   background: transparent;
 }
@@ -58,37 +74,52 @@
 .fulfillment-faq-section .accordion-button {
   display: flex;
   width: 100%;
-  min-height: 58px;
+  min-height: 126px;
   align-items: center;
   gap: 14px;
-  padding: 17px 4px;
+  padding: 26px 4px 26px 0;
   border: 0;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  color: #262626;
+  color: #141414;
   font-family: inherit;
-  font-size: 15px;
-  font-weight: 550;
-  line-height: 1.5;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.45;
   text-align: left;
   white-space: normal;
 }
 
 .fulfillment-faq-section .accordion-button:not(.collapsed) {
-  color: #171717;
+  color: #111;
   background: transparent;
   box-shadow: none;
 }
 
 .fulfillment-faq-section .accordion-button::after {
-  flex: 0 0 24px;
-  width: 24px;
-  height: 24px;
+  content: "+";
+  display: grid;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
   margin-left: auto;
-  background-size: 11px;
-  border: 1px solid #ffad79;
+  place-items: center;
+  border: 1.5px solid #ff6600;
   border-radius: 50%;
+  background-image: none !important;
+  color: #ff6600;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1;
+  transform: none !important;
+}
+
+.fulfillment-faq-section .accordion-button:not(.collapsed)::after {
+  content: "−";
+  border-color: #ff6600;
+  background-image: none !important;
+  color: #ff6600;
 }
 
 .fulfillment-faq-section .accordion-button:focus {
@@ -98,10 +129,11 @@
 }
 
 .fulfillment-faq-section .accordion-body {
-  padding: 0 30px 18px 4px;
-  color: #777;
-  font-size: 13px;
-  line-height: 1.8;
+  padding: 0 12px 36px 0;
+  color: #64748b;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.6;
   overflow-wrap: break-word;
 }
 
@@ -109,40 +141,69 @@
   position: relative;
   width: 100%;
   min-width: 0;
-  padding: 12px 10px 20px;
+  padding: 10px 0 35px;
 }
 
 .fulfillment-faq-section .image-box > img:first-child {
-  width: 100%;
+  display: block;
+  width: min(70%, 660px);
+  max-width: 660px;
   height: auto;
-  border: 1px solid #f2e8df;
-  border-radius: 16px;
-  box-shadow: 0 24px 64px rgba(37, 23, 11, 0.07);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .fulfillment-faq-section .image-box .img-box {
   position: absolute;
-  right: 1%;
-  bottom: 0;
-  width: 33%;
-  max-width: 170px;
+  right: -1%;
+  bottom: -7px;
+  width: 38%;
+  max-width: 360px;
   height: auto;
   object-fit: contain;
 }
 
 @media (max-width: 1000px) {
   .fulfillment-faq-section > section {
-    padding: 78px 0 84px;
+    padding: 24px 0 56px;
   }
 
   .fulfillment-faq-section .col-md-11 {
     width: calc(100% - 56px);
   }
+
+  .fulfillment-faq-section .heading {
+    font-size: clamp(34px, 4.6vw, 46px);
+    line-height: 1.3;
+    letter-spacing: -1px;
+  }
+
+  .fulfillment-faq-section .row {
+    gap: 30px;
+  }
+
+  .fulfillment-faq-section .accordion-button {
+    min-height: 90px;
+    font-size: 17px;
+  }
+
+  .fulfillment-faq-section .accordion-body {
+    font-size: 14px;
+  }
+
+  .fulfillment-faq-section .image-box > img:first-child {
+    width: 74%;
+  }
+
+  .fulfillment-faq-section .image-box .img-box {
+    width: 40%;
+  }
 }
 
 @media (max-width: 767.98px) {
   .fulfillment-faq-section > section {
-    padding: 68px 0 72px;
+    padding: 20px 0 48px;
   }
 
   .fulfillment-faq-section .col-md-11 {
@@ -150,30 +211,39 @@
   }
 
   .fulfillment-faq-section .heading {
-    margin-bottom: 25px;
-    font-size: clamp(32px, 9vw, 42px);
-    letter-spacing: -1.7px;
+    max-width: none;
+    margin-bottom: 20px;
+    font-size: clamp(29px, 7.7vw, 40px);
+    line-height: 1.24;
+    letter-spacing: -1px;
   }
 
   .fulfillment-faq-section .row {
-    margin-right: 0;
-    margin-left: 0;
+    display: block;
+    margin: 0;
   }
 
   .fulfillment-faq-section .row > [class*="col-"] {
     width: 100%;
-    padding-right: 0;
-    padding-left: 0;
+    padding: 0;
   }
 
   .fulfillment-faq-section .accordion-button {
-    min-height: 54px;
-    padding: 16px 3px;
-    font-size: 14px;
+    min-height: 72px;
+    padding: 20px 0;
+    font-size: 16px;
+  }
+
+  .fulfillment-faq-section .accordion-button::after {
+    flex-basis: 20px;
+    width: 20px;
+    height: 20px;
   }
 
   .fulfillment-faq-section .accordion-body {
-    font-size: 12px;
+    padding: 0 4px 22px 0;
+    font-size: 14px;
+    line-height: 1.7;
   }
 
   .fulfillment-faq-section .image-box {
