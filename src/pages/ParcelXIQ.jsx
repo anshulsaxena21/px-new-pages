@@ -25,6 +25,7 @@ import {
   Zap
 } from "lucide-react";
 import "../styles/parcelx-iq.css";
+import parcelXLogo from "../images/ParcelX_Logo.svg";
 
 const registerUrl = "https://seller.parcelx.in/register";
 const demoUrl = "mailto:hello@parcelx.in?subject=ParcelX%20IQ%20Demo";
@@ -222,7 +223,7 @@ export default function ParcelXIQ() {
       <header className="iq-header">
         <div className="iq-nav-shell">
           <a className="iq-logo" href={import.meta.env.BASE_URL} aria-label="ParcelX home">
-            <img src="/src/images/ParcelX_Logo.svg" alt="ParcelX" />
+            <img src={parcelXLogo} alt="ParcelX" />
             <span className="iq-logo-divider" />
             <span className="iq-logo-product">IQ</span>
           </a>
