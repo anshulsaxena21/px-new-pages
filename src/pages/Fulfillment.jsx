@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { ArrowUpRight, ArrowRight, Check, Boxes, PackageCheck, Warehouse, Truck, RefreshCw, BarChart3, ShieldCheck, ChevronDown, Play, Zap, Clock3, MapPin, Headset } from "lucide-react";
+import { ArrowUpRight, ArrowRight, Check, Boxes, PackageCheck, Warehouse, Truck, RefreshCw, BarChart3, ShieldCheck, Play, Zap, Clock3, MapPin, Headset } from "lucide-react";
 import "./Fulfillment.css";
 import Header from "../includes/Header.jsx";
 import Footer from "../includes/Footer.jsx";
+import Faq from "../component/Faq.jsx";
 
 const imageAssets = import.meta.glob("../images/fullfillment/*", { eager: true, query: "?url", import: "default" });
 const A = (name) => imageAssets[`../images/fullfillment/${name}`] || "";
@@ -24,10 +25,22 @@ const steps = [
   ["07","Delivered","Your customer gets the order and tracking updates."]
 ];
 const faqs = [
-  ["What is ParcelX Fulfillment?","ParcelX Fulfillment helps brands manage inventory storage, order processing, picking, packing and shipping through a connected workflow."],
-  ["Can I connect my online store?","The page is designed for an integrated workflow. Contact our team to confirm the supported platforms and onboarding steps for your business."],
-  ["Can fulfillment scale during peak sales?","The service is designed to help growing brands handle changing order volumes with a more structured operation."],
-  ["How can I get started?","Talk to our team about your order volumes, inventory, locations and shipping requirements. We’ll help you identify the next steps."]
+  {
+    question: "What is ParcelX Fulfillment?",
+    answer: "ParcelX Fulfillment helps brands manage inventory storage, order processing, picking, packing and shipping through a connected workflow."
+  },
+  {
+    question: "Can I connect my online store?",
+    answer: "The page is designed for an integrated workflow. Contact our team to confirm the supported platforms and onboarding steps for your business."
+  },
+  {
+    question: "Can fulfillment scale during peak sales?",
+    answer: "The service is designed to help growing brands handle changing order volumes with a more structured operation."
+  },
+  {
+    question: "How can I get started?",
+    answer: "Talk to our team about your order volumes, inventory, locations and shipping requirements. We’ll help you identify the next steps."
+  }
 ];
 const articles = [
   ["FULFILMENT GUIDE","A smarter way to manage e-commerce orders","Learn how connected fulfilment can simplify everyday operations.","fulfillment-hero-warehouse.png"],
@@ -47,7 +60,15 @@ export default function Fulfillment(){
   <section className="technology-section section-space" id="technology"><div className="section-wrap technology-layout"><div className="technology-copy"><div className="eyebrow">TECHNOLOGY THAT WORKS FOR YOU</div><h2>Less guesswork.<br/><span>More getting-things-done.</span></h2><p>Make informed decisions with connected tools that bring your inventory, orders and fulfilment activity into view.</p><ul><li><Check/> Visibility across your fulfillment workflow</li><li><Check/> A more organised inventory operation</li><li><Check/> A smoother path from order to dispatch</li></ul><a className="button button-dark" href="#contact">Explore fulfillment <ArrowUpRight size={18}/></a></div><div className="technology-visual"><div className="tech-glow"></div><Image src={A("fulfillment-technology-person-dashboard.png")} alt="Fulfillment team member using a dashboard" className="tech-person"/><div className="dashboard-card"><div className="dashboard-top"><span>FULFILLMENT OVERVIEW</span><span className="dashboard-status">● Live view</span></div><div className="dashboard-title">Operations at a glance</div><div className="dashboard-stats"><div><small>Orders processed</small><strong>2,480</strong><em>↗ On track</em></div><div><small>Inventory status</small><strong>98.4%</strong><em>↗ In sync</em></div></div><div className="chart-bars">{[35,52,43,68,54,77,63,88,72,95,81,100].map((h,i)=><i key={i} style={{height:h+"%"}}/>)}</div><div className="chart-labels"><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span></div></div><div className="tech-badge"><span><Zap size={16}/></span> Smarter by design</div></div></div></section>
   <section className="dashboard-section section-space"><div className="section-wrap dashboard-layout"><div className="dashboard-visual"><div className="dashboard-halo"></div><Image src={A("fulfillment-dashboard-laptop.png")} alt="ParcelX fulfillment dashboard on a laptop" className="laptop-image"/><div className="dashboard-mini"><span className="mini-check"><Check size={15}/></span><div><strong>Inventory synced</strong><small>Everything in its place</small></div></div></div><div className="dashboard-copy"><div className="eyebrow">YOUR BUSINESS, IN FOCUS</div><h2>Know what’s happening.<br/><span>And what’s next.</span></h2><p>When the details are easier to see, it’s easier to make the next move. Bring your fulfilment activity into a clearer view and keep your team aligned.</p><div className="dashboard-points"><div><span><Clock3/></span><div><strong>Stay in the loop</strong><p>Keep track of the work moving through your operation.</p></div></div><div><span><BarChart3/></span><div><strong>Make confident decisions</strong><p>Use operational visibility to plan your next stage of growth.</p></div></div></div><a className="text-link orange-link" href="#contact">Let’s talk about your needs <ArrowRight size={17}/></a></div></div></section>
   <section className="testimonial-section section-space"><div className="section-wrap testimonial-inner"><div className="testimonial-mark">“</div><div className="eyebrow">BUILT AROUND YOUR GROWTH</div><blockquote>“Great fulfillment is the kind your customer never has to think about — it just works.”</blockquote><div className="testimonial-bottom"><div className="testimonial-avatar">PX</div><div><strong>ParcelX Fulfillment</strong><p>Helping brands deliver better experiences</p></div><div className="testimonial-stars">★★★★★</div></div></div></section>
-  <section className="faq-section section-wrap section-space"><div className="section-heading"><div><div className="eyebrow">GOOD QUESTIONS</div><h2>Things you might<br/><span>want to know.</span></h2></div><p>Still wondering if ParcelX Fulfillment is right for your business? Here are a few useful starting points.</p></div><div className="faq-layout"><div className="faq-image"><Image src={A("fulfillment-technology-background.png")} alt="ParcelX fulfillment support" className="faq-photo"/><div className="faq-image-caption"><Headset size={20}/><div><strong>Real people. Real support.</strong><span>Let’s figure it out together.</span></div></div></div><div className="faq-list">{faqs.map(([q,a],i)=><div className={openFaq===i?"faq-item active":"faq-item"} key={q}><button onClick={()=>setOpenFaq(openFaq===i?-1:i)} aria-expanded={openFaq===i}><span>{q}</span><ChevronDown size={19}/></button>{openFaq===i&&<p>{a}</p>}</div>)}<a className="faq-contact" href="#contact">Have another question? <span>Talk to our team <ArrowUpRight size={16}/></span></a></div></div></section>
+  <div className="fulfillment-faq-section">
+   <Faq
+    title={{
+      highlight: "Things you might",
+      text: " want to know."
+    }}
+    faqs={faqs}
+   />
+  </div>
   <section className="resources-section section-space" id="resources"><div className="section-wrap"><div className="section-heading"><div><div className="eyebrow">THE PARCELX JOURNAL</div><h2>Ideas for your <span>next move.</span></h2></div><a className="text-link orange-link" href="#contact">Explore more insights <ArrowRight size={17}/></a></div><div className="article-grid">{articles.map(([tag,title,desc,img],i)=><article className="article-card" key={title}><div className="article-image"><Image src={A(img)} alt="" className="article-photo"/><span className="article-index">0{i+1}</span></div><div className="article-content"><div className="article-tag">{tag}</div><h3>{title}</h3><p>{desc}</p><a href="#contact" aria-label={`Learn more: ${title}`}><ArrowUpRight size={18}/></a></div></article>)}</div></div></section>
   <section className="contact-section section-wrap" id="contact"><div className="contact-panel"><div className="contact-decoration decoration-one"></div><div className="contact-decoration decoration-two"></div><div className="contact-content"><div className="eyebrow light-eyebrow"><span></span> READY WHEN YOU ARE</div><h2>Let’s get your<br/>orders moving.</h2><p>Tell us where you want to go. We’ll help you explore a fulfillment setup that fits your business.</p><a className="button button-light" href="https://parcelx.in/" target="_blank" rel="noreferrer">Talk to ParcelX <ArrowUpRight size={18}/></a></div><div className="contact-art"><div className="contact-box box-back"></div><div className="contact-box box-front"><span>PX</span><div className="box-tape"></div></div><div className="contact-ring ring-one"></div><div className="contact-ring ring-two"></div></div></div></section>
   
