@@ -1,0 +1,194 @@
+/* Styles for the supplied MainTestimonial component. Component JSX is unchanged. */
+.section03.pb-0 {
+  width: 100%;
+  padding: 48px 0 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+.section03 .marquee-container {
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
+}
+
+.section03 .marquee-track {
+  display: flex;
+  width: max-content;
+  align-items: stretch;
+  gap: 22px;
+  animation: testimonial-marquee 42s linear infinite;
+  will-change: transform;
+}
+
+.section03 .marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.section03 .marquee-card {
+  display: flex;
+  flex: 0 0 410px;
+  width: 410px;
+  min-height: 292px;
+  flex-direction: column;
+  padding: 28px 28px 24px;
+  border: 1px solid #ece9e6;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(31, 24, 17, 0.055);
+  color: #171717;
+}
+
+.section03 .marquee-card p {
+  color: #5d5d63;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+.section03 .marquee-card p.mb-24 {
+  margin-bottom: 18px !important;
+  color: #171717;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.section03 .marquee-card p.mb-48 {
+  flex: 1 1 auto;
+  margin-bottom: 32px;
+}
+
+.section03 .marquee-card p.mb-24 b {
+  font-weight: 650;
+}
+
+.section03 .marquee-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: auto;
+}
+
+.section03 .marquee-content {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 12px;
+}
+
+.section03 .marquee-content > img {
+  display: block;
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  border: 1px solid #efebe7;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.section03 .marquee-content h2 {
+  margin: 0 0 4px;
+  color: #171717;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.section03 .marquee-content p {
+  margin: 0;
+  color: #888;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.section03 .marquee-footer > img {
+  display: block;
+  width: 34px;
+  max-width: 34px;
+  max-height: 34px;
+  height: auto;
+  flex: 0 0 auto;
+  object-fit: contain;
+  opacity: 0.75;
+}
+
+@keyframes testimonial-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - 11px));
+  }
+}
+
+@media (max-width: 768px) {
+  .section03.pb-0 {
+    padding-top: 32px;
+  }
+
+  .section03 .marquee-track {
+    gap: 16px;
+    animation-duration: 48s;
+  }
+
+  .section03 .marquee-card {
+    flex-basis: 350px;
+    width: 350px;
+    min-height: 280px;
+    padding: 23px 22px 21px;
+    border-radius: 14px;
+  }
+
+  .section03 .marquee-card p {
+    font-size: 14px;
+  }
+
+  .section03 .marquee-card p.mb-24 {
+    font-size: 16px;
+  }
+
+  .section03 .marquee-card p.mb-48 {
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section03 .marquee-track {
+    gap: 12px;
+  }
+
+  .section03 .marquee-card {
+    flex-basis: 300px;
+    width: 300px;
+    min-height: 270px;
+    padding: 20px 18px 18px;
+  }
+
+  .section03 .marquee-card p {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .section03 .marquee-card p.mb-24 {
+    font-size: 15px;
+  }
+
+  .section03 .marquee-content > img {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .section03 .marquee-footer > img {
+    width: 28px;
+    max-width: 28px;
+    max-height: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section03 .marquee-track {
+    animation-play-state: paused;
+  }
+}
