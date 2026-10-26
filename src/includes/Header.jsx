@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import logo from '../images/ParcelX_Logo.svg';
 import {NavLink } from "react-router-dom";
-import { Collapse } from "bootstrap";
-function Header({item="About", item1="Features", item2="Videsh", item3="Pacex",item4="Career", item5="Courier Partners", item6="Channel Integration", item7="Pricing", item8="Tracking", item9="Contact", nav_button="Sign Up", nav_button2="Login", customLinks=null, loginHref="/dashboard", signupHref="/dashboard", homeHref=null}) {
+function Header({item="About", item1="Features", item2="Videsh", item3="Pacex",item4="Career", item5="Courier Partners", item6="Channel Integration", item7="Pricing", item8="Tracking", item9="Contact", nav_button="Sign Up", nav_button2="Login"}) {
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
@@ -18,24 +17,14 @@ function Header({item="About", item1="Features", item2="Videsh", item3="Pacex",i
         <div className={`sticky-top ${scrolled ? "header-top" : ""}`}>
             <nav className="navbar navbar-expand-lg navbar-light ">
                 <div className="container-fluid px-0">
-                    {homeHref ? <a className="navbar-brand" href={homeHref}><img src={logo} className="img-fluid" width={150} alt="Logo" /></a> : <NavLink className="navbar-brand" to="/"><img src={logo} className="img-fluid" width={150} alt="Logo" /></NavLink>}
+                    <NavLink className="navbar-brand" to="/">
+                        <img src={logo} className="img-fluid" width={150} alt="Logo" />
+                    </NavLink>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"aria-label="Toggle navigation" >
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-                            {customLinks ? <>
-                                {customLinks.map((link) => (
-                                    <li className="nav-item" key={link.label}>
-                                        <a className={link.active ? "nav-active" : ""} href={link.href} onClick={() => { if (window.innerWidth < 992) { const nav = document.getElementById("navbarSupportedContent"); if (nav) Collapse.getOrCreateInstance(nav).hide(); } }}>{link.label}</a>
-                                    </li>
-                                ))}
-                                <li className="d-lg-none d-block">
-                                    {loginHref.startsWith("http") ? <a href={loginHref} className="btn btn-secondary me-2">{nav_button2}</a> : <NavLink to={loginHref} className="btn btn-secondary me-2">{nav_button2}</NavLink>}
-                                    {signupHref.startsWith("http") ? <a href={signupHref} className="btn btn-primary">{nav_button}</a> : <NavLink to={signupHref} className="btn btn-primary">{nav_button}</NavLink>}
-                                </li>
-                            </> : <>
-
                             <li className="nav-item">
                                 <NavLink className={(e)=>{return e.isActive?"nav-active": ""}}  aria-current="page" to="/about">{item}</NavLink>
                             </li>
@@ -67,16 +56,14 @@ function Header({item="About", item1="Features", item2="Videsh", item3="Pacex",i
                                 <NavLink className={(e)=>{return e.isActive?"nav-active": ""}}  to="/contact-us">{item9}</NavLink>
                             </li>
                             <li className='d-lg-none d-block'>
-                                {loginHref.startsWith("http") ? <a href={loginHref} className="btn btn-secondary me-2">{nav_button2}</a> : <NavLink to={loginHref} className="btn btn-secondary me-2">{nav_button2}</NavLink>}
-                                {signupHref.startsWith("http") ? <a href={signupHref} className="btn btn-primary">{nav_button}</a> : <NavLink to={signupHref} className="btn btn-primary">{nav_button}</NavLink>}
+                                <NavLink  to='/dashboard' className="btn btn-secondary me-2" type="submit">{nav_button2}</NavLink>
+                                <NavLink  to='/dashboard' className="btn btn-primary" type="submit">{nav_button}</NavLink>
                             </li>
-                        
-                            </>}
                         </ul>
                     </div>
                     <div className='d-lg-block d-none'>
-                        {loginHref.startsWith("http") ? <a href={loginHref} className="btn btn-secondary me-2">{nav_button2}</a> : <NavLink to={loginHref} className="btn btn-secondary me-2">{nav_button2}</NavLink>}
-                        {signupHref.startsWith("http") ? <a href={signupHref} className="btn btn-primary">{nav_button}</a> : <NavLink to={signupHref} className="btn btn-primary">{nav_button}</NavLink>}
+                        <NavLink  to='/dashboard' className="btn btn-secondary me-2" type="submit">{nav_button2}</NavLink>
+                        <NavLink  to='/dashboard' className="btn btn-primary" type="submit">{nav_button}</NavLink>
                     </div>
                 </div>
             </nav> 
