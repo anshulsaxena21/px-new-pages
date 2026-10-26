@@ -475,3 +475,37 @@ body {
     height: 40px;
   }
 }
+
+
+/* Header spacing and fixed positioning refinements */
+.sticky-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1030;
+}
+
+.sticky-top .navbar > .container-fluid > .d-lg-block.d-none {
+  display: flex !important;
+  flex: 0 0 auto;
+  align-items: center;
+  margin-left: clamp(16px, 1.6vw, 28px);
+}
+
+.fulfillment-page > .sticky-top + .hero {
+  margin-top: 74px;
+}
+
+@media (max-width: 991.98px) {
+  .fulfillment-page > .sticky-top + .hero {
+    margin-top: 70px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .fulfillment-page > .sticky-top + .hero {
+    margin-top: 64px;
+  }
+}
