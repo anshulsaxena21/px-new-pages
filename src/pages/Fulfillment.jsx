@@ -4,6 +4,7 @@ import "./Fulfillment.css";
 import Header from "../includes/Header.jsx";
 import Footer from "../includes/Footer.jsx";
 import Faq from "../component/Faq.jsx";
+import MainTestimonial from "../component/slider/MainTestimonial.jsx";
 
 const imageAssets = import.meta.glob("../images/fullfillment/*", { eager: true, query: "?url", import: "default" });
 const A = (name) => imageAssets[`../images/fullfillment/${name}`] || "";
@@ -131,7 +132,7 @@ export default function Fulfillment(){
   </section>
   
   
-  <section className="testimonial-section section-space"><div className="section-wrap testimonial-inner"><div className="testimonial-mark">“</div><div className="eyebrow">BUILT AROUND YOUR GROWTH</div><blockquote>“Great fulfillment is the kind your customer never has to think about — it just works.”</blockquote><div className="testimonial-bottom"><div className="testimonial-avatar">PX</div><div><strong>ParcelX Fulfillment</strong><p>Helping brands deliver better experiences</p></div><div className="testimonial-stars">★★★★★</div></div></div></section>
+  <MainTestimonial />
   <div className="fulfillment-faq-section">
    <Faq
     title={{
