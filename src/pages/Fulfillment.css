@@ -1855,7 +1855,7 @@
   position: relative;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 48vw);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 43vw);
   align-items: center;
   gap: clamp(28px, 3.4vw, 56px);
   width: 100%;
@@ -2007,9 +2007,10 @@
   .fulfillment-page .benefits .feature-card { padding-right: 22px; padding-left: 22px; }
   .fulfillment-page .technology-edge-section { height: 330px; }
   .fulfillment-page .technology-edge-copy { width: 47%; right: 26px; }
-  .fulfillment-page .dashboard-reference-section { grid-template-columns: minmax(0,1fr) minmax(0,44vw); gap: 28px; padding-left: var(--page-gutter); }
+  .fulfillment-page .dashboard-reference-section { grid-template-columns: minmax(0,1fr) minmax(0,40vw); gap: 28px; padding-left: var(--page-gutter); }
   .fulfillment-page .dashboard-reference-copy h2 { font-size: 40px; font-weight: 500; }
   .fulfillment-page .dashboard-reference-visual { width: 100%; }
+  .fulfillment-page .dashboard-reference-laptop { width: 100%; }
   .fulfillment-page .workflow-flow { height: 570px; }
   .fulfillment-page .workflow-flow-node { width: 25%; }
   .fulfillment-page .workflow-node-order-sync { top: 195px; }
@@ -2054,7 +2055,7 @@
   .fulfillment-page .dashboard-reference-section { display: flex; flex-direction: column; align-items: stretch; gap: 22px; width: 100%; margin-top: var(--section-gap); padding: 0 0 0 var(--page-gutter); }
   .fulfillment-page .dashboard-reference-copy h2 { font-size: clamp(30px, 7vw, 40px); font-weight: 500; letter-spacing: -1px; }
   .fulfillment-page .dashboard-reference-visual { width: calc(100% + var(--page-gutter)); margin-right: 0; align-self: stretch; }
-  .fulfillment-page .dashboard-reference-laptop { width: 100%; max-width: none; object-position: right center; }
+  .fulfillment-page .dashboard-reference-laptop { width: 94%; max-width: none; margin-left: auto; object-position: right center; }
   .fulfillment-page .dashboard-reference-intro { font-size: 14px; margin-bottom: 22px; }
   .fulfillment-page .dashboard-reference-list { gap: 16px; }
   .fulfillment-page .dashboard-reference-list h3 { font-size: 15px; }
