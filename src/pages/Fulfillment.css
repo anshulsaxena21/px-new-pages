@@ -1622,22 +1622,220 @@
 }
 
 
-/* Keep the hero close to the navigation, as in the Figma reference. */
-@media (min-width: 1001px) {
-  .hero-reference-layout.section-wrap {
-    margin-top: 24px !important;
+
+
+
+/* Figma reference: fulfillment hero. Values below scale from the 1440px design. */
+.fulfillment-page .hero-reference-layout.section-wrap {
+  box-sizing: border-box;
+  width: min(100% - 128px, 1312px);
+  max-width: 1312px;
+  min-height: 0;
+  margin: 28px auto 0;
+  padding: 0 0 56px;
+  display: grid;
+  grid-template-columns: minmax(0, 908px) minmax(0, 1fr);
+  column-gap: 28px;
+  align-items: start;
+}
+.fulfillment-page .hero-reference-copy {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.fulfillment-page .hero-reference-title {
+  margin: 0 0 16px;
+  font-family: "Product Sans", "Instrument Sans", sans-serif;
+  font-size: clamp(30px, 2.78vw, 40px);
+  font-weight: 400;
+  line-height: 2;
+  letter-spacing: -0.8px;
+  white-space: normal;
+  color: #080808;
+}
+.fulfillment-page .hero-reference-lede {
+  width: 100%;
+  max-width: 882px;
+  margin: 0 0 32px;
+  font-family: "Product Sans", "Instrument Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: #111;
+}
+.fulfillment-page .hero-reference-cta {
+  min-width: 0;
+  height: auto;
+  min-height: 48px;
+  padding: 14px 24px;
+  border-radius: 10px;
+  gap: 4px;
+  font-size: 18px;
+  line-height: 1.4;
+  box-shadow: 0 4px 20px rgba(0,0,0,.25);
+}
+.fulfillment-page .hero-reference-divider {
+  width: 100%;
+  max-width: 908px;
+  margin-top: 60px;
+}
+.fulfillment-page .hero-reference-metrics {
+  width: 100%;
+  max-width: 908px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 48px;
+  padding-top: 32px;
+}
+.fulfillment-page .hero-reference-metric {
+  text-align: left;
+}
+.fulfillment-page .hero-reference-metric strong {
+  margin: 0 0 12px;
+  font-family: Inter, sans-serif;
+  font-size: 60px;
+  font-weight: 600;
+  line-height: 72px;
+  letter-spacing: -1.2px;
+  background: linear-gradient(90deg, #ff360d, #fe6600);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.fulfillment-page .hero-reference-metric p {
+  margin: 0;
+  font-family: "Product Sans", "Instrument Sans", sans-serif;
+  font-size: 18px;
+  line-height: 28px;
+  color: #101828;
+}
+.fulfillment-page .hero-reference-visual {
+  position: absolute;
+  top: 0;
+  right: -64px;
+  width: min(42%, 560px);
+  height: 610px;
+  pointer-events: none;
+}
+.fulfillment-page .hero-reference-warehouse {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: top right;
+}
+@media (max-width: 1200px) and (min-width: 901px) {
+  .fulfillment-page .hero-reference-layout.section-wrap {
+    width: calc(100% - 80px);
+    grid-template-columns: minmax(0, 1fr) 36%;
+    column-gap: 16px;
+    margin-top: 28px;
+  }
+  .fulfillment-page .hero-reference-title {
+    font-size: clamp(30px, 3vw, 36px);
+    line-height: 1.35;
+    letter-spacing: -0.7px;
+  }
+  .fulfillment-page .hero-reference-visual {
+    right: -40px;
+    width: 39%;
+    height: 500px;
+  }
+  .fulfillment-page .hero-reference-metrics {
+    gap: 20px;
+  }
+  .fulfillment-page .hero-reference-metric strong {
+    font-size: 52px;
+    line-height: 1.2;
   }
 }
-
-
-/* Restore the Figma hero's vertical rhythm: title clears the sticky header,
-   while the metrics divider stays at the reference position. */
-@media (min-width: 1001px) {
+@media (max-width: 900px) {
   .fulfillment-page .hero-reference-layout.section-wrap {
-    margin-top: 88px !important;
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 40px);
+    margin: 28px auto 0;
+    padding-bottom: 32px;
+    gap: 24px;
   }
-
+  .fulfillment-page .hero-reference-copy {
+    width: 100%;
+    max-width: 100%;
+  }
+  .fulfillment-page .hero-reference-title {
+    margin-bottom: 16px;
+    font-size: clamp(30px, 5.8vw, 40px);
+    line-height: 1.2;
+    letter-spacing: -0.7px;
+    white-space: normal;
+  }
+  .fulfillment-page .hero-reference-lede {
+    margin-bottom: 24px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
   .fulfillment-page .hero-reference-divider {
-    margin-top: 60px;
+    margin-top: 32px;
+  }
+  .fulfillment-page .hero-reference-metrics {
+    padding-top: 24px;
+    gap: 16px;
+  }
+  .fulfillment-page .hero-reference-metric strong {
+    margin-bottom: 8px;
+    font-size: clamp(34px, 7vw, 52px);
+    line-height: 1.15;
+    letter-spacing: -1px;
+  }
+  .fulfillment-page .hero-reference-metric p {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .fulfillment-page .hero-reference-visual {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: clamp(240px, 58vw, 420px);
+    order: 2;
+  }
+  .fulfillment-page .hero-reference-warehouse {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-position: center;
+  }
+}
+@media (max-width: 520px) {
+  .fulfillment-page .hero-reference-layout.section-wrap {
+    width: calc(100% - 32px);
+    margin-top: 20px;
+  }
+  .fulfillment-page .hero-reference-title {
+    font-size: 30px;
+    line-height: 1.18;
+  }
+  .fulfillment-page .hero-reference-cta {
+    min-height: 46px;
+    padding: 12px 20px;
+    font-size: 16px;
+  }
+  .fulfillment-page .hero-reference-metrics {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .fulfillment-page .hero-reference-metric {
+    text-align: left;
+  }
+  .fulfillment-page .hero-reference-metric strong {
+    font-size: 42px;
+    line-height: 1.1;
+  }
+  .fulfillment-page .hero-reference-metric p {
+    font-size: 16px;
+  }
+  .fulfillment-page .hero-reference-visual {
+    height: 260px;
   }
 }
