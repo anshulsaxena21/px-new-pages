@@ -170,10 +170,10 @@
   position: absolute;
   right: 0;
   bottom: 0;
-  width: 40%;
+  width: 39%;
   max-width: 360px;
-  height: 220px;
-  object-fit: fill;
+  height: auto;
+  object-fit: contain;
 }
 
 @media (max-width: 1000px) {
