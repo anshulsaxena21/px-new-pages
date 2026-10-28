@@ -23,6 +23,7 @@ import {
   Zap
 } from "lucide-react";
 import "../styles/parcelx-iq.css";
+import "../styles/shared-faq.css";
 import Header from "../includes/Header.jsx";
 import Footer from "../includes/Footer.jsx";
 import Faq from "../component/Faq.jsx";
@@ -371,13 +372,15 @@ export default function ParcelXIQ() {
         <MainTestimonial />
       </section>
 
-      <Faq
-        title={{
-          highlight: "Frequently Asked Questions:",
-          text: " Find answers about ParcelX IQ"
-        }}
-        faqs={faqs}
-      />
+      <div className="shared-faq-section">
+        <Faq
+          title={{
+            highlight: "Frequently Asked Questions:",
+            text: " Find answers about ParcelX IQ"
+          }}
+          faqs={faqs}
+        />
+      </div>
 
       <section className="iq-final-cta-shell iq-section-shell" id="get-started">
         <div className="iq-final-cta">
