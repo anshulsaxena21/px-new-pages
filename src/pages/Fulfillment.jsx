@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ArrowUpRight, ArrowRight, Check, Boxes, PackageCheck, Warehouse, Truck, RefreshCw, BarChart3, ShieldCheck, Play, Zap, Clock3, MapPin } from "lucide-react";
 import "./Fulfillment.css";
+import "../styles/shared-faq.css";
 import Header from "../includes/Header.jsx";
 import Footer from "../includes/Footer.jsx";
 import Faq from "../component/Faq.jsx";
@@ -129,7 +130,7 @@ export default function Fulfillment(){
   
   
   <MainTestimonial />
-  <div className="fulfillment-faq-section">
+  <div className="shared-faq-section">
    <Faq
     title={{
       highlight: "Frequently Asked Question:",
