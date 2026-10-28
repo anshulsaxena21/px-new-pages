@@ -371,7 +371,7 @@ export default function ParcelXIQ() {
         <MainTestimonial />
       </section>
 
-      <div className="iq-shared-faq" id="faq">
+      <div id="faq" className="iq-faq-spacing">
         <Faq
           title={{
             highlight: "Frequently Asked Questions:",
@@ -392,22 +392,7 @@ export default function ParcelXIQ() {
         </div>
       </section>
 
-      <Footer
-        homeHref={import.meta.env.BASE_URL}
-        description="ParcelX IQ turns shipping data into clearer insights, helping e-commerce teams make more informed shipping decisions."
-        quickLinks={[
-          { label: "Features", href: "#features" },
-          { label: "Use Cases", href: "#use-cases" },
-          { label: "How it works", href: "#how-it-works" },
-          { label: "FAQs", href: "#faq" }
-        ]}
-        usefulLinks={[
-          { label: "ParcelX Website", href: "https://www.parcelx.in/" },
-          { label: "Seller Login", href: "https://seller.parcelx.in/" },
-          { label: "Get Started", href: registerUrl },
-          { label: "Book a Demo", href: demoUrl }
-        ]}
-      />
+      <Footer />
     </main>
   );
 }
