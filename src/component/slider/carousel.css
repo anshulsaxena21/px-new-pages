@@ -23,6 +23,10 @@
   will-change: transform;
 }
 
+.section03 .marquee-track:hover {
+  animation-play-state: paused;
+}
+
 .section03 .marquee-card {
   position: relative;
   display: flex;
