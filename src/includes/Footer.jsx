@@ -50,8 +50,8 @@ export default function Footer({ homeHref = null, description = "ParcelX offers 
                             </ul>
                             <div className='footer-link'>
                                 <ul className="social-link">
-                                    {quickLinks ? quickLinks.map((link) => <li className="nav-item" key={link.label}><a className="nav-link" href={link.href}>{link.label}</a></li>) : <>
                                     <h5 className='link-heading'>Quick Links</h5>
+                                    {quickLinks ? quickLinks.map((link) => <li className="nav-item" key={link.label}><a className="nav-link" href={link.href}>{link.label}</a></li>) : <>
                                     <li className="nav-item">
                                         <NavLink className="nav-link" aria-current="page" to="features">Features</NavLink>
                                     </li>
@@ -68,8 +68,8 @@ export default function Footer({ homeHref = null, description = "ParcelX offers 
                                     </>}
                                 </ul>
                                 <ul className="social-link">
-                                    {usefulLinks ? usefulLinks.map((link) => <li className="nav-item" key={link.label}><a className="nav-link" href={link.href}>{link.label}</a></li>) : <>
                                     <h5 className='link-heading'>Useful Links</h5>
+                                    {usefulLinks ? usefulLinks.map((link) => <li className="nav-item" key={link.label}><a className="nav-link" href={link.href}>{link.label}</a></li>) : <>
                                     <li className="nav-item">
                                         <NavLink className="nav-link" aria-current="page" to="privacy">Privacy Policy</NavLink>
                                     </li>
