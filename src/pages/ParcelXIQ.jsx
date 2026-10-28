@@ -334,9 +334,9 @@ export default function ParcelXIQ() {
 
       <section className="iq-impact-banner">
         <div className="iq-impact-copy">
-          <div className="iq-eyebrow iq-eyebrow-dark"><Sparkles size={13} /> TURN DATA INTO ACTION</div>
-          <h2>From question<br />to <span>next step.</span></h2>
-          <p>Ask about a shipment trend, understand the patterns behind it, and explore the actions that may help your team move forward.</p>
+          <div className="iq-eyebrow iq-eyebrow-dark"><Sparkles size={13} /> FROM SHIPPING DATA TO SMARTER DECISIONS</div>
+          <h2>Find the why.<br /><span>Know what to do next.</span></h2>
+          <p>See what’s driving RTO, compare courier performance, and uncover delivery issues worth acting on—without piecing together reports.</p>
           <ButtonLink href={registerUrl}>Get Started</ButtonLink>
         </div>
         <div className="iq-impact-art">
