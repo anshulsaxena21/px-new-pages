@@ -582,7 +582,7 @@
 
 /* Hero: warmer light field, more deliberate whitespace and a stronger UI frame. */
 .iq-page .iq-hero {
-  padding-top: 124px;
+  padding-top: 42px;
   padding-bottom: clamp(43px, 5vw, 68px);
   background:
     radial-gradient(ellipse at 77% 23%, rgba(255, 168, 112, .24) 0%, rgba(255, 225, 205, .12) 28%, transparent 51%),
