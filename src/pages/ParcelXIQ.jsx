@@ -371,15 +371,13 @@ export default function ParcelXIQ() {
         <MainTestimonial />
       </section>
 
-      <div id="faq" className="iq-faq-spacing">
-        <Faq
-          title={{
-            highlight: "Frequently Asked Questions:",
-            text: " Find answers about ParcelX IQ"
-          }}
-          faqs={faqs}
-        />
-      </div>
+      <Faq
+        title={{
+          highlight: "Frequently Asked Questions:",
+          text: " Find answers about ParcelX IQ"
+        }}
+        faqs={faqs}
+      />
 
       <section className="iq-final-cta-shell iq-section-shell" id="get-started">
         <div className="iq-final-cta">
