@@ -334,10 +334,16 @@ export default function ParcelXIQ() {
 
       <section className="iq-impact-banner">
         <div className="iq-impact-copy">
-          <div className="iq-eyebrow iq-eyebrow-dark"><Sparkles size={13} /> FROM SHIPPING DATA TO SMARTER DECISIONS</div>
-          <h2>Find the why.<br /><span>Know what to do next.</span></h2>
-          <p>See what’s driving RTO, compare courier performance, and uncover delivery issues worth acting on—without piecing together reports.</p>
-          <ButtonLink href={registerUrl}>Get Started</ButtonLink>
+          <div className="iq-eyebrow iq-eyebrow-dark"><Sparkles size={13} /> SHIPPING INTELLIGENCE, WITHOUT THE SPREADSHEETS</div>
+          <h2>Stop chasing numbers.<br /><span>Start finding answers.</span></h2>
+          <p>Why is RTO rising? Which courier needs attention? Where are deliveries getting stuck? Ask better questions and turn shipment data into a clearer next move with ParcelX IQ.</p>
+          <div className="iq-impact-topics" aria-label="Shipping questions ParcelX IQ can help explore">
+            <span><TrendingDown size={13} /> RTO &amp; returns</span>
+            <span><Truck size={13} /> Courier performance</span>
+            <span><PackageCheck size={13} /> NDR &amp; delivery issues</span>
+          </div>
+          <ButtonLink href={registerUrl}>Explore ParcelX IQ</ButtonLink>
+          <div className="iq-impact-micro"><CheckCircle2 size={14} /> Less report-chasing. More clarity on what to look at next.</div>
         </div>
         <div className="iq-impact-art">
           <IQConversationVisual />
