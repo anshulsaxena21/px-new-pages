@@ -207,6 +207,36 @@ function InsightVisual() {
   );
 }
 
+function IQConversationVisual() {
+  return (
+    <div className="iq-conversation-visual">
+      <div className="iq-conversation-topbar">
+        <span className="iq-conversation-avatar"><Sparkles size={16} /></span>
+        <span><b>ParcelX IQ</b><small>Shipping assistant</small></span>
+        <span className="iq-conversation-status"><i /> Ready to help</span>
+      </div>
+      <div className="iq-conversation-thread">
+        <div className="iq-user-question">
+          <small>YOUR QUESTION</small>
+          <p>What should I look into if my RTO is increasing?</p>
+        </div>
+        <div className="iq-ai-answer">
+          <span className="iq-answer-icon"><BrainCircuit size={17} /></span>
+          <div className="iq-answer-content">
+            <small>IQ INSIGHT</small>
+            <p>Start by checking where the change is concentrated. These are useful places to investigate:</p>
+            <div className="iq-answer-row"><span className="iq-answer-row-icon orange"><Boxes size={14} /></span><span><b>COD shipments</b><small>Compare return patterns against prepaid orders.</small></span><ArrowUpRight size={15} /></div>
+            <div className="iq-answer-row"><span className="iq-answer-row-icon blue"><Truck size={14} /></span><span><b>Courier performance</b><small>Look for changes in delivery outcomes by partner.</small></span><ArrowUpRight size={15} /></div>
+            <div className="iq-answer-row"><span className="iq-answer-row-icon green"><FileText size={14} /></span><span><b>NDR reasons</b><small>Review repeat failure reasons and follow-up status.</small></span><ArrowUpRight size={15} /></div>
+          </div>
+        </div>
+      </div>
+      <div className="iq-conversation-composer"><Search size={16} /><span>Ask another question...</span><span className="iq-conversation-send"><ArrowRight size={14} /></span></div>
+      <div className="iq-conversation-note"><Sparkles size={13} /> Example interface for illustrative purposes</div>
+    </div>
+  );
+}
+
 export default function ParcelXIQ() {
 
   useEffect(() => {
@@ -218,7 +248,7 @@ export default function ParcelXIQ() {
 
   return (
     <main className="iq-page">
-      <Header />eader>
+      <Header />
 
       <section className="iq-hero" id="top">
         <div className="iq-hero-shell">
@@ -268,15 +298,49 @@ export default function ParcelXIQ() {
         </div>
       </section>
 
+      <section className="iq-how-it-works iq-section-shell" id="how-it-works">
+        <div className="iq-section-heading iq-steps-heading">
+          <div>
+            <div className="iq-eyebrow"><Sparkles size={13} /> FROM QUESTION TO CLARITY</div>
+            <h2>Less digging through reports.<br /><span>More confident decisions.</span></h2>
+            <p>A simple flow for turning everyday shipping questions into the next best action.</p>
+          </div>
+          <span className="iq-steps-badge"><Zap size={15} /> Built around your workflow</span>
+        </div>
+        <div className="iq-step-grid">
+          <article className="iq-step-card">
+            <span className="iq-step-number">01</span>
+            <span className="iq-step-icon"><Database size={22} /></span>
+            <h3>Bring the data together</h3>
+            <p>Start with a clearer view of shipment and delivery performance.</p>
+            <span className="iq-step-foot">CONTEXT <ArrowRight size={13} /></span>
+          </article>
+          <article className="iq-step-card">
+            <span className="iq-step-number">02</span>
+            <span className="iq-step-icon"><MessageCircle size={22} /></span>
+            <h3>Ask in plain language</h3>
+            <p>Explore RTO, NDR, courier trends and the questions your team needs answered.</p>
+            <span className="iq-step-foot">UNDERSTANDING <ArrowRight size={13} /></span>
+          </article>
+          <article className="iq-step-card">
+            <span className="iq-step-number">03</span>
+            <span className="iq-step-icon"><Zap size={22} /></span>
+            <h3>Choose your next move</h3>
+            <p>Use the patterns you find to decide what deserves attention first.</p>
+            <span className="iq-step-foot">ACTION</span>
+          </article>
+        </div>
+      </section>
+
       <section className="iq-impact-banner">
         <div className="iq-impact-copy">
           <div className="iq-eyebrow iq-eyebrow-dark"><Sparkles size={13} /> TURN DATA INTO ACTION</div>
-          <h2>Real insights.<br /><span>Real impact.</span></h2>
-          <p>Ask questions, explore shipment analytics and make smarter shipping decisions—all in one place with ParcelX IQ.</p>
+          <h2>From question<br />to <span>next step.</span></h2>
+          <p>Ask about a shipment trend, understand the patterns behind it, and explore the actions that may help your team move forward.</p>
           <ButtonLink href={registerUrl}>Get Started</ButtonLink>
         </div>
         <div className="iq-impact-art">
-          <InsightVisual />
+          <IQConversationVisual />
         </div>
       </section>
 
@@ -328,7 +392,7 @@ export default function ParcelXIQ() {
         quickLinks={[
           { label: "Features", href: "#features" },
           { label: "Use Cases", href: "#use-cases" },
-          { label: "Integrations", href: "#integrations" },
+          { label: "How it works", href: "#how-it-works" },
           { label: "FAQs", href: "#faq" }
         ]}
         usefulLinks={[
