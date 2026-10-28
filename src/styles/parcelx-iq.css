@@ -335,15 +335,6 @@
 
 /* FAQ + conversion */
 .iq-faq-cta { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:18px; padding-bottom:clamp(65px,7vw,100px); }
-.iq-faq-panel { padding:clamp(23px,3vw,39px); border:1px solid #f3eeeb; border-radius:23px; background:linear-gradient(135deg,#fffaf7,#fff); }
-.iq-faq-panel h2 { margin:16px 0 20px; color:#171e2d; font-size:clamp(27px,2.7vw,37px); font-weight:800; line-height:1.1; letter-spacing:-1.2px; }
-.iq-faq-list { display:flex; flex-direction:column; }
-.iq-faq-item { border-top:1px solid #eceef2; }
-.iq-faq-item:last-child { border-bottom:1px solid #eceef2; }
-.iq-faq-item button { display:flex; align-items:center; justify-content:space-between; gap:15px; width:100%; padding:15px 0; border:0; color:#313846; background:transparent; text-align:left; font-size:13px; font-weight:700; }
-.iq-faq-item button svg { flex:0 0 auto; color:#f26020; transition:transform .2s ease; }
-.iq-faq-item.is-open button svg { transform:rotate(180deg); }
-.iq-faq-item p { margin:-2px 0 15px; max-width:620px; color:#778193; font-size:12px; line-height:1.65; }
 .iq-final-cta { position:relative; isolation:isolate; min-width:0; padding:clamp(28px,3vw,42px); overflow:hidden; border-radius:23px; color:#fff; background:radial-gradient(ellipse at 90% 27%,rgba(255,103,27,.48),transparent 42%),linear-gradient(135deg,#11141b 0%,#271a1a 55%,#ee510e 100%); }
 .iq-final-cta::before { content:""; position:absolute; z-index:-1; right:-35px; bottom:-100px; width:290px; height:290px; border:1px solid rgba(255,255,255,.17); border-radius:50%; box-shadow:0 0 0 32px rgba(255,255,255,.04),0 0 0 65px rgba(255,255,255,.025); }
 .iq-final-cta-icon { position:absolute; right:25px; top:25px; display:grid; place-items:center; width:54px; height:54px; border:1px solid rgba(255,255,255,.45); border-radius:16px; color:#f45f1b; background:#fff; box-shadow:0 10px 25px rgba(0,0,0,.11); }
@@ -525,9 +516,6 @@
   .iq-proof-metrics b { font-size:21px; }
   .iq-proof-metrics > div > span:last-child { font-size:9px; }
   .iq-faq-cta { gap:13px; padding-bottom:55px; }
-  .iq-faq-panel { padding:21px 18px; border-radius:18px; }
-  .iq-faq-panel h2 { font-size:29px; }
-  .iq-faq-item button { font-size:12px; }
   .iq-final-cta { padding:25px 20px; border-radius:18px; }
   .iq-final-cta-icon { top:18px; right:17px; width:43px; height:43px; border-radius:12px; }
   .iq-final-cta-icon svg { width:22px; }
@@ -1035,11 +1023,6 @@
 }
 .iq-page .iq-testimonial p { color: #535e70; font-size: 15px; line-height: 1.75; }
 .iq-page .iq-proof-metrics > div { box-shadow: 0 4px 12px rgba(30,41,59,.025); }
-.iq-page .iq-faq-panel {
-  border-color: #eee9e5;
-  background: linear-gradient(140deg,#fffaf7,#fff 72%);
-  box-shadow: 0 9px 28px rgba(30,41,59,.025);
-}
 .iq-page .iq-final-cta-shell { padding-bottom: clamp(70px, 8vw, 115px); }
 .iq-page .iq-final-cta {
   padding: clamp(31px, 4.4vw, 58px);
@@ -1225,16 +1208,5 @@
   .iq-page .iq-impact-topics span { min-height: 31px; padding: 6px 8px; font-size: 9px; }
   .iq-page .iq-impact-micro { font-size: 9px; }
 }
-
-
-/* The shared components keep their original markup and styling.
-   This wrapper only provides page-level spacing around the existing FAQ component. */
-.iq-page .iq-faq-spacing {
-  padding-block: clamp(58px, 7vw, 96px);
-  scroll-margin-top: 100px;
-}
 @media (max-width: 680px) {
-  .iq-page .iq-faq-spacing {
-    padding-block: 48px;
-  }
 }
