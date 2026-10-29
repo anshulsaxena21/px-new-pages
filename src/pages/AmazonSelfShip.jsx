@@ -155,7 +155,7 @@ export default function AmazonSelfShip() {
         <div className="ash-hero-shell">
           <div className="ash-hero-copy">
             <h1>Amazon Self Ship : Ship Amazon Self-Ship Orders with ParcelX</h1>
-            <p>Take complete control of your Amazon deliveries with flexible couriers, better rates, and real-time tracking — fully compliant with Amazon Self-Ship.</p>
+            <p>Take complete control of your Amazon deliveries with flexible couriers, better rates, and real-time tracking.<span className="ash-compliance">— Fully compliant with Amazon Self-Ship</span></p>
             <a className="ash-primary-button" href={registerUrl}>Get Started <ArrowUpRight size={17} /></a>
           </div>
           <div className="ash-hero-visual">
@@ -189,7 +189,6 @@ export default function AmazonSelfShip() {
       <section className="ash-benefits" id="benefits">
         <div className="ash-section-heading">
           <h2>Why Sellers Switch to ParcelX Self-Ship</h2>
-          <p>More control over your shipping, without adding complexity.</p>
         </div>
         <div className="ash-benefit-grid">
           {benefits.map(({ icon: Icon, title, text }) => (

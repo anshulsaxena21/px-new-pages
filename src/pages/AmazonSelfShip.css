@@ -8,7 +8,7 @@
 /* SECTION 02 — Hero */
 .ash-hero {
   position: relative;
-  padding: 98px 0 0; /* Fixed header (~74px) + 24px content clearance */
+  padding: 155px 0 0; /* Match the reference hero position below the fixed header */
   background: #fff;
 }
 .ash-hero-shell {
@@ -17,7 +17,7 @@
   align-items: center;
   gap: 32px;
   width: min(1312px, calc(100% - 128px));
-  min-height: 330px;
+  min-height: 342px;
   margin: 0 auto;
 }
 .ash-hero-copy { position: relative; z-index: 1; padding: 0; }
@@ -38,6 +38,13 @@
   font-weight: 400;
   line-height: 21px;
   letter-spacing: 0;
+}
+.ash-compliance {
+  display: block;
+  margin-top: 1px;
+  color: #666;
+  font-size: 13px;
+  line-height: 19px;
 }
 .ash-primary-button {
   display: inline-flex;
@@ -64,7 +71,7 @@
   position: relative;
   display: grid;
   min-width: 0;
-  height: 330px;
+  height: 342px;
   place-items: center;
 }
 .ash-box-art {
@@ -81,8 +88,8 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
-  width: min(1312px, calc(100% - 128px));
-  margin: 8px auto 0;
+  width: min(900px, calc(100% - 128px));
+  margin: 8px 0 0 max(64px, calc((100vw - 1312px) / 2));
   padding: 0 0 32px;
 }
 .ash-metric {
@@ -109,19 +116,19 @@
 
 /* SECTION 04 — Gray media panel and five-step workflow */
 .ash-media-strip {
-  width: min(1312px, calc(100% - 128px));
-  margin: 0 auto 24px;
+  width: 100%;
+  margin: 107px 0 100px;
 }
 .ash-media-placeholder {
-  width: 100%;
-  height: 200px;
-  border-radius: 12px;
+  width: min(47vw, 760px);
+  height: clamp(320px, 31vw, 450px);
+  border-radius: 0 25px 25px 0;
   background: #f5f5f5;
 }
 .ash-workflow {
   width: min(1312px, calc(100% - 128px));
   margin: 0 auto;
-  padding: 0 0 52px;
+  padding: 0 0 160px;
 }
 .ash-workflow-track {
   position: relative;
@@ -131,7 +138,7 @@
 }
 .ash-workflow-track::before {
   position: absolute;
-  top: 42px;
+  top: 76px;
   left: 10%;
   right: 10%;
   height: 1px;
@@ -149,8 +156,8 @@
 }
 .ash-workflow-icon {
   display: grid;
-  width: 84px;
-  height: 84px;
+  width: 152px;
+  height: 152px;
   flex: 0 0 auto;
   place-items: center;
   border: 1px solid #efeff2;
@@ -173,17 +180,17 @@
   position: relative;
   display: inline-block;
   color: #090909;
-  font-size: 40px;
+  font-size: 56px;
   font-weight: 700;
   line-height: 1;
-  letter-spacing: -3px;
+  letter-spacing: -4px;
 }
 .ash-amazon-a small {
   position: absolute;
   right: 0;
-  bottom: -5px;
+  bottom: -7px;
   color: #ff6600;
-  font-size: 19px;
+  font-size: 26px;
   font-weight: 600;
   transform: rotate(-9deg);
 }
@@ -205,7 +212,7 @@
 
 /* Benefit cards */
 .ash-benefits { width:min(1320px,calc(100% - 128px)); margin:0 auto; padding:0 0 86px; }
-.ash-section-heading { margin:0 auto 32px; text-align:center; }
+.ash-section-heading { margin:0 auto 40px; text-align:center; }
 .ash-section-heading h2 { margin:0; color:#22232a; font-size:clamp(30px,2.6vw,39px); font-weight:600; line-height:1.2; letter-spacing:-.8px; }
 .ash-section-heading p { margin:10px 0 0; color:#858791; font-size:14px; }
 .ash-benefit-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
@@ -281,11 +288,14 @@
 .ash-article-row p { display:none; margin:7px 0 0; color:#777b86; font-size:11px; line-height:1.5; }
 
 @media (max-width:1199px) {
+  .ash-hero { padding-top:135px; }
   .ash-hero-shell { width:calc(100% - 80px); grid-template-columns:minmax(0,1fr) minmax(280px,.85fr); }
-  .ash-metrics, .ash-media-strip, .ash-workflow { width:calc(100% - 80px); }
+  .ash-metrics, .ash-workflow { width:calc(100% - 80px); }
+  .ash-metrics { margin-left:40px; }
+  .ash-media-strip { width:100%; }
   .ash-benefits, .ash-integration-banner, .ash-insights { width:calc(100% - 80px); }
-  .ash-workflow-icon { width:78px; height:78px; }
-  .ash-workflow-track::before { top:39px; }
+  .ash-workflow-icon { width:128px; height:128px; }
+  .ash-workflow-track::before { top:64px; }
   .ash-workflow-step h3 { font-size:12px; }
   .ash-integration-banner { grid-template-columns:minmax(0,1fr) minmax(0,.92fr); }
   .ash-dashboard-window { padding:13px; }
@@ -295,15 +305,17 @@
   .ash-article-row > img { height:108px; }
 }
 @media (max-width:991.98px) {
-  .ash-hero { padding-top:98px; }
+  .ash-hero { padding-top:96px; }
   .ash-hero-shell { width:calc(100% - 56px); grid-template-columns:minmax(0,1.05fr) minmax(240px,.95fr); gap:20px; }
   .ash-hero-copy h1 { font-size:clamp(30px,3.4vw,36px); line-height:1.15; }
   .ash-hero-visual { height:300px; min-height:300px; }
-  .ash-metrics, .ash-media-strip, .ash-workflow { width:calc(100% - 56px); }
+  .ash-metrics, .ash-workflow { width:calc(100% - 56px); }
+  .ash-metrics { margin-left:28px; }
+  .ash-media-strip { width:100%; }
   .ash-media-placeholder { height:200px; }
   .ash-benefits, .ash-integration-banner, .ash-insights { width:calc(100% - 56px); }
-  .ash-workflow-icon { width:68px; height:68px; }
-  .ash-workflow-track::before { top:34px; }
+  .ash-workflow-icon { width:110px; height:110px; }
+  .ash-workflow-track::before { top:55px; }
   .ash-workflow-step h3 { font-size:12px; }
   .ash-benefit-grid { gap:13px; }
   .ash-benefit-card { min-height:190px; padding:22px 15px; }
@@ -327,20 +339,20 @@
   .ash-primary-button { min-height:45px; }
   .ash-hero-visual { width:100%; height:250px; min-height:250px; margin-top:0; }
   .ash-box-art { width:min(100%,390px); height:260px; }
-  .ash-metrics { width:calc(100% - 40px); gap:6px; margin-top:8px; padding-bottom:32px; }
+  .ash-metrics { width:calc(100% - 40px); gap:6px; margin:8px auto 0; padding-bottom:32px; }
   .ash-metric { gap:3px; }
   .ash-metric strong { font-size:clamp(24px,6vw,30px); line-height:34px; }
   .ash-metric span { font-size:10px; line-height:13px; }
   .ash-media-strip { margin:0 auto 24px; }
-  .ash-media-placeholder { width:100%; height:180px; border-radius:10px; }
+  .ash-media-placeholder { width:72%; height:240px; border-radius:0 20px 20px 0; }
   .ash-workflow { width:calc(100% - 32px); padding-bottom:48px; overflow-x:auto; }
   .ash-workflow-track { grid-template-columns:repeat(5,minmax(0,1fr)); gap:0; min-width:650px; }
   .ash-workflow-track::before { top:30px; left:8%; right:8%; border-top-width:1px; }
-  .ash-workflow-icon { width:64px; height:64px; }
-  .ash-workflow-icon svg { width:32px; height:32px; }
+  .ash-workflow-icon { width:clamp(43px, 11vw, 68px); height:clamp(43px, 11vw, 68px); }
+  .ash-workflow-icon svg { width:24px; height:24px; }
   .ash-amazon-a { font-size:34px; letter-spacing:-3px; }
   .ash-amazon-a small { bottom:-5px; font-size:17px; }
-  .ash-workflow-step h3 { max-width:155px; min-height:48px; margin-top:10px; font-size:11px; line-height:16px; }
+  .ash-workflow-step h3 { max-width:155px; min-height:48px; margin-top:10px; font-size:10px; line-height:14px; }
   .ash-workflow-step > span { font-size:10px; line-height:15px; }
   .ash-benefits { width:calc(100% - 32px); padding-bottom:55px; }
   .ash-section-heading { margin-bottom:23px; }
@@ -402,10 +414,10 @@
   .ash-metrics { gap:5px; }
   .ash-metric strong { font-size:23px; letter-spacing:-.8px; line-height:29px; }
   .ash-metric span { font-size:8.5px; }
-  .ash-media-placeholder { height:160px; }
-  .ash-workflow-icon { width:56px; height:56px; }
-  .ash-workflow-icon svg { width:28px; height:28px; }
-  .ash-workflow-track::before { top:28px; }
+  .ash-media-placeholder { height:190px; }
+  .ash-workflow-icon { width:43px; height:43px; }
+  .ash-workflow-icon svg { width:24px; height:24px; }
+  .ash-workflow-track::before { top:21px; }
   .ash-workflow-step h3 { max-width:135px; font-size:10px; line-height:14px; }
   .ash-benefit-grid { gap:8px; }
   .ash-benefit-card { min-height:158px; padding-inline:8px; }
