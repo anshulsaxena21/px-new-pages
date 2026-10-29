@@ -117,7 +117,6 @@
 .ash-faq-section .accordion-button { min-height:100px; font-size:15px; }
 .ash-faq-section .accordion-body { font-size:13px; line-height:1.7; }
 .ash-faq-section .image-box > img:first-child { width:100%; max-width:600px; border-radius:18px; box-shadow:none; }
-.ash-faq-section .image-box .img-box { display:none; }
 .ash-faq-section .image-box { padding:4px 0 0; }
 
 /* Insights */

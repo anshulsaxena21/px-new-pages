@@ -175,7 +175,7 @@ export default function AmazonSelfShip() {
         <div className="ash-metrics">
           <div className="ash-metric"><strong>20+</strong><span>Courier Partners</span></div>
           <div className="ash-metric"><strong>100%</strong><span>Tracking Sync Accuracy</span></div>
-          <div className="ash-metric"><strong>1000’s</strong><span>Pin codes &amp; destinations</span></div>
+          <div className="ash-metric"><strong>1000’s</strong><span>Countries</span></div>
         </div>
       </section>
 
