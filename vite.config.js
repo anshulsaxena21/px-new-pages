@@ -9,7 +9,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(process.cwd(), "index.html"),
-        parcelxIQ: resolve(process.cwd(), "parcelx-iq.html")
+        parcelxIQ: resolve(process.cwd(), "parcelx-iq.html"),
+        amazonSelfShip: resolve(process.cwd(), "amazon-self-ship.html")
       }
     }
   }
