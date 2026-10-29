@@ -4,7 +4,6 @@ import {
   BarChart3,
   Boxes,
   CalendarDays,
-  CheckCircle2,
   CircleDollarSign,
   ClipboardCheck,
   Clock3,
@@ -14,7 +13,6 @@ import {
   ShoppingBag,
   Store,
   Truck,
-  Zap
 } from "lucide-react";
 import "../styles/shared-faq.css";
 import "./AmazonSelfShip.css";
@@ -157,21 +155,17 @@ export default function AmazonSelfShip() {
         <div className="ash-hero-shell">
           <div className="ash-hero-copy">
             <h1>Amazon Self Ship : Ship Amazon Self-Ship Orders with ParcelX</h1>
-            <p>Take complete control of your Amazon deliveries with flexible couriers, better rates, and real-time tracking.</p>
-            <p className="ash-compliance"><CheckCircle2 size={15} /> Fully compliant with Amazon Self-Ship</p>
+            <p>Take complete control of your Amazon deliveries with flexible couriers, better rates, and real-time tracking — fully compliant with Amazon Self-Ship.</p>
             <a className="ash-primary-button" href={registerUrl}>Get Started <ArrowUpRight size={17} /></a>
           </div>
           <div className="ash-hero-visual">
-            <div className="ash-hero-orbit ash-hero-orbit-one" />
-            <div className="ash-hero-orbit ash-hero-orbit-two" />
             <AmazonBoxArt />
-            <span className="ash-hero-tag"><Zap size={14} /> Smarter shipping, one dashboard</span>
           </div>
         </div>
         <div className="ash-metrics">
           <div className="ash-metric"><strong>20+</strong><span>Courier Partners</span></div>
           <div className="ash-metric"><strong>100%</strong><span>Tracking Sync Accuracy</span></div>
-          <div className="ash-metric"><strong>1000’s</strong><span>Countries</span></div>
+          <div className="ash-metric"><strong>1000's</strong><span>Countries</span></div>
         </div>
       </section>
 
@@ -184,7 +178,7 @@ export default function AmazonSelfShip() {
           {workflowSteps.map(({ icon: Icon, title, step }, index) => (
             <article className="ash-workflow-step" key={step}>
               <div className={"ash-workflow-icon ash-workflow-icon-" + index}>
-                {index === 0 ? <span className="ash-amazon-a">a<small>⌣</small></span> : <Icon size={27} strokeWidth={1.65} />}
+                {index === 0 ? <span className="ash-amazon-a">a<small>⌣</small></span> : <Icon size={36} strokeWidth={1.65} />}
               </div>
               <h3>{title}</h3><span>{step}</span>
             </article>
