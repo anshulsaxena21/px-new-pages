@@ -151,11 +151,7 @@ function IntegrationPreview() {
 export default function AmazonSelfShip() {
   return (
     <main className="amazon-self-ship-page">
-      <Header
-        item="Solutions" item1="Platform" item2="Products" item3="Partners"
-        item4="Careers" item5="Tracking" item6="Resources"
-        item7="" item8="" item9="" nav_button="Sign Up" nav_button2="Login"
-      />
+      <Header />
 
       <section className="ash-hero" id="top">
         <div className="ash-hero-shell">
