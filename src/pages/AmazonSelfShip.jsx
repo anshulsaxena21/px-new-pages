@@ -1,4 +1,5 @@
 import React from "react";
+import { Check, ChevronDown, Search, X } from "lucide-react";
 import {
   ArrowUpRight,
   BarChart3,
@@ -146,6 +147,191 @@ function IntegrationPreview() {
   );
 }
 
+
+const tagOptions = [
+  "Parcelx - Cancelled via WhatsApp",
+  "Parcelx - Confirmed via IVR",
+  "Parcelx - Confirmed via WhatsApp",
+  "Parcelx - Cancelled via IVR",
+  "ok",
+  "releasit_cod_form",
+  "bopshop"
+];
+
+function AmazonTagMultiSelect() {
+  const [selectedTags, setSelectedTags] = React.useState([
+    "Parcelx - Confirmed via WhatsApp",
+    "Parcelx - Confirmed via IVR"
+  ]);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [appliedTags, setAppliedTags] = React.useState([]);
+  const [searchMessage, setSearchMessage] = React.useState("");
+  const dropdownRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    const handleEscape = (event) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("touchstart", handleOutsideClick);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("touchstart", handleOutsideClick);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
+  const toggleTag = (tag) => {
+    setSelectedTags((current) =>
+      current.includes(tag)
+        ? current.filter((item) => item !== tag)
+        : [...current, tag]
+    );
+    setSearchMessage("");
+  };
+
+  const removeTag = (event, tag) => {
+    event.stopPropagation();
+    setSelectedTags((current) => current.filter((item) => item !== tag));
+    setSearchMessage("");
+  };
+
+  const applySearch = () => {
+    if (selectedTags.length === 0) {
+      setAppliedTags([]);
+      setSearchMessage("Select at least one tag to search.");
+      return;
+    }
+    setAppliedTags([...selectedTags]);
+    setIsOpen(false);
+    setSearchMessage(
+      selectedTags.length === 1
+        ? "1 tag selected for search."
+        : selectedTags.length + " tags selected for search."
+    );
+  };
+
+  return (
+    <section className="ash-tag-search-section" aria-label="Search shipments by tag">
+      <div className="ash-tag-search-inner">
+        <label className="ash-tag-search-label" id="ash-tag-search-label">
+          Search By Tag
+        </label>
+        <div className="ash-tag-search-controls">
+          <div className="ash-tag-select-wrap" ref={dropdownRef}>
+            <div
+              className={"ash-tag-select-field" + (isOpen ? " is-open" : "")}
+              role="combobox"
+              tabIndex={0}
+              aria-labelledby="ash-tag-search-label"
+              aria-haspopup="listbox"
+              aria-expanded={isOpen}
+              aria-controls="ash-tag-options"
+              onClick={() => setIsOpen((open) => !open)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  setIsOpen((open) => !open);
+                }
+                if (event.key === "ArrowDown") {
+                  event.preventDefault();
+                  setIsOpen(true);
+                }
+              }}
+            >
+              <div className="ash-tag-selected-values">
+                {selectedTags.length > 0 ? (
+                  selectedTags.map((tag) => (
+                    <span className="ash-tag-chip" key={tag}>
+                      <span>{tag}</span>
+                      <button
+                        type="button"
+                        aria-label={"Remove " + tag}
+                        onClick={(event) => removeTag(event, tag)}
+                      >
+                        <X size={15} strokeWidth={2} />
+                      </button>
+                    </span>
+                  ))
+                ) : (
+                  <span className="ash-tag-placeholder">Select one or more tags</span>
+                )}
+              </div>
+              <ChevronDown
+                className={"ash-tag-chevron" + (isOpen ? " is-open" : "")}
+                size={20}
+                aria-hidden="true"
+              />
+            </div>
+
+            {isOpen && (
+              <div className="ash-tag-dropdown" id="ash-tag-options">
+                <div className="ash-tag-dropdown-top">
+                  <span>{selectedTags.length} selected</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedTags([]);
+                      setSearchMessage("");
+                    }}
+                    disabled={selectedTags.length === 0}
+                  >
+                    Clear all
+                  </button>
+                </div>
+                <div className="ash-tag-options-list" role="listbox" aria-multiselectable="true" aria-label="Available tags">
+                  {tagOptions.map((tag) => {
+                    const selected = selectedTags.includes(tag);
+                    return (
+                      <button
+                        type="button"
+                        role="option"
+                        aria-selected={selected}
+                        className={"ash-tag-option" + (selected ? " is-selected" : "")}
+                        key={tag}
+                        onClick={() => toggleTag(tag)}
+                      >
+                        <span>{tag}</span>
+                        <span className="ash-tag-option-check">
+                          {selected ? <Check size={17} strokeWidth={2.3} /> : null}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+                <div className="ash-tag-dropdown-bottom">
+                  <span>Choose multiple tags</span>
+                  <button type="button" onClick={() => setIsOpen(false)}>Done</button>
+                </div>
+              </div>
+            )}
+          </div>
+          <button
+            type="button"
+            className="ash-tag-search-button"
+            aria-label="Search selected tags"
+            title="Search selected tags"
+            onClick={applySearch}
+          >
+            <Search size={21} strokeWidth={2.2} />
+          </button>
+        </div>
+        <div className="ash-tag-search-feedback" aria-live="polite">
+          {searchMessage || (appliedTags.length > 0
+            ? "Applied: " + appliedTags.join(" · ")
+            : "")}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function AmazonSelfShip() {
   return (
     <main className="amazon-self-ship-page">
@@ -168,6 +354,8 @@ export default function AmazonSelfShip() {
           <div className="ash-metric"><strong>1000's</strong><span>Countries</span></div>
         </div>
       </section>
+
+      <AmazonTagMultiSelect />
 
       <section className="ash-media-strip" aria-label="Amazon Self-Ship preview">
         <div className="ash-media-placeholder" />
