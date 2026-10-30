@@ -659,8 +659,7 @@
 
 
 /* Match the select field height exactly to the search button.
-   Selected chips stay on one line and scroll horizontally inside the field.
-   The dropdown options keep their independent vertical scroll. */
+   Selected chips wrap onto rows and scroll vertically inside the fixed field. */
 .ash-tag-select-field {
   width: 100%;
   height: 52px;
@@ -678,19 +677,19 @@
   height: 36px;
   min-height: 36px;
   max-height: 36px;
-  flex-wrap: nowrap;
-  align-items: center;
-  align-content: center;
-  gap: 7px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  overscroll-behavior-x: contain;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 5px 7px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
   scrollbar-width: thin;
   scrollbar-color: #a1a3aa #f1f1f2;
-  padding: 1px 3px 3px 0;
+  padding: 1px 5px 1px 0;
 }
 .ash-tag-selected-values::-webkit-scrollbar {
-  height: 4px;
+  width: 5px;
 }
 .ash-tag-selected-values::-webkit-scrollbar-track {
   border-radius: 8px;
@@ -702,8 +701,7 @@
 }
 .ash-tag-chip {
   flex: 0 0 auto;
-  max-width: min(420px, calc(100vw - 130px));
-  white-space: nowrap;
+  max-width: calc(100% - 7px);
 }
 .ash-tag-chip > span {
   white-space: nowrap;
@@ -733,7 +731,7 @@
     max-height: 34px;
   }
   .ash-tag-chip {
-    max-width: calc(100vw - 120px);
+    max-width: calc(100% - 7px);
   }
   .ash-tag-dropdown {
     max-height: 330px;
