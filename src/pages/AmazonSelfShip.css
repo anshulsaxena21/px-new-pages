@@ -658,31 +658,39 @@
 }
 
 
-/* Keep the multi-select input at a fixed height as selected tags grow.
-   The chips scroll inside the field; the option menu keeps its own scroll. */
+/* Match the select field height exactly to the search button.
+   Selected chips stay on one line and scroll horizontally inside the field.
+   The dropdown options keep their independent vertical scroll. */
 .ash-tag-select-field {
-  height: 100px;
-  min-height: 100px;
-  max-height: 100px;
+  width: 100%;
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
   align-items: center;
   overflow: hidden;
 }
 .ash-tag-selected-values {
-  align-self: stretch;
-  height: 84px;
-  max-height: 84px;
-  min-height: 0;
-  align-content: flex-start;
-  align-items: flex-start;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  display: flex;
+  flex: 1 1 auto;
+  align-self: center;
+  width: 0;
+  min-width: 0;
+  height: 36px;
+  min-height: 36px;
+  max-height: 36px;
+  flex-wrap: nowrap;
+  align-items: center;
+  align-content: center;
+  gap: 7px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
   scrollbar-width: thin;
   scrollbar-color: #a1a3aa #f1f1f2;
-  padding: 1px 5px 1px 0;
+  padding: 1px 3px 3px 0;
 }
 .ash-tag-selected-values::-webkit-scrollbar {
-  width: 6px;
+  height: 4px;
 }
 .ash-tag-selected-values::-webkit-scrollbar-track {
   border-radius: 8px;
@@ -694,7 +702,11 @@
 }
 .ash-tag-chip {
   flex: 0 0 auto;
-  max-width: calc(100% - 7px);
+  max-width: min(420px, calc(100vw - 130px));
+  white-space: nowrap;
+}
+.ash-tag-chip > span {
+  white-space: nowrap;
 }
 .ash-tag-dropdown {
   max-height: 360px;
@@ -704,21 +716,33 @@
   overflow-y: auto;
   overscroll-behavior: contain;
 }
+.ash-tag-search-button {
+  height: 52px;
+  min-height: 52px;
+}
 
 @media (max-width: 767.98px) {
   .ash-tag-select-field {
-    height: 88px;
-    min-height: 88px;
-    max-height: 88px;
+    height: 50px;
+    min-height: 50px;
+    max-height: 50px;
   }
   .ash-tag-selected-values {
-    height: 72px;
-    max-height: 72px;
+    height: 34px;
+    min-height: 34px;
+    max-height: 34px;
+  }
+  .ash-tag-chip {
+    max-width: calc(100vw - 120px);
   }
   .ash-tag-dropdown {
     max-height: 330px;
   }
   .ash-tag-options-list {
     max-height: 230px;
+  }
+  .ash-tag-search-button {
+    height: 50px;
+    min-height: 50px;
   }
 }
