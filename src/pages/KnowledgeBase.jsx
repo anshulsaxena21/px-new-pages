@@ -15,6 +15,21 @@ const groups=[
 ["FAQs & support","Quick answers and help from our team.",MessageCircle,"FAQs & help",["Frequently asked questions","Raise a support ticket","Check your ticket status","Contact ParcelX support"]]
 ];
 const popular=["Create a shipment","Upload orders in bulk","Understand COD remittance","Track a shipment","Connect your Shopify store","Manage an NDR shipment"];
+const siteLinks=[
+  {label:"About ParcelX",detail:"Our story and how we simplify shipping",href:"https://parcelx.in/about"},
+  {label:"Platform features",detail:"Explore tools for your shipping workflow",href:"https://parcelx.in/features"},
+  {label:"PaceX",detail:"Same Day and Next Day delivery",href:"https://parcelx.in/pacex"},
+  {label:"Videsh",detail:"International shipping to 220+ countries",href:"https://parcelx.in/parcel-videsh"},
+  {label:"Store integrations",detail:"Connect marketplaces and shopping carts",href:"https://parcelx.in/channel-integration"},
+  {label:"Track a shipment",detail:"Open the ParcelX shipment tracking page",href:"https://parcelx.in/tracking"},
+  {label:"Pricing",detail:"Explore ParcelX shipping plans and rates",href:"https://parcelx.in/pricing"},
+  {label:"Contact support",detail:"Get in touch with the ParcelX team",href:"https://parcelx.in/contact-us"}
+];
+const resourceLinks=[
+  {label:"Explore ParcelX features",href:"https://parcelx.in/features"},
+  {label:"Track a shipment",href:"https://parcelx.in/tracking"},
+  {label:"Contact ParcelX",href:"https://parcelx.in/contact-us"}
+];
 export default function KnowledgeBase(){
 const [q,Q]=useState(""),[cat,C]=useState(-1),[article,A]=useState(""),[vote,V]=useState("");
 const all=useMemo(()=>groups.flatMap((g,i)=>g[4].map(t=>({title:t,category:g[0],id:i}))),[]);
@@ -32,7 +47,7 @@ return <div className="pxkb">
     <aside className="kbarticle-sidebar">
       <div className="kbside-heading">HELP TOPICS</div>
       {groups.map((g,i)=>{const Icon=g[2];return <button key={g[0]} className={cat===i?"sel":""} onClick={()=>{C(i);A("");window.scrollTo(0,0)}}><Icon size={16}/><span>{g[0]}</span><ChevronRight size={14}/></button>})}
-      <div className="kbside-help"><span><LifeBuoy size={18}/></span><b>Need more help?</b><p>Our support team is here when you need us.</p><a href="https://parcelx.in/" target="_blank" rel="noreferrer">Contact support <ArrowUpRight size={13}/></a></div>
+      <div className="kbside-help"><span><LifeBuoy size={18}/></span><b>Need more help?</b><p>Our support team is here when you need us.</p><a href="https://parcelx.in/contact-us" target="_blank" rel="noreferrer">Contact support <ArrowUpRight size={13}/></a></div>
     </aside>
     <article className="kbarticle-content">
       <div className="kbarticle-meta"><span className="kbarticle-pill"><BookOpen size={13}/> CUSTOMER GUIDE</span><span><Clock3 size={14}/> 4 min read</span><span className="kbmeta-dot">·</span><span>ParcelX Help Centre</span></div>
@@ -47,7 +62,7 @@ return <div className="pxkb">
           <section id="before-you-begin"><div className="kb-section-kicker">03 <span>BEFORE YOU BEGIN</span></div><h2>Before you begin</h2><p>When the detailed instructions are published, make sure you have access to your ParcelX account and the relevant order or account information for this task.</p><div className="kb-info-note"><b>A quick note</b><p>Account-specific settings, charges, eligibility and workflow details will be confirmed against the live ParcelX platform before this guide is marked complete.</p></div></section>
           <div className="kbarticle-feedback"><div><b>Was this page helpful?</b><p>Your feedback helps us make ParcelX guides more useful.</p></div><button className={vote==="yes"?"chosen":""} onClick={()=>V("yes")}><ThumbsUp size={15}/> Yes, helpful</button><button className={vote==="no"?"chosen":""} onClick={()=>V("no")}><ThumbsDown size={15}/> Needs work</button></div>
           {vote&&<div className="kb-feedback-thanks">Thanks for sharing your feedback.</div>}
-          <div className="kbarticle-related"><div><small>KEEP EXPLORING</small><h3>Related guides</h3></div><div className="kbarticle-related-grid">{groups[cat<0?0:cat][4].filter(t=>t!==article).slice(0,3).map(t=><button key={t} onClick={()=>open(t)}><FileText size={16}/><span>{t}</span><ArrowUpRight size={15}/></button>)}</div></div>
+          <div className="kbarticle-related"><div><small>OFFICIAL PARCELX RESOURCES</small><h3>Continue with ParcelX</h3></div><div className="kbarticle-related-grid">{resourceLinks.map(link=><a key={link.label} href={link.href} target="_blank" rel="noreferrer"><ArrowUpRight size={16}/><span>{link.label}</span></a>)}</div><div style={{marginTop:28}}><small>KEEP EXPLORING</small><h3>Related guides</h3></div><div className="kbarticle-related-grid">{groups[cat<0?0:cat][4].filter(t=>t!==article).slice(0,3).map(t=><button key={t} onClick={()=>open(t)}><FileText size={16}/><span>{t}</span><ArrowUpRight size={15}/></button>)}</div></div>
         </div>
         <nav className="kbarticle-toc"><b>ON THIS PAGE</b><a href="#overview">About this guide</a><a href="#what-youll-learn">What you'll learn</a><a href="#before-you-begin">Before you begin</a><div className="kb-toc-help">Looking for something else?<button onClick={home}>Browse all topics <ArrowRight size={13}/></button></div></nav>
       </div>
@@ -56,7 +71,12 @@ return <div className="pxkb">
 </main>:<><section className="kbhero"><div className="kbwrap kbheroin"><div><small className="kbover">— THE PARCELX KNOWLEDGE HUB</small><h1>Shipping questions?<br/><em>We've got answers.</em></h1><p>Explore step-by-step guides, product explainers and helpful resources to make every shipment simpler.</p><div className="kbsearch"><Search/><input value={q} onChange={e=>{Q(e.target.value);C(-1)}} placeholder="Search articles, topics or questions..."/>{q&&<button onClick={()=>Q("")}><X size={16}/></button>}</div><div className="kbhints">Popular: {["Create an order","COD remittance","Track shipment"].map(t=><button onClick={()=>Q(t)}>{t}</button>)}</div></div><div className="kbvisual"><div className="kbvisualcard"><span>SHIPMENT UPDATE</span><Package/><b>Your order is on its way!</b><i/><i/><i/><small>Moving smoothly with ParcelX</small></div><div className="kbfloat">✓　Need a hand?<small>Find your answer, faster.</small></div><span className="kbspark">✳</span></div></div></section>
 <section className="kbwrap kbbody"><div className="kbsection"><div><small>FIND WHAT YOU NEED</small><h2>{q?"Search results":"How can we help you?"}</h2><p>{q?results.length+" matching articles":"Browse by topic and get the most out of ParcelX."}</p></div>{q&&<button className="kbclear" onClick={()=>Q("")}>Clear search</button>}</div>
 {(q||cat>=0)?<div className="kbresults">{results.length?results.map(x=><button onClick={()=>{C(x.id);open(x.title)}}><FileText/><span><b>{x.title}</b><small>{x.category}</small></span><ArrowUpRight/></button>):<p className="kbempty">No matching articles yet. Try another search or browse all topics.</p>}</div>:<div className="kbgrid">{groups.map((g,i)=>{const Icon=g[2];return <button className="kbcard" onClick={()=>{C(i);Q("")}}><span className={"kbicon tone"+i}><Icon/></span><b>{g[0]} <ArrowUpRight size={16}/></b><p>{g[1]}</p><small>{g[3]} <strong>Explore <ArrowRight size={13}/></strong></small></button>})}</div>}
-{!q&&<><div className="kbsection popularhead"><div><small>QUICK ANSWERS</small><h2>Popular articles</h2><p>Helpful guides ParcelX users visit most.</p></div></div><div className="kbpopular">{popular.map((t,i)=><button onClick={()=>{const found=all.find(x=>x.title===t);C(found?.id??0);open(t)}}><small>0{i+1}　·　GUIDE</small><b>{t}</b><span><Clock3 size={13}/> {i%2?"4":"3"} min read <ArrowUpRight size={15}/></span></button>)}</div><div className="kbdev"><Code2/><div><small>FOR DEVELOPERS</small><b>Building something with ParcelX?</b><p>Explore API references, integration guides and webhook documentation.</p></div><button onClick={()=>C(6)}>Explore developer docs <ArrowRight size={16}/></button></div></>}</section></>}
-<section className="kbsupport"><div className="kbwrap"><Headphones/><div><small>STILL NEED A HAND?</small><b>We're always happy to help.</b><p>Couldn't find what you were looking for? Our support team is here for you.</p></div><a href="https://parcelx.in/" target="_blank" rel="noreferrer">Visit ParcelX ↗</a></div></section>
+{!q&&<><div className="kbsection popularhead"><div><small>QUICK ANSWERS</small><h2>Popular articles</h2><p>Helpful guides ParcelX users visit most.</p></div></div><div className="kbpopular">{popular.map((t,i)=><button onClick={()=>{const found=all.find(x=>x.title===t);C(found?.id??0);open(t)}}><small>0{i+1}　·　GUIDE</small><b>{t}</b><span><Clock3 size={13}/> {i%2?"4":"3"} min read <ArrowUpRight size={15}/></span></button>)}</div><div className="kbdev"><Code2/><div><small>FOR DEVELOPERS</small><b>Building something with ParcelX?</b><p>Need API credentials or integration guidance? Talk to our team about developer access.</p></div><a href="https://parcelx.in/contact-us" target="_blank" rel="noreferrer">Talk to our team <ArrowRight size={16}/></a></div></>}
+<div className="kbsite-links">
+  <div className="kbsite-links-head"><div><small>EXPLORE PARCELX</small><h2>More from ParcelX</h2><p>Go beyond the guides. Explore the platform, services and tools.</p></div><a href="https://parcelx.in/" target="_blank" rel="noreferrer">Visit parcelx.in <ArrowUpRight size={15}/></a></div>
+  <div className="kbsite-links-grid">{siteLinks.map(link=><a key={link.label} href={link.href} target="_blank" rel="noreferrer"><span><b>{link.label}</b><small>{link.detail}</small></span><ArrowUpRight size={17}/></a>)}</div>
+</div>
+</section></>}
+<section className="kbsupport"><div className="kbwrap"><Headphones/><div><small>STILL NEED A HAND?</small><b>We're always happy to help.</b><p>Couldn't find what you were looking for? Our support team is here for you.</p></div><div className="kbsupport-actions"><a href="https://parcelx.in/contact-us" target="_blank" rel="noreferrer">Contact us <ArrowUpRight size={14}/></a><a href="mailto:hello@parcelx.in">Email hello@parcelx.in</a></div></div></section>
 <Footer />
 </div>}
