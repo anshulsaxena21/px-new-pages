@@ -415,3 +415,91 @@ img,iframe{max-width:100%}
 /* Blue Dart courier logo */
 .courier-logo{display:block;width:116px;max-width:100%;height:auto;max-height:30px;object-fit:contain;object-position:left center;margin:0 0 5px}
 @media(max-width:760px){.courier-logo{width:96px;max-height:25px}}
+
+/* Timeline alignment fix — keep all six milestones on one shared grid */
+.timeline-card{
+  display:block;
+  width:100%;
+  min-width:0;
+  padding:22px 20px 20px;
+  overflow:hidden;
+}
+.timeline{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  width:100%;
+  min-width:0;
+  gap:0;
+  position:relative;
+  align-items:start;
+}
+.timeline:before,
+.timeline:after{
+  content:"";
+  position:absolute;
+  top:62px;
+  height:0;
+  border-top:5px dotted;
+  pointer-events:none;
+}
+.timeline:before{
+  left:8.3333%;
+  right:8.3333%;
+  width:auto;
+  border-color:#d8dadd;
+}
+.timeline:after{
+  left:8.3333%;
+  right:auto;
+  width:50%;
+  border-color:#18bd78;
+}
+.timeline-step{
+  position:relative;
+  display:grid;
+  grid-template-rows:34px 32px auto;
+  justify-items:center;
+  align-items:start;
+  gap:12px;
+  width:100%;
+  min-width:0;
+  text-align:center;
+}
+.timeline-step small{
+  width:100%;
+  height:34px;
+  margin:0;
+  padding:0;
+  font-size:13px;
+  line-height:1.45;
+  font-weight:500;
+  color:#252a32;
+  white-space:normal;
+}
+.timeline-step .step-dot{
+  width:32px;
+  height:32px;
+  margin:0;
+  z-index:2;
+  display:grid;
+  place-items:center;
+  font-size:17px;
+  border-radius:50%;
+  box-shadow:0 0 0 4px #fff;
+}
+.timeline-step .step-dot .ph{font-size:17px;line-height:1}
+.timeline-step b{
+  display:block;
+  width:100%;
+  margin:0;
+  padding-top:1px;
+  font-size:14px;
+  line-height:1.25;
+  font-weight:500;
+  white-space:normal;
+  overflow-wrap:normal;
+}
+@media(max-width:760px){
+ .timeline-card{overflow-x:auto;padding:18px 14px}
+ .timeline{min-width:590px}
+}
