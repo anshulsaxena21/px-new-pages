@@ -1,0 +1,41 @@
+name: Deploy standalone order tracking page
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "standalone/order-tracking/**"
+      - ".github/workflows/deploy-standalone-tracking.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Prepare site
+        run: |
+          mkdir -p site/standalone/order-tracking
+          cp standalone/order-tracking/* site/standalone/order-tracking/
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
