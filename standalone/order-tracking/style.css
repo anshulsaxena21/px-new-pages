@@ -411,3 +411,7 @@ img,iframe{max-width:100%}
  .timeline-step small{font-size:12px}
  .timeline-step b{font-size:13px}
 }
+
+/* Blue Dart courier logo */
+.courier-logo{display:block;width:116px;max-width:100%;height:auto;max-height:30px;object-fit:contain;object-position:left center;margin:0 0 5px}
+@media(max-width:760px){.courier-logo{width:96px;max-height:25px}}
