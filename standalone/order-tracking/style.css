@@ -311,3 +311,103 @@ img,iframe{max-width:100%}
 @media(max-width:1100px){.site-header{padding-inline:32px}.hero{width:calc(100% - 64px);height:520px}.tracking-panel{padding:24px}.shipment-summary.content-width,.tracking-details.content-width{width:calc(100% - 64px)}.shipment-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.delivery-card{grid-column:1/-1}.summary-item{padding:12px}.tracking-details{grid-template-columns:1fr}.left-column{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.map-card,.shop-promo{height:220px}.timeline{min-width:0}}
 @media(max-width:760px){.site-header{height:60px;padding-inline:20px}.main-nav{gap:18px}.main-nav a{font-size:14px}.offer-strip{height:auto;min-height:54px;font-size:13px;padding:10px 16px}.hero-wrap{padding:22px 0 28px}.hero{width:calc(100% - 32px);height:auto;min-height:480px;padding:170px 14px 16px;border-radius:24px}.tracking-panel{padding:20px 14px;border-radius:16px}.panel-title{font-size:17px;line-height:1.4}.tracking-form{grid-template-columns:1fr;gap:10px}.tracking-form input,.track-button{height:48px;width:100%}.shipment-summary.content-width,.tracking-details.content-width{width:calc(100% - 32px)}.shipment-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:9px}.delivery-card{grid-column:1/-1}.summary-item{gap:9px;padding:8px 4px}.summary-icon{width:42px;height:42px;font-size:20px}.summary-item strong{font-size:15px}.summary-item small{font-size:11px}.courier-name b,.courier-name em{font-size:16px}.tracking-details{margin-top:22px;gap:18px}.left-column{grid-template-columns:1fr;gap:14px}.map-card{height:210px}.shop-promo{height:205px;padding:20px}.shop-promo h2{font-size:22px}.timeline-card{overflow-x:auto;padding:16px 10px}.timeline{min-width:590px}.history-card{padding:17px 12px}.discover{grid-template-columns:1fr;margin-top:42px;gap:24px}.spotlight{height:auto;aspect-ratio:16/9;min-height:190px}.youtube-spotlight iframe{position:absolute;inset:0;width:100%;height:100%}.product-card img{height:auto;aspect-ratio:1/1}.instagram-heading{align-items:flex-start;flex-direction:column}.instagram-post-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.site-footer{padding:28px 20px 22px}}
 @media(max-width:420px){.shipment-summary{grid-template-columns:1fr}.delivery-card{grid-column:auto}.summary-item{padding:8px}}
+
+/* Shipment journey timeline polish */
+.timeline-card{
+  min-height:154px;
+  padding:22px 24px 20px;
+  border:1px solid #e8e8e8;
+  border-radius:12px;
+  background:#fff;
+  box-shadow:0 2px 12px rgba(18,24,40,.025);
+  overflow:visible;
+}
+.timeline{
+  position:relative;
+  isolation:isolate;
+  width:100%;
+  min-width:0;
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  align-items:start;
+  gap:0;
+}
+.timeline:before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  top:68px;
+  left:8.25%;
+  right:8.25%;
+  border-top:5px dotted #d8dadd;
+}
+.timeline:after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  top:68px;
+  left:8.25%;
+  width:51%;
+  border-top:5px dotted #19bf73;
+}
+.timeline-step{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  gap:12px;
+  min-width:0;
+  text-align:center;
+}
+.timeline-step small{
+  display:block;
+  height:34px;
+  margin:0;
+  color:#252a32;
+  font-size:13px;
+  font-weight:500;
+  line-height:1.45;
+  letter-spacing:-.1px;
+}
+.step-dot{
+  width:32px;
+  height:32px;
+  flex:none;
+  display:grid;
+  place-items:center;
+  border:1px solid #e8eaed;
+  border-radius:50%;
+  background:#f4f5f7;
+  color:#9aa1ab;
+  font-size:17px;
+  line-height:1;
+  box-shadow:0 0 0 5px #fff;
+}
+.step-dot .ph{font-size:17px;line-height:1}
+.timeline-step.done .step-dot{
+  border-color:#18bd78;
+  background:#18bd78;
+  color:#fff;
+}
+.timeline-step.current .step-dot{
+  border-color:#ffeadf;
+  background:#fff1e9;
+  color:#ff6600;
+}
+.timeline-step b{
+  display:block;
+  margin-top:1px;
+  color:#252a32;
+  font-size:14px;
+  line-height:1.25;
+  font-weight:500;
+  white-space:nowrap;
+}
+.timeline-step.current b{color:#ff6600;font-weight:600}
+.timeline-step:not(.done):not(.current) b{color:#737b87}
+@media(max-width:760px){
+ .timeline-card{min-height:150px;padding:18px 14px;overflow-x:auto}
+ .timeline{min-width:590px}
+ .timeline-step small{font-size:12px}
+ .timeline-step b{font-size:13px}
+}
