@@ -49,3 +49,95 @@
 .instagram-post-grid{gap:22px}
 @media(max-width:1000px){.instagram-heading{align-items:center}.instagram-post-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}}
 @media(max-width:600px){.instagram-heading{align-items:flex-start;flex-direction:row;gap:12px}.instagram-heading>div{min-width:0}.instagram-heading h2{font-size:17px}.instagram-follow{white-space:nowrap;font-size:11px;padding:9px 10px}.instagram-post{max-width:100%;aspect-ratio:1/1}.instagram-post blockquote.instagram-media{top:-38px!important}}
+
+
+/* Full-page responsive refinements */
+img,iframe{max-width:100%}
+.content-width{width:min(1180px,calc(100% - 48px))}
+.hero{width:min(1180px,calc(100% - 48px))}
+.tracking-form>*{min-width:0}
+.tracking-tabs{min-width:0}
+.tracking-tab{min-width:0}
+.summary-item strong{white-space:normal;overflow-wrap:anywhere}
+.timeline-card{min-width:0;overflow-x:auto}
+.timeline{min-width:600px}
+.history-card,.table-scroll{min-width:0;max-width:100%}
+.discover>*{min-width:0}
+.product-card{min-width:0}
+.product-card img{display:block;width:100%;max-width:100%}
+.youtube-spotlight iframe{aspect-ratio:16/9}
+.instagram-heading>div{min-width:0}
+.instagram-heading h2{overflow-wrap:anywhere}
+.instagram-post-grid>*{min-width:0}
+.footer-bottom p{min-width:0;flex-wrap:wrap}
+@media(max-width:1100px){
+ .shipment-summary{gap:12px;grid-template-columns:1.2fr 1fr 1fr 1fr}
+ .summary-item{gap:9px}
+ .summary-icon{width:44px;height:44px}
+ .summary-item strong{font-size:14px}
+ .tracking-details{grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr);gap:18px}
+ .discover{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px}
+ .product-grid{gap:10px}
+ .product-card img{height:150px}
+}
+@media(max-width:900px){
+ .content-width,.hero{width:calc(100% - 40px)}
+ .shipment-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .delivery-card{grid-column:1/-1}
+ .tracking-details{grid-template-columns:minmax(0,1fr)}
+ .left-column{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+ .map-card,.shop-promo{height:220px;min-width:0}
+ .timeline-card{overflow-x:auto}
+ .discover{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ .instagram-post-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:640px){
+ .content-width,.hero{width:calc(100% - 28px)}
+ .site-header{padding-inline:14px}
+ .main-nav{left:0;right:0}
+ .hero{height:auto;min-height:390px;padding:150px 12px 16px;align-items:flex-end}
+ .tracking-panel{padding:16px 12px}
+ .tracking-form{grid-template-columns:minmax(0,1fr)}
+ .tracking-tabs{grid-column:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+ .tracking-tab{padding:9px 3px;font-size:11px}
+ .tracking-form input,.track-button{width:100%;min-height:46px}
+ .shipment-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:10px}
+ .summary-item{gap:8px;min-width:0}
+ .summary-icon{width:36px;height:36px;font-size:19px}
+ .summary-item strong{font-size:12px;line-height:1.25}
+ .summary-item small{font-size:10px}
+ .left-column{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+ .map-card,.shop-promo{height:170px}
+ .shop-promo{padding:10px}
+ .shop-promo h2{font-size:15px;overflow-wrap:anywhere}
+ .shop-promo img{width:62%;right:-20%}
+ .timeline-card{padding:14px 8px}
+ .timeline{min-width:590px}
+ .history-card{padding:14px}
+ .discover{grid-template-columns:minmax(0,1fr);gap:22px;margin-top:42px}
+ .spotlight{height:auto;aspect-ratio:16/9;min-height:190px}
+ .youtube-spotlight iframe{position:absolute;inset:0;width:100%;height:100%}
+ .video-caption{bottom:10px;left:10px}
+ .video-caption h2{font-size:16px}
+ .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .product-card{padding:7px}
+ .product-card img{height:auto;aspect-ratio:1/1}
+ .instagram-heading{align-items:center;flex-direction:row;gap:10px}
+ .instagram-heading h2{font-size:17px;line-height:1.25}
+ .instagram-follow{font-size:11px;white-space:nowrap;padding:9px 10px}
+ .instagram-post-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .footer-top{gap:14px}
+ .footer-top nav{gap:14px}
+ .footer-bottom{gap:12px}
+ .footer-bottom p{gap:10px}
+}
+@media(max-width:380px){
+ .instagram-heading{align-items:flex-start;flex-direction:column}
+ .instagram-follow{align-self:flex-start}
+ .left-column{grid-template-columns:minmax(0,1fr)}
+ .map-card,.shop-promo{height:190px}
+ .shipment-summary{grid-template-columns:minmax(0,1fr)}
+ .delivery-card{grid-column:auto}
+ .product-grid{grid-template-columns:minmax(0,1fr)}
+ .product-card img{aspect-ratio:4/3}
+}
