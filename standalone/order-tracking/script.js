@@ -52,9 +52,3 @@ nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", () =>
   nav.classList.remove("open");
   menuToggle.setAttribute("aria-expanded", "false");
 }));
-
-document.querySelector(".play-button").addEventListener("click", () => {
-  const button = document.querySelector(".play-button");
-  button.textContent = button.textContent === "▶" ? "Ⅱ" : "▶";
-  document.querySelector(".video-controls small").textContent = button.textContent === "Ⅱ" ? "Playing demo" : "0:18";
-});
