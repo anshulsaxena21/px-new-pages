@@ -503,3 +503,62 @@ img,iframe{max-width:100%}
  .timeline-card{overflow-x:auto;padding:18px 14px}
  .timeline{min-width:590px}
 }
+
+/* Final responsive timeline correction: never let the six-step row grow wider than its card */
+.timeline-card{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+.timeline{
+  display:grid!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:0!important;
+  box-sizing:border-box!important;
+}
+.timeline-step{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+}
+.timeline-step small{
+  width:100%!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+  white-space:normal!important;
+}
+.timeline-step b{
+  width:100%!important;
+  font-size:12px!important;
+  line-height:1.2!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+}
+.timeline-step .step-dot{
+  width:32px!important;
+  height:32px!important;
+  box-sizing:border-box!important;
+}
+.timeline:before,.timeline:after{
+  top:62px!important;
+  left:8.333333%!important;
+  right:auto!important;
+}
+.timeline:before{width:83.333334%!important}
+.timeline:after{width:50%!important}
+@media(max-width:760px){
+  .timeline-card{overflow:hidden!important;padding:16px 8px!important}
+  .timeline{min-width:0!important;width:100%!important}
+  .timeline-step{gap:10px!important}
+  .timeline-step small{font-size:10px!important}
+  .timeline-step b{font-size:10px!important;overflow-wrap:anywhere!important}
+  .timeline-step .step-dot{width:27px!important;height:27px!important}
+  .timeline:before,.timeline:after{top:58px!important}
+}
