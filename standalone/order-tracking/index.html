@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="description" content="Track your ParcelX shipment with real-time delivery updates." />
+  <title>Track Your Order | ParcelX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="ParcelX home">Parcel<span>X</span><i></i></a>
+    <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#home">Home</a><a href="#about">About</a><a href="#contact">Contact Us</a><a class="nav-cta" href="#products">Shop Now!</a>
+    </nav>
+  </header>
+
+  <div class="offer-strip">Flash Deal : Flat 50% off on orders above 1299 <span aria-hidden="true">🔥</span></div>
+
+  <main id="home">
+    <section class="hero-wrap">
+      <div class="hero">
+        <div class="hero-shade"></div>
+        <div class="tracking-panel">
+          <p class="panel-title">Enter your details to track your package</p>
+          <form id="trackingForm" class="tracking-form">
+            <div class="tracking-tabs" role="tablist" aria-label="Tracking method">
+              <button type="button" class="tracking-tab active" data-mode="waybill" role="tab" aria-selected="true">Waybill</button>
+              <button type="button" class="tracking-tab" data-mode="order" role="tab" aria-selected="false">Order ID</button>
+              <button type="button" class="tracking-tab" data-mode="mobile" role="tab" aria-selected="false">Mobile Number</button>
+            </div>
+            <label class="sr-only" for="trackingInput">Tracking number</label>
+            <input id="trackingInput" type="text" placeholder="Enter your waybill number" value="989687675" autocomplete="off" />
+            <button class="track-button" type="submit">Track Your Order <span>→</span></button>
+          </form>
+          <p id="formMessage" class="form-message" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="shipment-summary content-width" aria-label="Shipment summary">
+      <div class="delivery-card">
+        <div><small>Expected Delivery</small><strong>18 March</strong></div>
+        <div class="delivery-track"><span></span></div>
+        <div class="delivery-foot"><span>📦</span><span>On its way!</span><span>📍</span></div>
+      </div>
+      <div class="summary-item">
+        <span class="summary-icon blue">▣</span><div><strong>In-Transit</strong><small>Shipping Status</small></div>
+      </div>
+      <div class="summary-item courier">
+        <span class="summary-icon amber">◇</span><div><strong class="courier-name"><b>BLUE</b><em>DART</em></strong><small>Fulfilled by</small></div>
+      </div>
+      <div class="summary-item">
+        <span class="summary-icon coral">⌁</span><div><strong>682016, COCHIN</strong><small>Destination</small></div>
+      </div>
+    </section>
+
+    <section class="tracking-details content-width">
+      <aside class="left-column">
+        <div class="map-card">
+          <iframe title="Shipment destination map" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=76.25%2C9.92%2C76.34%2C10.02&amp;layer=mapnik"></iframe>
+          <a href="https://www.openstreetmap.org/#map=14/9.967/76.295" target="_blank" rel="noreferrer">View larger map ↗</a>
+        </div>
+        <div class="shop-promo">
+          <div><h2>Loved Our Amazing<br>Collection?</h2><a href="#products" class="light-button">Shop More</a></div>
+          <img src="https://images.unsplash.com/photo-1607082349566-187342175e2f?auto=format&fit=crop&w=500&q=85" alt="Shopping bags" />
+        </div>
+      </aside>
+
+      <div class="right-column">
+        <section class="timeline-card" aria-label="Shipment journey">
+          <div class="timeline">
+            <div class="timeline-step done"><small>21 Nov<br>10:43 AM</small><span class="step-dot">✓</span><b>Booked</b></div>
+            <div class="timeline-step done"><small>21 Nov<br>10:43 AM</small><span class="step-dot">✓</span><b>Manifested</b></div>
+            <div class="timeline-step done"><small>21 Nov<br>10:43 AM</small><span class="step-dot">✓</span><b>Picked</b></div>
+            <div class="timeline-step current"><small>21 Nov<br>10:43 AM</small><span class="step-dot">🚚</span><b>In-Transit</b></div>
+            <div class="timeline-step"><small>21 Nov<br>10:43 AM</small><span class="step-dot">✈</span><b>Out for Delivery</b></div>
+            <div class="timeline-step"><small>21 Nov<br>10:43 AM</small><span class="step-dot">⌂</span><b>Delivered</b></div>
+          </div>
+        </section>
+        <section class="history-card">
+          <h3>Tracking History</h3>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Scanned At</th><th>Location</th><th>Remark</th></tr></thead>
+              <tbody>
+                <tr><td>07 Nov, 24 05:30 PM</td><td>Sirmathura, Sirmathura, RAJASTHAN</td><td>BagOutScan</td></tr>
+                <tr><td>09 Nov, 24 11:12 AM</td><td>JAI/HUB, Jaipur, RAJASTHAN</td><td>BagInScan</td></tr>
+                <tr><td>12 Nov, 24 05:01 PM</td><td>BLR/FC1, BANGALORE, KARNATAKA</td><td>In Transit</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="discover content-width" id="products">
+      <div class="spotlight">
+        <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=1000&q=90" alt="Skincare product spotlight" />
+        <div class="spotlight-overlay"><small>Product Spotlight</small><h2>Variety that can't be resisted</h2><button class="play-button" aria-label="Play product spotlight">▶</button></div>
+        <div class="video-controls"><span>▶</span><i><b></b></i><small>0:18</small></div>
+      </div>
+      <div class="product-area">
+        <div class="section-heading"><h3>Check our Products</h3><a href="#products" class="dark-button">View All</a></div>
+        <div class="product-grid">
+          <article class="product-card"><img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=650&q=85" alt="Skincare collection" /><b>Everyday Essentials</b><small>Discover the collection</small></article>
+          <article class="product-card"><img src="https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&w=650&q=85" alt="Beauty and skincare products" /><b>Daily Skincare Ritual</b><small>Made for your routine</small></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="instagram content-width" id="about">
+      <h2>Follow Us on Instagram <a href="https://instagram.com/" target="_blank" rel="noreferrer">@parcelX</a></h2>
+      <div class="insta-grid">
+        <img src="https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=600&q=85" alt="Beauty skincare routine" />
+        <img src="https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=600&q=85" alt="Natural skincare ingredients" />
+        <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=600&q=85" alt="Skincare and beauty" />
+        <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=600&q=85" alt="Beauty product flatlay" />
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div class="footer-top"><a class="brand" href="#home">Parcel<span>X</span><i></i></a><nav><a href="#home">Home</a><a href="#about">About</a><a href="#contact">Contact Us</a><a href="#products">Shop Now!</a></nav></div>
+    <div class="footer-bottom"><p>Connect with Us : <a href="mailto:hello@parcelx.in">✉ hello@parcelx.in</a> <a href="tel:+919988776655">♧ +91 99887 76655</a></p><p><b>Follow Us :</b> <a href="https://facebook.com/" aria-label="Facebook">ⓕ</a> <a href="https://instagram.com/" aria-label="Instagram">◎</a> <a href="https://youtube.com/" aria-label="YouTube">▷</a></p></div>
+  </footer>
+  <script src="./script.js"></script>
+</body>
+</html>
