@@ -38,6 +38,8 @@ jobs:
           node -e "require('@rollup/rollup-linux-x64-gnu')"
       - name: Build
         run: npm run build
+      - name: Include standalone pages
+        run: cp -R standalone dist/standalone
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
