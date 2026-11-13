@@ -21,3 +21,19 @@
 .instagram-post iframe{max-width:100%!important}
 @media(max-width:1000px){.instagram-post-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}}
 @media(max-width:600px){.instagram{padding-top:32px;padding-bottom:40px}.instagram-heading{align-items:flex-start;flex-direction:column;gap:12px}.instagram-post-grid{grid-template-columns:1fr;gap:14px}.instagram-post{max-width:540px;width:100%;margin:0 auto}}
+
+
+/* Phosphor icon styling */
+.ph{display:inline-flex;align-items:center;justify-content:center;line-height:1;vertical-align:middle}
+.menu-toggle .ph{font-size:24px}
+.offer-strip>.ph{margin-left:8px;font-size:16px}
+.track-button>.ph{margin-left:8px;font-size:17px}
+.delivery-foot>.ph{font-size:15px}
+.summary-icon .ph{font-size:25px}
+.step-dot .ph{font-size:14px}
+.footer-bottom .ph{font-size:15px}
+.footer-bottom p:last-child a{font-size:18px}
+.instagram-follow{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border:1px solid #ff6600;border-radius:8px;color:#ff6600;text-decoration:none;font-size:13px;font-weight:600;transition:background .2s,color .2s}
+.instagram-follow:hover{background:#ff6600;color:#fff}
+.instagram-heading{align-items:center}
+@media(max-width:600px){.instagram-heading{align-items:flex-start}}
