@@ -37,3 +37,12 @@
 .instagram-follow:hover{background:#ff6600;color:#fff}
 .instagram-heading{align-items:center}
 @media(max-width:600px){.instagram-heading{align-items:flex-start}}
+
+
+/* Crop Instagram's injected profile header and footer: show only the post media tile */
+.instagram-post{position:relative;aspect-ratio:1/1;height:auto;overflow:hidden;border-radius:0;background:#f5f5f5;box-shadow:none}
+.instagram-post blockquote.instagram-media{position:absolute!important;top:-54px!important;left:0!important;width:100%!important;min-width:0!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:transparent!important}
+.instagram-post blockquote.instagram-media iframe{display:block!important;width:100%!important;max-width:none!important;height:calc(100% + 54px)!important;min-height:420px!important;border:0!important}
+.instagram-post-grid{gap:22px}
+@media(max-width:1000px){.instagram-post-grid{gap:16px}}
+@media(max-width:600px){.instagram-post{max-width:100%;aspect-ratio:1/1}.instagram-post blockquote.instagram-media{top:-54px!important}}
