@@ -763,3 +763,54 @@ img,iframe{max-width:100%}
  .history-card td,.history-card th{padding:13px 9px!important}
  .timeline:before,.timeline:after{top:58px!important}
 }
+
+/* Compact bento sizing — avoid forced tall cards */
+.tracking-details{
+  align-items:start!important;
+  grid-template-columns:minmax(0,.92fr) minmax(0,1.78fr)!important;
+  gap:24px!important;
+}
+.left-column,.right-column{
+  height:auto!important;
+  gap:16px!important;
+}
+.left-column .map-card{
+  flex:0 0 auto!important;
+  height:210px!important;
+  min-height:210px!important;
+}
+.left-column .shop-promo{
+  flex:0 0 auto!important;
+  height:210px!important;
+  min-height:210px!important;
+}
+.right-column .timeline-card{
+  flex:0 0 auto!important;
+  height:154px!important;
+  min-height:154px!important;
+}
+.right-column .history-card{
+  flex:0 0 auto!important;
+  height:270px!important;
+  min-height:0!important;
+  padding:20px!important;
+}
+.history-card .table-scroll{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  max-height:190px!important;
+  overflow-y:auto!important;
+  overflow-x:auto!important;
+}
+@media(max-width:1000px){
+ .tracking-details{align-items:stretch!important}
+ .left-column,.right-column{height:auto!important}
+ .left-column .map-card,.left-column .shop-promo{height:210px!important;min-height:210px!important}
+ .right-column .history-card{height:270px!important;min-height:0!important}
+}
+@media(max-width:760px){
+ .left-column .map-card,.left-column .shop-promo{height:210px!important;min-height:210px!important}
+ .right-column .timeline-card{height:150px!important;min-height:150px!important}
+ .right-column .history-card{height:270px!important;min-height:0!important;padding:17px 12px!important}
+ .history-card .table-scroll{max-height:195px!important}
+}
