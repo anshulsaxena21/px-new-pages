@@ -614,3 +614,13 @@ img,iframe{max-width:100%}
  .shop-promo{background-position:center!important}
  .shop-promo>div{max-width:72%}
 }
+
+/* Crop built-in padding in the collection artwork so it fills the promo edge-to-edge */
+.shop-promo{
+  background-size:120% auto!important;
+  background-position:center center!important;
+  background-repeat:no-repeat!important;
+}
+@media(max-width:760px){
+  .shop-promo{background-size:cover!important;background-position:56% center!important}
+}
