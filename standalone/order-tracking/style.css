@@ -624,3 +624,48 @@ img,iframe{max-width:100%}
 @media(max-width:760px){
   .shop-promo{background-size:cover!important;background-position:56% center!important}
 }
+
+/* Premium hover interaction for shopping product cards */
+.product-card{
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  background:#fff;
+  border:1px solid #ededed;
+  transform:translateY(0);
+  transition:transform .32s cubic-bezier(.2,.75,.25,1),box-shadow .32s ease,border-color .32s ease;
+  will-change:transform;
+}
+.product-card img{
+  transform:scale(1);
+  transition:transform .55s cubic-bezier(.2,.75,.25,1),filter .35s ease;
+}
+.product-card b{
+  transition:color .25s ease,transform .25s ease;
+}
+.product-card small{transition:color .25s ease}
+.product-card:hover,
+.product-card:focus-within{
+  transform:translateY(-8px);
+  border-color:rgba(255,102,0,.32);
+  box-shadow:0 18px 42px rgba(22,28,36,.14);
+}
+.product-card:hover img,
+.product-card:focus-within img{
+  transform:scale(1.045);
+  filter:saturate(1.06);
+}
+.product-card:hover b,
+.product-card:focus-within b{
+  color:#ff6600;
+  transform:translateX(2px);
+}
+.product-card:hover small,
+.product-card:focus-within small{color:#555}
+@media(hover:none){
+ .product-card:hover{transform:none;box-shadow:0 4px 18px #00000012}
+ .product-card:hover img{transform:none;filter:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .product-card,.product-card img,.product-card b,.product-card small{transition:none!important}
+}
