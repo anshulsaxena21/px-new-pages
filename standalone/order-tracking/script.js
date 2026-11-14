@@ -52,3 +52,28 @@ nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", () =>
   nav.classList.remove("open");
   menuToggle.setAttribute("aria-expanded", "false");
 }));
+
+/* Clean interactive map — attribution retained as required by OpenStreetMap */
+const mapElement = document.querySelector("#shipmentMap");
+if (mapElement && window.L) {
+  const shipmentMap = L.map(mapElement, {
+    center: [9.967, 76.295],
+    zoom: 13,
+    zoomControl: false,
+    attributionControl: false,
+    scrollWheelZoom: false
+  });
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(shipmentMap);
+  L.control.zoom({ position: "topright" }).addTo(shipmentMap);
+  L.circleMarker([9.967, 76.295], {
+    radius: 8,
+    color: "#ffffff",
+    weight: 3,
+    fillColor: "#ff6600",
+    fillOpacity: 1
+  }).addTo(shipmentMap);
+  setTimeout(() => shipmentMap.invalidateSize(), 150);
+}
