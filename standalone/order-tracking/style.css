@@ -586,3 +586,31 @@ img,iframe{max-width:100%}
 .shop-promo .light-button{border-color:rgba(255,255,255,.85);background:#fff;color:#171717}
 .shop-promo img{display:none!important}
 @media(max-width:760px){.shop-promo{background-position:center!important}.shop-promo>div{max-width:75%}}
+
+/* Collection promo: remove dark overlay and use the artwork cleanly */
+.shop-promo{
+  background-image:url("https://raw.githubusercontent.com/anshulsaxena21/px-new-pages/main/standalone/order-tracking/loved-our-amazing-collection.png")!important;
+  background-color:#f5f5f5!important;
+  background-size:cover!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+}
+.shop-promo:before,.shop-promo:after{content:none!important;display:none!important}
+.shop-promo>div{position:relative;z-index:2;max-width:65%}
+.shop-promo h2{
+  color:#111!important;
+  text-shadow:none!important;
+}
+.shop-promo .light-button{
+  background:#111!important;
+  color:#fff!important;
+  border:1px solid #111!important;
+  border-radius:8px!important;
+  box-shadow:none!important;
+}
+.shop-promo .light-button:hover{background:#333!important;border-color:#333!important}
+.shop-promo img{display:none!important}
+@media(max-width:760px){
+ .shop-promo{background-position:center!important}
+ .shop-promo>div{max-width:72%}
+}
