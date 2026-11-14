@@ -814,3 +814,144 @@ img,iframe{max-width:100%}
  .right-column .history-card{height:270px!important;min-height:0!important;padding:17px 12px!important}
  .history-card .table-scroll{max-height:195px!important}
 }
+
+/* Responsive pass — standalone order tracking */
+@media(max-width:1024px){
+  .content-width{width:calc(100% - 48px)!important}
+  .site-header{padding-inline:24px!important}
+  .hero{width:calc(100% - 48px)!important}
+  .tracking-details{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:18px!important;
+  }
+  .left-column{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:16px!important;
+  }
+  .left-column .map-card,.left-column .shop-promo{
+    width:100%!important;height:220px!important;min-height:220px!important;
+  }
+  .right-column{display:flex!important;min-width:0!important}
+  .right-column .timeline-card{width:100%!important}
+  .right-column .history-card{width:100%!important}
+}
+@media(max-width:767px){
+  body{font-size:14px;overflow-x:hidden}
+  .content-width{width:calc(100% - 32px)!important}
+  .site-header{
+    height:62px!important;
+    padding:0 16px!important;
+    position:relative;
+    z-index:20;
+  }
+  .site-header .brand{width:112px!important;height:36px!important}
+  .menu-toggle{display:flex!important;align-items:center;justify-content:center;width:40px;height:40px;font-size:24px;color:#171717;cursor:pointer}
+  .main-nav{
+    display:none!important;
+    position:absolute!important;
+    top:calc(100% - 1px)!important;
+    left:0!important;right:0!important;
+    padding:16px!important;
+    background:#fff!important;
+    border-top:1px solid #eee;
+    box-shadow:0 12px 24px rgba(0,0,0,.09);
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:0!important;
+  }
+  .main-nav.open{display:flex!important}
+  .main-nav a{padding:13px 10px!important;font-size:14px!important}
+  .main-nav .nav-cta{text-align:center;margin-top:8px}
+  .offer-strip{padding:11px 16px!important;font-size:12px!important;line-height:1.4}
+  .hero-wrap{padding:18px 0 22px!important}
+  .hero{
+    width:calc(100% - 24px)!important;
+    min-height:490px!important;height:auto!important;
+    padding:180px 12px 14px!important;
+    border-radius:22px!important;
+    background-position:center!important;
+  }
+  .tracking-panel{padding:18px 14px!important;border-radius:15px!important}
+  .panel-title{font-size:16px!important;line-height:1.4!important}
+  .tracking-form{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important}
+  .tracking-tabs{grid-column:auto!important;display:flex!important;gap:4px!important}
+  .tracking-tab{min-width:0!important;padding:9px 5px!important;font-size:11px!important}
+  .tracking-form input,.track-button{width:100%!important;height:46px!important;min-width:0!important}
+  .track-button{justify-content:center}
+  .shipment-summary.content-width{width:calc(100% - 24px)!important}
+  .shipment-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;padding:9px!important}
+  .delivery-card{grid-column:1/-1!important;min-width:0}
+  .summary-item{min-width:0!important;gap:8px!important;padding:7px 3px!important}
+  .summary-icon{width:38px!important;height:38px!important;flex:none}
+  .summary-item strong{font-size:13px!important;white-space:normal!important;overflow-wrap:anywhere}
+  .summary-item small{font-size:10px!important}
+  .courier-logo{width:84px!important}
+  .tracking-details{
+    width:calc(100% - 24px)!important;
+    margin-top:18px!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:16px!important;
+  }
+  .left-column{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:12px!important;
+  }
+  .left-column .map-card{height:210px!important;min-height:210px!important}
+  .left-column .shop-promo{height:210px!important;min-height:210px!important}
+  .right-column{gap:12px!important}
+  .right-column .timeline-card{
+    display:block!important;
+    height:150px!important;min-height:150px!important;
+    padding:14px 10px!important;
+    overflow-x:auto!important;overflow-y:hidden!important;
+    -webkit-overflow-scrolling:touch;
+  }
+  .right-column .timeline{
+    display:grid!important;
+    grid-template-columns:repeat(6,minmax(78px,1fr))!important;
+    width:600px!important;min-width:600px!important;max-width:none!important;
+  }
+  .timeline-step small{font-size:11px!important}
+  .timeline-step b{font-size:11px!important;white-space:normal!important}
+  .timeline:before,.timeline:after{top:58px!important}
+  .right-column .history-card{
+    height:280px!important;min-height:0!important;
+    padding:17px 12px!important;
+  }
+  .history-card h3{font-size:15px!important;margin:0 0 12px!important}
+  .history-card .table-scroll{
+    height:215px!important;max-height:215px!important;
+    overflow:auto!important;-webkit-overflow-scrolling:touch;
+  }
+  .history-card table{min-width:560px!important}
+  .history-card th,.history-card td{padding:12px 9px!important;font-size:12px!important}
+  .discover{width:calc(100% - 32px)!important;grid-template-columns:minmax(0,1fr)!important;gap:22px!important;margin-top:40px!important}
+  .spotlight{height:auto!important;aspect-ratio:16/9;min-height:0!important}
+  .youtube-spotlight iframe{position:absolute!important;inset:0!important;width:100%!important;height:100%!important}
+  .product-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  .product-card{min-width:0;padding:8px!important}
+  .product-card img{height:auto!important;aspect-ratio:1/1!important}
+  .instagram{width:calc(100% - 32px)!important;margin:38px auto 54px!important}
+  .instagram-post-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  .site-footer{padding:26px 16px 20px!important}
+  .footer-top{align-items:flex-start!important;gap:18px!important;flex-wrap:wrap}
+  .footer-top nav{gap:12px!important;flex-wrap:wrap}
+  .footer-bottom{align-items:flex-start!important;flex-direction:column!important;gap:14px!important}
+  .footer-bottom p{flex-wrap:wrap!important;gap:10px!important}
+}
+@media(max-width:390px){
+  .hero{min-height:510px!important;padding-top:190px!important}
+  .tracking-tabs{flex-wrap:nowrap!important}
+  .tracking-tab{font-size:10px!important;padding-inline:3px!important}
+  .shipment-summary{grid-template-columns:minmax(0,1fr)!important}
+  .delivery-card{grid-column:auto!important}
+  .summary-item{padding:8px!important}
+  .summary-item strong{font-size:14px!important}
+  .product-grid{grid-template-columns:minmax(0,1fr)!important}
+  .footer-top nav{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  .main-nav,.tracking-details,.timeline-card{scroll-behavior:auto!important}
+}
