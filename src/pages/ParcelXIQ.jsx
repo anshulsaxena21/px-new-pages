@@ -338,19 +338,9 @@ export default function ParcelXIQ() {
           <div><div className="iq-eyebrow"><Sparkles size={13} /> KEY FEATURES</div><h2>Everything you need to optimise shipping</h2><p>From shipment risk to courier trends, get the context to make your next move.</p></div>
           <a className="iq-text-link" href="#use-cases">Explore use cases <ArrowRight size={16} /></a>
         </div>
-        <div className="iq-feature-grid iq-feature-grid-illustrated">
-          {features.map(({ icon: Icon, tone, title, text }, index) => (
-            <article className={"iq-feature-card iq-feature-card-illustrated tone-" + tone} key={title}>
-              <div className={"iq-feature-art iq-feature-art-" + index} aria-hidden="true">
-                <div className="iq-art-grid" />
-                <div className="iq-art-orbit orbit-one" />
-                <div className="iq-art-orbit orbit-two" />
-                <span className="iq-art-node node-a"><Icon size={17} /></span>
-                <span className="iq-art-node node-b"><Sparkles size={15} /></span>
-                <span className="iq-art-node node-c"><CheckCircle2 size={14} /></span>
-                <span className="iq-art-center"><Icon size={30} strokeWidth={1.7} /></span>
-                <span className="iq-art-caption">{["RISK SIGNALS","COURIER NETWORK","LIVE INSIGHTS","ALWAYS ON","SMART WORKFLOWS","SECURE DATA"][index]}</span>
-              </div>
+        <div className="iq-feature-grid">
+          {features.map(({ icon: Icon, tone, title, text }) => <article className={"iq-feature-card tone-" + tone} key={title}><span className="iq-feature-icon"><Icon size={24} strokeWidth={1.9} /></span><div><h3>{title}</h3><p>{text}</p></div><span className="iq-feature-arrow"><ArrowUpRight size={16} /></span></article>)}
+        </div>
               <div className="iq-feature-copy">
                 <span className="iq-feature-icon"><Icon size={20} strokeWidth={1.9} /></span>
                 <div><h3>{title}</h3><p>{text}</p></div>
