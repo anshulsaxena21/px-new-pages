@@ -341,14 +341,6 @@ export default function ParcelXIQ() {
         <div className="iq-feature-grid">
           {features.map(({ icon: Icon, tone, title, text }) => <article className={"iq-feature-card tone-" + tone} key={title}><span className="iq-feature-icon"><Icon size={24} strokeWidth={1.9} /></span><div><h3>{title}</h3><p>{text}</p></div><span className="iq-feature-arrow"><ArrowUpRight size={16} /></span></article>)}
         </div>
-              <div className="iq-feature-copy">
-                <span className="iq-feature-icon"><Icon size={20} strokeWidth={1.9} /></span>
-                <div><h3>{title}</h3><p>{text}</p></div>
-                <span className="iq-feature-arrow"><ArrowUpRight size={16} /></span>
-              </div>
-            </article>
-          ))}
-        </div>
       </section>
 
       <section className="iq-impact-banner">
