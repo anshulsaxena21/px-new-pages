@@ -1547,3 +1547,173 @@
 @media(prefers-reduced-motion:reduce){
   .iq-page .iq-floating-spark,.iq-page .iq-floating-note{animation:none!important}
 }
+
+/* Premium finishing pass — stronger hierarchy, depth and interactions */
+.iq-page .iq-hero{
+  padding-bottom:clamp(54px,6vw,86px);
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(255,211,181,.62),transparent 43%),
+    radial-gradient(ellipse at 8% 42%,rgba(255,244,235,.95),transparent 34%),
+    radial-gradient(ellipse at 94% 45%,rgba(255,235,221,.8),transparent 34%),
+    linear-gradient(180deg,#fffaf6 0%,#fff 78%);
+}
+.iq-page .iq-hero h1{max-width:900px;font-size:clamp(48px,6.2vw,86px);letter-spacing:-4.5px}
+.iq-page .iq-hero h1 span{
+  display:inline-block;
+  background:linear-gradient(100deg,#ff681f 5%,#f04e12 55%,#ff9a59 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.iq-page .iq-hero-lede{color:#5f6878}
+.iq-page .iq-hero-highlights{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  width:min(100%,680px);
+  gap:10px;
+  margin-top:30px;
+}
+.iq-page .iq-hero-highlights>div{
+  display:grid;
+  grid-template-columns:34px minmax(0,1fr);
+  grid-template-rows:auto auto;
+  align-items:center;
+  column-gap:9px;
+  padding:12px 13px;
+  border:1px solid rgba(234,225,218,.9);
+  border-radius:13px;
+  background:rgba(255,255,255,.76);
+  box-shadow:0 6px 20px rgba(37,42,52,.035);
+  text-align:left;
+  backdrop-filter:blur(12px);
+}
+.iq-page .iq-hero-highlights>div>span{
+  grid-row:1/3;
+  display:grid;place-items:center;
+  width:34px;height:34px;
+  border-radius:10px;
+  color:#f45b1b;background:#fff0e6;
+}
+.iq-page .iq-hero-highlights b{color:#252c39;font-size:11px;line-height:1.25}
+.iq-page .iq-hero-highlights small{margin-top:3px;color:#858c98;font-size:9px;line-height:1.3}
+.iq-page .iq-dashboard-scene{
+  padding:22px 12px 40px;
+  filter:drop-shadow(0 24px 35px rgba(39,45,57,.045));
+}
+.iq-page .iq-dashboard-scene::before{
+  inset:7% -1% 8%;
+  border:1px solid rgba(255,255,255,.8);
+  background:linear-gradient(135deg,rgba(255,255,255,.7),rgba(255,229,210,.42));
+  transform:rotate(-1.3deg);
+}
+.iq-page .iq-dashboard{
+  min-height:470px;
+  border:1px solid #e9e9ed;
+  box-shadow:0 28px 80px rgba(34,39,51,.15),0 4px 16px rgba(255,112,47,.08);
+}
+.iq-page .iq-floating-spark{
+  width:58px;height:58px;
+  border:4px solid #fff;
+  box-shadow:0 13px 32px rgba(255,91,24,.3);
+}
+.iq-page .iq-floating-note{
+  border:1px solid rgba(255,255,255,.92);
+  box-shadow:0 15px 38px rgba(35,41,52,.12);
+  backdrop-filter:blur(16px);
+}
+.iq-page .iq-integrations{padding-top:32px;padding-bottom:34px}
+.iq-page .iq-brand{font-weight:800;letter-spacing:-.3px}
+.iq-page .iq-data-section{position:relative}
+.iq-page .iq-insight-visual{
+  border-color:#f0e7e0;
+  background:
+    radial-gradient(ellipse at 85% 12%,rgba(255,218,194,.44),transparent 35%),
+    linear-gradient(145deg,#fff 4%,#fffaf6 65%,#fff1e7);
+}
+.iq-page .iq-chart-card{
+  border:1px solid #f0ece9;
+  box-shadow:0 8px 24px rgba(30,41,59,.035);
+}
+.iq-page .iq-step-card{
+  min-height:236px;
+  background:linear-gradient(150deg,#fff 15%,#fffaf6);
+}
+.iq-page .iq-step-icon{
+  transition:transform .3s ease,background .3s ease,box-shadow .3s ease;
+}
+.iq-page .iq-step-card:hover .iq-step-icon{
+  transform:translateY(-3px) rotate(-5deg);
+  background:#ffe3d1;
+  box-shadow:0 10px 24px rgba(255,91,24,.14);
+}
+.iq-page .iq-features{
+  position:relative;
+  isolation:isolate;
+  padding-top:clamp(70px,7vw,96px);
+  padding-bottom:clamp(72px,7vw,100px);
+}
+.iq-page .iq-features::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:0 calc((100vw - 100%)/-2);
+  background:linear-gradient(180deg,#fffaf6 0%,#fff 100%);
+  border-top:1px solid #f5eee9;
+  border-bottom:1px solid #f5eee9;
+}
+.iq-page .iq-feature-card{
+  position:relative;
+  min-height:145px;
+  padding:23px 25px;
+  border-radius:16px;
+  transition:transform .28s cubic-bezier(.2,.75,.25,1),box-shadow .28s ease,border-color .28s ease;
+}
+.iq-page .iq-feature-card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(255,102,0,.25);
+  box-shadow:0 18px 36px rgba(31,41,55,.075);
+}
+.iq-page .iq-feature-icon{
+  transition:transform .28s ease;
+}
+.iq-page .iq-feature-card:hover .iq-feature-icon{transform:scale(1.07) rotate(-4deg)}
+.iq-page .iq-feature-arrow{
+  opacity:.45;
+  transition:opacity .25s ease,transform .25s ease;
+}
+.iq-page .iq-feature-card:hover .iq-feature-arrow{opacity:1;transform:translate(2px,-2px)}
+.iq-page .iq-use-card{
+  min-height:184px;
+  padding:25px;
+  border-radius:17px;
+  transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease;
+}
+.iq-page .iq-use-card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(255,102,0,.22);
+  box-shadow:0 18px 36px rgba(31,41,55,.08);
+}
+.iq-page .iq-use-illustration{transition:transform .35s ease}
+.iq-page .iq-use-card:hover .iq-use-illustration{transform:skewY(-8deg) translateY(-5px)}
+.iq-page .iq-final-cta{
+  padding:clamp(34px,5vw,62px);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 24px 65px rgba(28,30,38,.16);
+}
+.iq-page .iq-final-cta h2{max-width:620px;font-size:clamp(32px,3.6vw,48px)}
+.iq-page .iq-final-cta .iq-button-primary{background:#ff681f}
+.iq-page .iq-final-cta .iq-button-primary:hover{background:#f45112}
+@media(max-width:980px){
+  .iq-page .iq-dashboard{min-height:420px}
+}
+@media(max-width:680px){
+  .iq-page .iq-hero h1{font-size:clamp(40px,10.5vw,58px);letter-spacing:-2.8px}
+  .iq-page .iq-hero-highlights{grid-template-columns:1fr;max-width:420px;margin-top:22px}
+  .iq-page .iq-hero-highlights>div{padding:10px 12px}
+  .iq-page .iq-dashboard{min-height:300px}
+  .iq-page .iq-dashboard-scene{padding:12px 0 27px}
+  .iq-page .iq-feature-card{min-height:112px;padding:17px}
+  .iq-page .iq-use-card{min-height:150px;padding:18px}
+}
+@media(prefers-reduced-motion:reduce){
+  .iq-page .iq-step-icon,.iq-page .iq-feature-card,.iq-page .iq-feature-icon,
+  .iq-page .iq-feature-arrow,.iq-page .iq-use-card,.iq-page .iq-use-illustration{transition:none!important}
+}
