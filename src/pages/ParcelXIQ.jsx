@@ -285,31 +285,6 @@ export default function ParcelXIQ() {
         </div>
       </section>
 
-      <section className="iq-data-section iq-section-shell">
-        <InsightVisual />
-        <div className="iq-data-copy">
-          <div className="iq-eyebrow"><Sparkles size={13} /> WHAT IS PARCELX IQ?</div>
-          <h2>Your shipping<br /><span>data assistant</span></h2>
-          <p>ParcelX IQ turns shipment information into insights your team can act on. Understand trends, explore courier performance and spot opportunities to improve delivery outcomes.</p>
-          <div className="iq-benefit-grid">
-            <div><span className="iq-benefit-icon"><Database size={17} /></span><span><b>Unified data view</b><small>Shipping data in one place</small></span></div>
-            <div><span className="iq-benefit-icon"><BrainCircuit size={17} /></span><span><b>AI-powered insights</b><small>Find patterns faster</small></span></div>
-            <div><span className="iq-benefit-icon"><CheckCircle2 size={17} /></span><span><b>Actionable guidance</b><small>Know where to focus next</small></span></div>
-            <div><span className="iq-benefit-icon"><ActivityIcon /></span><span><b>Performance trends</b><small>See how shipping changes</small></span></div>
-          </div>
-        </div>
-      </section>
-
-      <section className="iq-features iq-section-shell" id="features">
-        <div className="iq-section-heading">
-          <div><div className="iq-eyebrow"><Sparkles size={13} /> KEY FEATURES</div><h2>Everything you need to optimise shipping</h2><p>From shipment risk to courier trends, get the context to make your next move.</p></div>
-          <a className="iq-text-link" href="#use-cases">Explore use cases <ArrowRight size={16} /></a>
-        </div>
-        <div className="iq-feature-grid">
-          {features.map(({ icon: Icon, tone, title, text }) => <article className={"iq-feature-card tone-" + tone} key={title}><span className="iq-feature-icon"><Icon size={24} strokeWidth={1.9} /></span><div><h3>{title}</h3><p>{text}</p></div><span className="iq-feature-arrow"><ArrowUpRight size={16} /></span></article>)}
-        </div>
-      </section>
-
       <section className="iq-how-it-works iq-section-shell" id="how-it-works">
         <div className="iq-section-heading iq-steps-heading">
           <div>
@@ -341,6 +316,31 @@ export default function ParcelXIQ() {
             <p>Use the patterns you find to decide what deserves attention first.</p>
             <span className="iq-step-foot">ACTION</span>
           </article>
+        </div>
+      </section>
+
+      <section className="iq-data-section iq-section-shell">
+        <InsightVisual />
+        <div className="iq-data-copy">
+          <div className="iq-eyebrow"><Sparkles size={13} /> WHY TEAMS CHOOSE PARCELX IQ</div>
+          <h2>Make every<br /><span>shipment smarter</span></h2>
+          <p>ParcelX IQ turns shipment information into insights your team can act on. Understand trends, explore courier performance and spot opportunities to improve delivery outcomes.</p>
+          <div className="iq-benefit-grid">
+            <div><span className="iq-benefit-icon"><Database size={17} /></span><span><b>Unified data view</b><small>Shipping data in one place</small></span></div>
+            <div><span className="iq-benefit-icon"><BrainCircuit size={17} /></span><span><b>AI-powered insights</b><small>Find patterns faster</small></span></div>
+            <div><span className="iq-benefit-icon"><CheckCircle2 size={17} /></span><span><b>Actionable guidance</b><small>Know where to focus next</small></span></div>
+            <div><span className="iq-benefit-icon"><ActivityIcon /></span><span><b>Performance trends</b><small>See how shipping changes</small></span></div>
+          </div>
+        </div>
+      </section>
+
+      <section className="iq-features iq-section-shell" id="features">
+        <div className="iq-section-heading">
+          <div><div className="iq-eyebrow"><Sparkles size={13} /> KEY FEATURES</div><h2>Everything you need to optimise shipping</h2><p>From shipment risk to courier trends, get the context to make your next move.</p></div>
+          <a className="iq-text-link" href="#use-cases">Explore use cases <ArrowRight size={16} /></a>
+        </div>
+        <div className="iq-feature-grid">
+          {features.map(({ icon: Icon, tone, title, text }) => <article className={"iq-feature-card tone-" + tone} key={title}><span className="iq-feature-icon"><Icon size={24} strokeWidth={1.9} /></span><div><h3>{title}</h3><p>{text}</p></div><span className="iq-feature-arrow"><ArrowUpRight size={16} /></span></article>)}
         </div>
       </section>
 
