@@ -261,12 +261,11 @@ export default function ParcelXIQ() {
               <ButtonLink href={registerUrl}>Get Started</ButtonLink>
               <ButtonLink href={demoUrl} variant="outline">Book a Demo</ButtonLink>
             </div>
-            <div className="iq-hero-stats">
-              <div><b>35% <TrendingDown size={17} /></b><span>Lower RTO</span></div>
-              <div><b>2X <TrendingUp size={17} /></b><span>Faster decisions</span></div>
-              <div><b>100%</b><span>Data-driven insights</span></div>
+            <div className="iq-hero-highlights" aria-label="ParcelX IQ capabilities">
+              <div><span><TrendingDown size={16} /></span><b>RTO &amp; NDR</b><small>Spot delivery risks</small></div>
+              <div><span><Truck size={16} /></span><b>Courier insights</b><small>Compare performance</small></div>
+              <div><span><BarChart3 size={16} /></span><b>Shipping trends</b><small>See what is changing</small></div>
             </div>
-            <p className="iq-micro-note">*Illustrative outcome highlights from the supplied concept reference.</p>
           </div>
           <DashboardPreview />
         </div>
