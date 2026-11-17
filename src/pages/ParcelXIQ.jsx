@@ -293,7 +293,7 @@ export default function ParcelXIQ() {
       <section className="iq-features-section" id="features">
         <div className="iq-section-shell">
           <div className="iq-section-heading">
-            <div><div className="iq-section-kicker"><span>03</span> IQ FEATURES · WHAT IQ CAN DO</div><h2>One workspace.<br/><span>Six ways to stay in control.</span></h2><p>From reports and shipment visibility to ticket tracking, wallet recharge, NDR escalation and support.</p></div>
+            <div><div className="iq-section-kicker"><span>03</span> IQ FEATURES · WHAT IQ CAN DO</div><h2>One workspace.<br/><span>Six ways to stay in control.</span></h2><p>Bring your everyday shipping operations together with ParcelX IQ. Explore zone-wise, courier-wise and user-wise analytics, track shipments and support tickets, recharge your wallet, escalate non-delivery cases, and find assistance whenever you need it—all from one connected workspace.</p></div>
             <span className="iq-feature-count">06 <i>CAPABILITIES</i></span>
           </div>
           <div className="iq-feature-grid">
