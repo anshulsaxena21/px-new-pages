@@ -714,3 +714,6 @@
  .iq-page .track-step b{font-size:6px}
  .iq-page .iq-analytics-preview{padding:9px}
 }
+
+/* Wide hero headline emphasis, matching the reference treatment */
+.iq-page .iq-hero h1 span{font-style:italic}
