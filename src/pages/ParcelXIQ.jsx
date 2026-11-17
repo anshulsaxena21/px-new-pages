@@ -58,9 +58,9 @@ const features = [
 ];
 
 const useCases = [
-  { icon: Boxes, title: "D2C & ecommerce brands", text: "Keep a closer eye on delivery experience, RTO patterns and courier performance.", tone: "lavender" },
-  { icon: PackageCheck, title: "Marketplaces", text: "Bring multi-partner shipment performance into one clearer operating picture.", tone: "mint" },
-  { icon: BarChart3, title: "Growing enterprises", text: "Give teams a shared view of shipping trends, costs and operational priorities.", tone: "sky" }
+  { icon: Boxes, title: "D2C & ecommerce brands", text: "Keep shipment visibility, ticket follow-ups, wallet activity and support in one connected workflow.", tone: "lavender" },
+  { icon: PackageCheck, title: "Marketplaces", text: "Track shipment movement, raise and follow up on tickets, and manage everyday shipping tasks.", tone: "mint" },
+  { icon: BarChart3, title: "Growing enterprises", text: "Give teams structured analytics by zone, courier and user, alongside tracking and escalation tools.", tone: "sky" }
 ];
 
 const faqs = [
