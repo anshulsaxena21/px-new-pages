@@ -251,8 +251,8 @@ export default function ParcelXIQ() {
         <div className="iq-hero-shell">
           <div className="iq-hero-copy">
             <div className="iq-eyebrow"><span className="iq-eyebrow-icon"><Sparkles size={13}/></span> YOUR SHIPPING OPERATIONS, CONNECTED</div>
-            <h1>Your shipping operations.<br/><span>All in one place.</span></h1>
-            <p>Explore shipping reports by zone, courier and user. Track shipments and tickets, recharge your wallet, escalate NDR cases and get support—all through ParcelX IQ.</p>
+            <h1>One workspace for<br/><span>every shipping task.</span></h1>
+            <p>Get a clearer view of your shipping operations with zone-wise, courier-wise and user-wise analytics. Track shipments and support tickets, recharge your wallet, escalate NDR cases and reach support when you need it—all from one connected ParcelX IQ workspace.</p>
             <div className="iq-hero-actions"><ButtonLink href={registerUrl}>Get started</ButtonLink><ButtonLink href={demoUrl} variant="secondary">Book a demo</ButtonLink></div>
             <div className="iq-hero-trust"><span><i/> Zone, courier &amp; user reports</span><span><i/> Shipment &amp; ticket tracking</span><span><i/> Wallet, NDR &amp; support</span></div>
           </div>
