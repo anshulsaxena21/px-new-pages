@@ -251,8 +251,8 @@ export default function ParcelXIQ() {
         <div className="iq-hero-shell">
           <div className="iq-hero-copy">
             <div className="iq-eyebrow"><span className="iq-eyebrow-icon"><Sparkles size={13}/></span> YOUR SHIPPING OPERATIONS, CONNECTED</div>
-            <h1>Make Shipping<br/><span>Smarter &amp; Easier.</span></h1>
-            <p>Simplify shipping with intelligent analytics, shipment and ticket tracking, wallet recharge, NDR escalation and dedicated support—all in one connected workspace.</p>
+            <h1>Make Your Business<br/><span>Smarter &amp; Easier with AI.</span></h1>
+            <p>Turn shipping data into clearer decisions with ParcelX IQ. Explore AI-powered insights through zone-wise, courier-wise and user-wise analytics, while managing shipments, support tickets, wallet recharges and NDR escalations—all in one connected workspace.</p>
             <div className="iq-hero-actions"><ButtonLink href={registerUrl}>Get started</ButtonLink><ButtonLink href={demoUrl} variant="secondary">Book a demo</ButtonLink></div>
             <div className="iq-hero-trust"><span><i/> Zone, courier &amp; user reports</span><span><i/> Shipment &amp; ticket tracking</span><span><i/> Wallet, NDR &amp; support</span></div>
           </div>
