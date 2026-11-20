@@ -866,3 +866,61 @@ html:has(.pxq-product){scroll-behavior:smooth}
    opacity:1!important;transform:none!important;filter:none!important;animation:none!important
  }
 }
+
+
+/* Heading color system: black on light, white on true-black sections */
+.pxq-product .pxq-hero-copy h1,
+.pxq-product .pxq-hero-copy h1 span,
+.pxq-product .pxq-intro h2 span,
+.pxq-product .pxq-capabilities .pxq-section-heading h2 span,
+.pxq-product .pxq-steps-head h2 span,
+.pxq-product .pxq-faq-intro h2 span{
+  color:#080808!important;
+  -webkit-text-fill-color:#080808!important;
+  background:none!important;
+  background-image:none!important;
+  background-clip:border-box!important;
+  -webkit-background-clip:border-box!important;
+  text-shadow:none!important;
+  animation:none!important;
+}
+.pxq-product .pxq-hero-copy h1 .pxq-word,
+.pxq-product .pxq-intro h2 .pxq-word,
+.pxq-product .pxq-capabilities .pxq-section-heading h2 .pxq-word,
+.pxq-product .pxq-steps-head h2 .pxq-word,
+.pxq-product .pxq-faq-intro h2 .pxq-word{
+  color:#080808!important;
+  -webkit-text-fill-color:#080808!important;
+  background:none!important;
+  background-image:none!important;
+  text-shadow:none!important;
+}
+
+/* All headline lines inside black panels stay pure white */
+.pxq-product .pxq-deployment .pxq-section-heading h2,
+.pxq-product .pxq-deployment .pxq-section-heading h2 *,
+.pxq-product .pxq-deployment .pxq-adoption-copy h3,
+.pxq-product .pxq-analytics .pxq-analytics-copy h2,
+.pxq-product .pxq-analytics .pxq-analytics-copy h2 *,
+.pxq-product .pxq-integration .pxq-integration-head h2,
+.pxq-product .pxq-integration .pxq-integration-head h2 *,
+.pxq-product .pxq-final .pxq-final-inner h2,
+.pxq-product .pxq-final .pxq-final-inner h2 *{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  background:none!important;
+  background-image:none!important;
+  background-clip:border-box!important;
+  -webkit-background-clip:border-box!important;
+  text-shadow:none!important;
+}
+.pxq-product .pxq-deployment .pxq-section-heading h2 .pxq-word,
+.pxq-product .pxq-analytics .pxq-analytics-copy h2 .pxq-word,
+.pxq-product .pxq-integration .pxq-integration-head h2 .pxq-word,
+.pxq-product .pxq-final .pxq-final-inner h2 .pxq-word{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  background:none!important;
+  background-image:none!important;
+  text-shadow:none!important;
+}
