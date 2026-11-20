@@ -94,3 +94,43 @@
  .iqd-cursor-aura.is-interactive .iqd-cursor-dot{width:6px;height:6px}
  .iqd-cursor-aura.is-pressed .iqd-cursor-ring{width:17px;height:17px;background:rgba(255,102,0,.18)}
 }
+
+
+/* Dark intro panel balances the bright, focused IQ demo form */
+.iqd-page .iqd-intro{
+  position:sticky;isolation:isolate;align-self:start;overflow:hidden;
+  padding:clamp(24px,3vw,38px);border:1px solid rgba(255,255,255,.09);border-radius:20px;
+  color:#fff;
+  background:
+    radial-gradient(ellipse at 95% 5%,rgba(119,108,214,.3),transparent 35%),
+    radial-gradient(ellipse at 5% 95%,rgba(255,102,0,.2),transparent 34%),
+    linear-gradient(145deg,#172231 0%,#253249 57%,#192536 100%);
+  box-shadow:0 22px 55px rgba(30,39,56,.13);
+}
+.iqd-page .iqd-intro::after{
+  content:"";position:absolute;z-index:-1;right:-170px;bottom:-260px;width:430px;height:430px;
+  border:1px solid rgba(255,255,255,.1);border-radius:50%;
+  box-shadow:0 0 0 30px rgba(255,255,255,.018),0 0 0 76px rgba(255,255,255,.012);
+  pointer-events:none;
+}
+.iqd-page .iqd-intro>*{position:relative;z-index:1}
+.iqd-page .iqd-kicker{border-color:rgba(255,255,255,.15);color:#ffc49e;background:rgba(255,255,255,.07)}
+.iqd-page .iqd-kicker>span{color:#ff9b61;background:rgba(255,102,0,.15)}
+.iqd-page .iqd-intro h1{color:#fff}
+.iqd-page .iqd-intro>p{color:#c3ccda}
+.iqd-page .iqd-benefits b{color:#f2f4f8}
+.iqd-page .iqd-benefits small{color:#b1bdcd}
+.iqd-page .iqd-product-note{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.07);backdrop-filter:blur(12px)}
+.iqd-page .iqd-product-note b{color:#f3f5f9}
+.iqd-page .iqd-product-note p{color:#b7c2d1}
+.iqd-page .iqd-note-icon{color:#ffb07f;background:rgba(255,102,0,.16)}
+.iqd-page .iqd-capability-strip span{border-color:rgba(255,255,255,.13);color:#d5dce7;background:rgba(255,255,255,.06)}
+.iqd-page .iqd-capability-strip svg{color:#b8aefa}
+.iqd-page .iqd-form-card{border-color:#e7e9ee;background:#fff;box-shadow:0 24px 65px rgba(34,43,58,.11)}
+@media(max-width:900px){
+ .iqd-page .iqd-intro{position:relative;padding:clamp(23px,4vw,32px)}
+}
+@media(max-width:560px){
+ .iqd-page .iqd-intro{padding:23px 18px;border-radius:16px}
+ .iqd-page .iqd-intro::after{right:-270px;bottom:-290px}
+}
