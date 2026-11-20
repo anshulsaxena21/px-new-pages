@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, BadgeCheck, BarChart3, CheckCircle2, Headset, La
 import logo from "../images/ParcelX_Logo.svg";
 import "../styles/parcelx-iq-demo.css";
 
-const inboxEndpoint = "https://formsubmit.co/ajax/hello@parcelx.in";
+const inboxEndpoint = "https://formsubmit.co/ajax/parcelxsocial@gmail.com";
 const productUrl = "https://anshulsaxena21.github.io/px-new-pages/parcelx-iq-product.html";
 const intentCopy = {
   demo: { eyebrow: "PRODUCT WALKTHROUGH", title: "See what ParcelX IQ can do for your business.", description: "Share five quick details and the IQ team can take you through the product." },
