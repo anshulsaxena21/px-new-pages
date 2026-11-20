@@ -804,3 +804,65 @@ html:has(.pxq-product){scroll-behavior:smooth}
  .pxq-product .pxq-deployment::before,.pxq-product .pxq-analytics::after,.pxq-product .pxq-integration::before{animation:none!important}
  .pxq-product .pxq-deployment h2 span,.pxq-product .pxq-analytics h2 span,.pxq-product .pxq-integration h2 span,.pxq-product .pxq-final h2 span{animation:none!important}
 }
+
+/* ---------------------------------------------------------
+   Dark-section heading contrast fix
+   Keep animated word spans individually paintable and legible.
+   --------------------------------------------------------- */
+.pxq-product .pxq-deployment .pxq-section-heading h2,
+.pxq-product .pxq-analytics-copy h2,
+.pxq-product .pxq-integration-head h2,
+.pxq-product .pxq-final h2{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff;
+}
+.pxq-product .pxq-deployment .pxq-section-heading h2>span,
+.pxq-product .pxq-analytics-copy h2>span,
+.pxq-product .pxq-integration-head h2>span,
+.pxq-product .pxq-final h2>span{
+  color:#ff955f!important;
+  -webkit-text-fill-color:#ff955f!important;
+  background:none!important;
+  background-image:none!important;
+  background-clip:border-box!important;
+  -webkit-background-clip:border-box!important;
+  text-shadow:0 0 22px rgba(255,112,48,.1)!important;
+  animation:none!important;
+}
+.pxq-product .pxq-deployment .pxq-section-heading h2>span .pxq-word,
+.pxq-product .pxq-analytics-copy h2>span .pxq-word,
+.pxq-product .pxq-integration-head h2>span .pxq-word,
+.pxq-product .pxq-final h2>span .pxq-word{
+  color:#ff955f!important;
+  -webkit-text-fill-color:#ff955f!important;
+  background:none!important;
+  background-image:none!important;
+  background-clip:border-box!important;
+  -webkit-background-clip:border-box!important;
+  text-shadow:none!important;
+}
+.pxq-product .pxq-deployment .pxq-section-heading h2 .pxq-word,
+.pxq-product .pxq-analytics-copy h2 .pxq-word,
+.pxq-product .pxq-integration-head h2 .pxq-word,
+.pxq-product .pxq-final h2 .pxq-word{
+  will-change:transform,opacity;
+  filter:none;
+}
+.pxq-product .pxq-deployment .pxq-section-heading h2>span .pxq-word,
+.pxq-product .pxq-analytics-copy h2>span .pxq-word,
+.pxq-product .pxq-integration-head h2>span .pxq-word,
+.pxq-product .pxq-final h2>span .pxq-word{
+  animation-name:pxqWordRise!important;
+  animation-duration:.76s!important;
+  animation-timing-function:cubic-bezier(.16,1,.3,1)!important;
+  animation-fill-mode:both!important;
+  animation-delay:calc(var(--pxq-word-index,0) * 48ms)!important;
+}
+@media(prefers-reduced-motion:reduce){
+ .pxq-product .pxq-deployment h2 .pxq-word,
+ .pxq-product .pxq-analytics h2 .pxq-word,
+ .pxq-product .pxq-integration h2 .pxq-word,
+ .pxq-product .pxq-final h2 .pxq-word{
+   opacity:1!important;transform:none!important;filter:none!important;animation:none!important
+ }
+}
