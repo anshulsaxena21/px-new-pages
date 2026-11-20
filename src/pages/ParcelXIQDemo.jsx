@@ -112,20 +112,20 @@ export default function ParcelXIQDemo() {
       }
       nodes.forEach((node) => {
         const fragment = document.createDocumentFragment();
-        node.textContent.split(/(\\s+)/).forEach((part) => {
+        node.textContent.split(/(\s+)/).forEach((part) => {
           if (!part) return;
-          if (/^\\s+$/.test(part)) fragment.appendChild(document.createTextNode(part));
+          if (/^\s+$/.test(part)) fragment.appendChild(document.createTextNode(part));
           else {
             const word = document.createElement("span");
             word.className = "iqd-word";
             word.style.setProperty("--iqd-word-index", index++);
-            word.setAttribute("aria-hidden", "true");
             word.textContent = part;
             fragment.appendChild(word);
           }
         });
         node.parentNode.replaceChild(fragment, node);
       });
+      element.setAttribute("aria-label", element.textContent);
       element.classList.add("iqd-word-motion");
       element.dataset.iqdWordsReady = "true";
     });
