@@ -924,3 +924,27 @@ html:has(.pxq-product){scroll-behavior:smooth}
   background-image:none!important;
   text-shadow:none!important;
 }
+
+
+/* Hero headline visibility fix — keep every split word visibly black */
+.pxq-product .pxq-hero-copy h1,
+.pxq-product .pxq-hero-copy h1 span,
+.pxq-product .pxq-hero-copy h1 .pxq-word,
+.pxq-product .pxq-hero-copy h1 span .pxq-word{
+  color:#050505!important;
+  -webkit-text-fill-color:#050505!important;
+  opacity:1!important;
+  visibility:visible!important;
+  filter:none!important;
+  transform:none!important;
+  animation:none!important;
+  background:none!important;
+  background-image:none!important;
+  background-clip:border-box!important;
+  -webkit-background-clip:border-box!important;
+  text-shadow:none!important;
+}
+.pxq-product .pxq-hero-copy h1{
+  position:relative;
+  z-index:2;
+}
