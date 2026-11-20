@@ -31,15 +31,15 @@ import {
   Zap
 } from "lucide-react";
 import logo from "../images/ParcelX_Logo.svg";
-import Footer from "../includes/Footer.jsx";
+import logo from "../images/ParcelX_Logo.svg";
 import "../styles/parcelx-iq-product.css";
 
-const contactBaseUrl = "https://parcelx.in/contact-us?source=parcelx-iq-product";
-const demoUrl = `${contactBaseUrl}&intent=product-demo`;
-const integrationUrl = `${contactBaseUrl}&intent=integration-enquiry`;
-const questionUrl = `${contactBaseUrl}&intent=product-question`;
-const standaloneUrl = `${contactBaseUrl}&intent=standalone-setup`;
-const embeddedUrl = `${contactBaseUrl}&intent=embedded-setup`;
+const demoBaseUrl = "/px-new-pages/parcelx-iq-demo.html";
+const demoUrl = `${demoBaseUrl}?intent=demo`;
+const integrationUrl = `${demoBaseUrl}?intent=integration`;
+const questionUrl = `${demoBaseUrl}?intent=question`;
+const standaloneUrl = `${demoBaseUrl}?intent=standalone`;
+const embeddedUrl = `${demoBaseUrl}?intent=embedded`;
 
 const capabilities = [
   {
@@ -137,7 +137,7 @@ function ProductNav() {
   return (
     <header className="pxq-nav">
       <div className="pxq-nav-inner">
-        <a className="pxq-logo" href="https://parcelx.in/" aria-label="ParcelX home">
+        <a className="pxq-logo" href="#top" aria-label="ParcelX IQ home">
           <img src={logo} alt="ParcelX" />
           <span className="pxq-logo-divider" />
           <b>IQ</b>
@@ -147,7 +147,7 @@ function ProductNav() {
         </button>
         <nav className={menuOpen ? "pxq-nav-links is-open" : "pxq-nav-links"} aria-label="Product navigation">
           {links.map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}
-          <a className="pxq-nav-login" href="https://seller.parcelx.in/" target="_blank" rel="noreferrer">Seller login <ArrowUpRight size={14}/></a>
+          <a className="pxq-nav-login" href="#deployment">Choose your setup <ArrowUpRight size={14}/></a>
           <a className="pxq-nav-cta" href={demoUrl}>Request a demo <ArrowRight size={15}/></a>
         </nav>
       </div>
@@ -406,7 +406,23 @@ export default function ParcelXIQProduct() {
         </div>
       </section>
 
-      <Footer/>
+      <footer className="pxq-site-footer">
+        <div className="pxq-site-footer-inner">
+          <a className="pxq-logo" href="#top" aria-label="ParcelX IQ home">
+            <img src={logo} alt="ParcelX" />
+            <span className="pxq-logo-divider" />
+            <b>IQ</b>
+          </a>
+          <span>Shipping intelligence, built around your business.</span>
+          <nav aria-label="Footer navigation">
+            <a href="#platform">Platform</a>
+            <a href="#capabilities">Capabilities</a>
+            <a href="#integration">Integration</a>
+            <a href={demoUrl}>Request a demo <ArrowUpRight size={13}/></a>
+          </nav>
+          <small>© {new Date().getFullYear()} ParcelX IQ. All rights reserved.</small>
+        </div>
+      </footer>
     </main>
   );
 }
