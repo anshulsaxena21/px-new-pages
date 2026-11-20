@@ -253,6 +253,7 @@ export default function ParcelXIQProduct() {
   }, []);
 
   useEffect(() => {
+    const root = document.querySelector(".pxq-product");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const revealTargets = document.querySelectorAll(
       ".pxq-intro-grid, .pxq-value-row > div, .pxq-deployment .pxq-section-tag, .pxq-section-heading, .pxq-adoption-panel, .pxq-model-note, .pxq-cap-card, .pxq-analytics-copy, .pxq-report-board, .pxq-integration-head, .pxq-architecture, .pxq-integration-foot, .pxq-steps-head, .pxq-step-grid article, .pxq-steps-note, .pxq-faq-intro, .pxq-faq-item, .pxq-final-inner"
@@ -271,27 +272,28 @@ export default function ParcelXIQProduct() {
       }
       textNodes.forEach((node) => {
         const fragment = document.createDocumentFragment();
-        node.textContent.split(/(\\s+)/).forEach((part) => {
+        node.textContent.split(/(\s+)/).forEach((part) => {
           if (!part) return;
-          if (/^\\s+$/.test(part)) {
+          if (/^\s+$/.test(part)) {
             fragment.appendChild(document.createTextNode(part));
           } else {
             const word = document.createElement("span");
             word.className = "pxq-word";
             word.style.setProperty("--pxq-word-index", wordIndex++);
-            word.setAttribute("aria-hidden", "true");
             word.textContent = part;
             fragment.appendChild(word);
           }
         });
         node.parentNode.replaceChild(fragment, node);
       });
+      element.setAttribute("aria-label", element.textContent);
       element.classList.add("pxq-word-motion");
       element.dataset.pxqWordsReady = "true";
     };
     animatedText.forEach(splitIntoWords);
     if (reduceMotion || !("IntersectionObserver" in window)) {
       revealTargets.forEach((element) => element.classList.add("pxq-revealed"));
+      animatedText.forEach((element) => element.classList.add("pxq-text-visible"));
       return undefined;
     }
 
@@ -312,7 +314,6 @@ export default function ParcelXIQProduct() {
     revealTargets.forEach((element) => observer.observe(element));
     animatedText.forEach((element) => observer.observe(element));
 
-    const root = document.querySelector(".pxq-product");
     const progress = root?.querySelector(".pxq-scroll-progress");
     let frame = 0;
     const updateProgress = () => {
