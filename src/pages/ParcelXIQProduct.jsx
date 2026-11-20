@@ -34,7 +34,12 @@ import logo from "../images/ParcelX_Logo.svg";
 import Footer from "../includes/Footer.jsx";
 import "../styles/parcelx-iq-product.css";
 
-const demoUrl = "mailto:hello@parcelx.in?subject=ParcelX%20IQ%20Product%20Walkthrough";
+const contactBaseUrl = "https://parcelx.in/contact-us?source=parcelx-iq-product";
+const demoUrl = `${contactBaseUrl}&intent=product-demo`;
+const integrationUrl = `${contactBaseUrl}&intent=integration-enquiry`;
+const questionUrl = `${contactBaseUrl}&intent=product-question`;
+const standaloneUrl = `${contactBaseUrl}&intent=standalone-setup`;
+const embeddedUrl = `${contactBaseUrl}&intent=embedded-setup`;
 
 const capabilities = [
   {
@@ -318,7 +323,7 @@ export default function ParcelXIQProduct() {
               <h3>{adoption.title}</h3>
               <p>{adoption.text}</p>
               <ul>{adoption.bullets.map(item => <li key={item}><CheckCircle2 size={15}/>{item}</li>)}</ul>
-              <a href={demoUrl} className="pxq-text-link">Discuss this setup <ArrowRight size={15}/></a>
+              <a href={deployment === "standalone" ? standaloneUrl : embeddedUrl} className="pxq-text-link">Discuss this setup <ArrowRight size={15}/></a>
             </div>
             {deployment === "standalone" ? <DashboardPreview/> : <EmbedPreview/>}
           </div>
@@ -370,7 +375,7 @@ export default function ParcelXIQProduct() {
           <div className="pxq-architecture-link"><span/><ArrowRight size={18}/><small>CHOOSE YOUR EXPERIENCE</small></div>
           <div className="pxq-architecture-outputs"><small>YOUR TEAM</small><div><MonitorSmartphone size={17}/> Standalone workspace</div><div><PanelTop size={17}/> Embedded modules</div><div><BarChart3 size={17}/> Operational views</div></div>
         </div>
-        <div className="pxq-integration-foot"><span><Plug size={15}/> Integration scope tailored to your environment</span><a href={demoUrl}>Talk through your requirements <ArrowRight size={14}/></a></div>
+        <div className="pxq-integration-foot"><span><Plug size={15}/> Integration scope tailored to your environment</span><a href={integrationUrl}>Talk through your requirements <ArrowRight size={14}/></a></div>
       </section>
 
       <section className="pxq-steps">
@@ -387,7 +392,7 @@ export default function ParcelXIQProduct() {
       </section>
 
       <section className="pxq-faq pxq-shell" id="faqs">
-        <div className="pxq-faq-intro"><div className="pxq-section-tag"><span>07</span> QUESTIONS, ANSWERED</div><h2>Good to know<br/><span>before you get started.</span></h2><p>Learn more about using ParcelX IQ as a standalone workspace or exploring an embedded experience.</p><a href={demoUrl}>Still have questions? Talk to us <ArrowRight size={14}/></a></div>
+        <div className="pxq-faq-intro"><div className="pxq-section-tag"><span>07</span> QUESTIONS, ANSWERED</div><h2>Good to know<br/><span>before you get started.</span></h2><p>Learn more about using ParcelX IQ as a standalone workspace or exploring an embedded experience.</p><a href={questionUrl}>Still have questions? Talk to us <ArrowRight size={14}/></a></div>
         <div className="pxq-faq-list">{faqs.map((item,index)=><FAQItem key={item.q} item={item} index={index} open={faqOpen===index} onToggle={()=>setFaqOpen(faqOpen===index?-1:index)}/>)}</div>
       </section>
 
@@ -397,7 +402,7 @@ export default function ParcelXIQProduct() {
           <div className="pxq-section-tag"><span>LET'S TALK</span> YOUR NEXT SHIPPING WORKFLOW</div>
           <h2>Make room for<br/><span>smarter shipping operations.</span></h2>
           <p>Tell us how your team works today. We'll help you explore whether a standalone or embedded ParcelX IQ experience is right for your business.</p>
-          <div className="pxq-final-actions"><a className="pxq-btn pxq-btn-primary" href={demoUrl}>Request a product walkthrough <ArrowRight size={16}/></a><a className="pxq-btn pxq-btn-light" href="mailto:hello@parcelx.in?subject=ParcelX%20IQ%20Integration%20Enquiry">Discuss an integration <ArrowUpRight size={16}/></a></div>
+          <div className="pxq-final-actions"><a className="pxq-btn pxq-btn-primary" href={demoUrl}>Request a product walkthrough <ArrowRight size={16}/></a><a className="pxq-btn pxq-btn-light" href={integrationUrl}>Discuss an integration <ArrowUpRight size={16}/></a></div>
         </div>
       </section>
 
