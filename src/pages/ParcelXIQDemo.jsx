@@ -66,9 +66,11 @@ export default function ParcelXIQDemo() {
         const ny = (event.clientY - rect.top - rect.height / 2) / (rect.height / 2);
         magnetic.style.setProperty("--iqd-magnetic-x", (Math.max(-1, Math.min(1, nx)) * 5).toFixed(2) + "px");
         magnetic.style.setProperty("--iqd-magnetic-y", (Math.max(-1, Math.min(1, ny)) * 3).toFixed(2) + "px");
+        magnetic.classList.add("iqd-magnetic-active");
       } else if (magnetic) {
         magnetic.style.removeProperty("--iqd-magnetic-x");
         magnetic.style.removeProperty("--iqd-magnetic-y");
+        magnetic.classList.remove("iqd-magnetic-active");
       }
     };
 
@@ -78,6 +80,7 @@ export default function ParcelXIQDemo() {
       if (magnetic) {
         magnetic.style.removeProperty("--iqd-magnetic-x");
         magnetic.style.removeProperty("--iqd-magnetic-y");
+        magnetic.classList.remove("iqd-magnetic-active");
       }
     };
 
