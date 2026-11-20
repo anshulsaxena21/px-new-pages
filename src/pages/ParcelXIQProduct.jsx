@@ -333,8 +333,8 @@ export default function ParcelXIQProduct() {
     const clearTilt = () => {
       if (!tiltedElement) return;
       tiltedElement.classList.remove("pxq-mouse-tilted");
-      tiltedElement.style.removeProperty("--pxq-tilt-x");
-      tiltedElement.style.removeProperty("--pxq-tilt-y");
+      tiltedElement.style.removeProperty("--pxq-tilt-x-angle");
+      tiltedElement.style.removeProperty("--pxq-tilt-y-angle");
       tiltedElement = null;
     };
 
@@ -356,11 +356,15 @@ export default function ParcelXIQProduct() {
         const rect = hero.getBoundingClientRect();
         const nx = (event.clientX - rect.left - rect.width / 2) / (rect.width / 2);
         const ny = (event.clientY - rect.top - rect.height / 2) / (rect.height / 2);
-        hero.style.setProperty("--pxq-parallax-x", Math.max(-1, Math.min(1, nx)).toFixed(3));
-        hero.style.setProperty("--pxq-parallax-y", Math.max(-1, Math.min(1, ny)).toFixed(3));
+        hero.style.setProperty("--pxq-parallax-x-px", (Math.max(-1, Math.min(1, nx)) * 95).toFixed(1) + "px");
+        hero.style.setProperty("--pxq-parallax-y-px", (Math.max(-1, Math.min(1, ny)) * 65).toFixed(1) + "px");
+        hero.style.setProperty("--pxq-dashboard-x", (Math.max(-1, Math.min(1, nx)) * -5).toFixed(1) + "px");
+        hero.style.setProperty("--pxq-dashboard-y", (Math.max(-1, Math.min(1, ny)) * -4).toFixed(1) + "px");
       } else if (hero) {
-        hero.style.setProperty("--pxq-parallax-x", "0");
-        hero.style.setProperty("--pxq-parallax-y", "0");
+        hero.style.setProperty("--pxq-parallax-x-px", "0px");
+        hero.style.setProperty("--pxq-parallax-y-px", "0px");
+        hero.style.setProperty("--pxq-dashboard-x", "0px");
+        hero.style.setProperty("--pxq-dashboard-y", "0px");
       }
 
       const tiltTarget = event.target.closest(".pxq-cap-card, .pxq-value-row > div, .pxq-step-grid article, .pxq-architecture-core");
@@ -373,8 +377,8 @@ export default function ParcelXIQProduct() {
         const rect = tiltTarget.getBoundingClientRect();
         const nx = (event.clientX - rect.left - rect.width / 2) / (rect.width / 2);
         const ny = (event.clientY - rect.top - rect.height / 2) / (rect.height / 2);
-        tiltTarget.style.setProperty("--pxq-tilt-x", Math.max(-1, Math.min(1, nx)).toFixed(3));
-        tiltTarget.style.setProperty("--pxq-tilt-y", Math.max(-1, Math.min(1, ny)).toFixed(3));
+        tiltTarget.style.setProperty("--pxq-tilt-x-angle", (Math.max(-1, Math.min(1, nx)) * 3).toFixed(2) + "deg");
+        tiltTarget.style.setProperty("--pxq-tilt-y-angle", (Math.max(-1, Math.min(1, ny)) * -3).toFixed(2) + "deg");
       } else {
         clearTilt();
       }
