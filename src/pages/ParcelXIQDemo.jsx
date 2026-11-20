@@ -99,6 +99,53 @@ export default function ParcelXIQDemo() {
     };
   }, []);
 
+  useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const targets = document.querySelectorAll(".iqd-intro h1, .iqd-form-head h2, .iqd-success h3");
+    targets.forEach((element) => {
+      if (element.dataset.iqdWordsReady) return;
+      let index = 0;
+      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+      const nodes = [];
+      while (walker.nextNode()) {
+        if (walker.currentNode.textContent.trim()) nodes.push(walker.currentNode);
+      }
+      nodes.forEach((node) => {
+        const fragment = document.createDocumentFragment();
+        node.textContent.split(/(\\s+)/).forEach((part) => {
+          if (!part) return;
+          if (/^\\s+$/.test(part)) fragment.appendChild(document.createTextNode(part));
+          else {
+            const word = document.createElement("span");
+            word.className = "iqd-word";
+            word.style.setProperty("--iqd-word-index", index++);
+            word.setAttribute("aria-hidden", "true");
+            word.textContent = part;
+            fragment.appendChild(word);
+          }
+        });
+        node.parentNode.replaceChild(fragment, node);
+      });
+      element.classList.add("iqd-word-motion");
+      element.dataset.iqdWordsReady = "true";
+    });
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      targets.forEach((element) => element.classList.add("iqd-text-visible"));
+      return undefined;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("iqd-text-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    targets.forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, []);
+
   function update(event) {
     const { name, value } = event.target;
     setValues(current => ({ ...current, [name]: value }));
