@@ -31,6 +31,7 @@ import {
   Zap
 } from "lucide-react";
 import logo from "../images/ParcelX_Logo.svg";
+import IQRobot from "../component/IQRobot.jsx";
 import "../styles/parcelx-iq-product.css";
 
 const demoBaseUrl = "/px-new-pages/parcelx-iq-demo.html";
@@ -157,6 +158,7 @@ function ProductNav() {
 function DashboardPreview() {
   return (
     <div className="pxq-dashboard-wrap">
+      <IQRobot variant="hero" />
       <div className="pxq-dash-halo pxq-halo-one"/>
       <div className="pxq-dash-halo pxq-halo-two"/>
       <div className="pxq-dashboard-window">
