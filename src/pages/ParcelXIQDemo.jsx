@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, BadgeCheck, BarChart3, CheckCircle2, Headset, Layers3, LoaderCircle, LockKeyhole, PackageCheck, Sparkles, Ticket, Truck, Wallet } from "lucide-react";
 import logo from "../images/ParcelX_Logo.svg";
-import IQRobot from "../component/IQRobot.jsx";
 import "../styles/parcelx-iq-demo.css";
 
 const inboxEndpoint = "https://formsubmit.co/ajax/parcelxsocial@gmail.com";
@@ -95,7 +94,6 @@ export default function ParcelXIQDemo() {
           <div className="iqd-kicker"><span><Sparkles size={13} /></span> {copy.eyebrow}</div>
           <h1>{copy.title}</h1>
           <p>{copy.description}</p>
-          <IQRobot variant="inline" />
           <div className="iqd-benefits">
             <div><span className="benefit-violet"><BarChart3 size={17} /></span><b>Shipping insights</b><small>Zone, courier & user views</small></div>
             <div><span className="benefit-blue"><Truck size={17} /></span><b>Operational visibility</b><small>Shipments, tickets & NDR</small></div>
