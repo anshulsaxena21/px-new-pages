@@ -23,3 +23,47 @@
 .iqd-footer{display:flex;align-items:center;justify-content:space-between;gap:15px;width:min(calc(100% - 48px),1190px);min-height:76px;margin:auto;border-top:1px solid #e8e9ec}.iqd-footer .iqd-brand img{width:107px}.iqd-footer>span{color:#9aa2ad;font-size:max(14px, 9px)}.iqd-footer>a:last-child{display:inline-flex;align-items:center;gap:7px;color:#667283;font-size:max(14px, 9px);font-weight:700}.iqd-footer>a:last-child:hover{color:var(--iqd-orange)}
 @media(max-width:900px){.iqd-main{grid-template-columns:1fr;gap:30px;width:min(calc(100% - 42px),700px);padding-top:40px}.iqd-intro{position:static;padding-top:0}.iqd-intro h1{max-width:650px;font-size:48px}.iqd-benefits{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.iqd-benefits>div{grid-template-columns:32px 1fr;gap:1px 7px}.iqd-benefits>div>span{width:32px;height:32px}.iqd-benefits b{font-size:max(14px, 9px)}.iqd-benefits small{font-size:max(14px, 7px)}.iqd-product-note{margin-top:23px}}
 @media(max-width:560px){.iqd-header{width:calc(100% - 34px);height:66px}.iqd-brand img{width:112px}.iqd-back{font-size:max(14px, 9px)}.iqd-main{width:calc(100% - 30px);gap:22px;padding:32px 0 48px}.iqd-intro h1{margin:18px 0 12px;font-size:38px;letter-spacing:-1.9px}.iqd-intro>p{font-size:max(14px, 12px)}.iqd-benefits{grid-template-columns:1fr 1fr;margin-top:21px}.iqd-benefits>div{grid-template-columns:31px 1fr}.iqd-benefits>div:last-child{grid-column:1/-1}.iqd-benefits b{font-size:max(14px, 9px)}.iqd-benefits small{font-size:max(14px, 7px)}.iqd-product-note{margin-top:18px;padding:12px}.iqd-capability-strip{gap:5px;margin-top:16px}.iqd-capability-strip span{font-size:max(14px, 7px);padding:6px}.iqd-form-card{padding:18px 15px;border-radius:14px}.iqd-form-head h2{font-size:21px}.iqd-form-grid{grid-template-columns:1fr;gap:14px}.iqd-field-wide{grid-column:auto}.iqd-choice-grid{grid-template-columns:1fr}.iqd-form-submit{align-items:stretch;flex-direction:column}.iqd-form-submit button{width:100%}.iqd-form-submit>small{max-width:none}.iqd-footer{width:calc(100% - 34px);flex-wrap:wrap;min-height:0;padding:17px 0}.iqd-footer>span{order:3;width:100%}}
+
+
+/* Demo page motion — clear, welcoming, never distracting */
+.iqd-page{--iqd-ease:cubic-bezier(.2,.75,.25,1);overflow:hidden}
+.iqd-page::before{content:"";position:fixed;z-index:0;top:-18vw;right:-12vw;width:55vw;aspect-ratio:1;border:1px solid rgba(125,113,218,.1);border-radius:50%;box-shadow:0 0 0 35px rgba(125,113,218,.025),0 0 0 82px rgba(125,113,218,.018);animation:iqdAmbient 22s ease-in-out infinite alternate;pointer-events:none}
+.iqd-header,.iqd-main,.iqd-footer{position:relative;z-index:1}
+.iqd-intro>*{animation:iqdIntroEnter .72s var(--iqd-ease) both}
+.iqd-intro>.iqd-kicker{animation-delay:.05s}
+.iqd-intro>h1{animation-delay:.14s}
+.iqd-intro>p{animation-delay:.23s}
+.iqd-benefits>div{animation:iqdIntroEnter .65s var(--iqd-ease) both}
+.iqd-benefits>div:nth-child(1){animation-delay:.31s}
+.iqd-benefits>div:nth-child(2){animation-delay:.4s}
+.iqd-benefits>div:nth-child(3){animation-delay:.49s}
+.iqd-product-note{animation:iqdIntroEnter .65s .56s var(--iqd-ease) both;transition:transform .3s,box-shadow .3s}
+.iqd-product-note:hover{transform:translateY(-3px);box-shadow:0 12px 25px rgba(32,41,56,.06)}
+.iqd-capability-strip span{transition:transform .25s,border-color .25s,color .25s,background .25s}
+.iqd-capability-strip span:hover{transform:translateY(-3px);border-color:#d9d4f4;color:#6257c2;background:#f7f6ff}
+.iqd-form-card{animation:iqdFormEnter .85s .14s var(--iqd-ease) both;transition:box-shadow .35s,border-color .35s}
+.iqd-form-card:focus-within{border-color:#e4d9d0;box-shadow:0 28px 75px rgba(34,43,58,.1)}
+.iqd-form-head{animation:iqdIntroEnter .65s .2s var(--iqd-ease) both}
+.iqd-form-spark{animation:iqdSparkFloat 4s ease-in-out infinite}
+.iqd-field{animation:iqdFieldEnter .55s var(--iqd-ease) both;animation-delay:calc(var(--iqd-field-index,0) * 55ms)}
+.iqd-field:nth-child(1){--iqd-field-index:1}.iqd-field:nth-child(2){--iqd-field-index:2}.iqd-field:nth-child(3){--iqd-field-index:3}.iqd-field:nth-child(4){--iqd-field-index:4}.iqd-field:nth-child(5){--iqd-field-index:5}
+.iqd-field input,.iqd-field select{transition:border-color .2s,box-shadow .2s,background .2s,transform .2s}
+.iqd-field input:focus,.iqd-field select:focus,.iqd-field textarea:focus{transform:translateY(-1px)}
+.iqd-form-submit button{position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s,background .25s}
+.iqd-form-submit button::before{content:"";position:absolute;top:-30%;left:-50%;width:35%;height:160%;transform:skewX(-22deg);background:rgba(255,255,255,.2);transition:left .55s}
+.iqd-form-submit button:hover::before{left:130%}
+.iqd-form-submit button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 13px 25px rgba(255,102,0,.24)}
+.iqd-back,.iqd-footer>a:last-child{transition:transform .2s,color .2s}
+.iqd-back:hover,.iqd-footer>a:last-child:hover{transform:translateX(-3px)}
+.iqd-success{animation:iqdFormEnter .65s var(--iqd-ease) both}
+.iqd-success>span{animation:iqdSuccessPop .6s var(--iqd-ease) both}
+@keyframes iqdAmbient{from{transform:translate(0,0) rotate(0)}to{transform:translate(-22px,30px) rotate(10deg)}}
+@keyframes iqdIntroEnter{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes iqdFormEnter{from{opacity:0;transform:translateY(25px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes iqdFieldEnter{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+@keyframes iqdSparkFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(7deg)}}
+@keyframes iqdSuccessPop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){
+ .iqd-page::before,.iqd-intro>*,.iqd-benefits>div,.iqd-product-note,.iqd-form-card,.iqd-form-head,.iqd-form-spark,.iqd-field,.iqd-success,.iqd-success>span{animation:none!important}
+ .iqd-field,.iqd-page *{transition:none!important}
+}
