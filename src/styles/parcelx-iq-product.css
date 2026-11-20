@@ -453,3 +453,19 @@
 @media(prefers-reduced-motion:reduce){
  .pxq-product *,.pxq-product *::before,.pxq-product *::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
 }
+
+
+/* Independent ParcelX IQ website footer */
+.pxq-site-footer{margin-top:0;border-top:1px solid #e9ecf1;background:#fafbfc}
+.pxq-site-footer-inner{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:15px 35px;width:min(calc(100% - clamp(36px,9vw,144px)),1280px);margin:auto;padding:24px 0 18px}
+.pxq-site-footer-inner>span{color:#8a94a1;font-size:9px}
+.pxq-site-footer-inner nav{display:flex;align-items:center;gap:22px}
+.pxq-site-footer-inner nav a{display:inline-flex;align-items:center;gap:5px;color:#758090;font-size:9px;font-weight:650}
+.pxq-site-footer-inner nav a:hover{color:var(--iq-orange)}
+.pxq-site-footer-inner>small{justify-self:end;color:#a0a8b3;font-size:8px}
+@media(max-width:640px){
+ .pxq-site-footer-inner{grid-template-columns:1fr;gap:13px;width:calc(100% - 36px);padding:22px 0}
+ .pxq-site-footer-inner nav{flex-wrap:wrap;gap:12px 18px}
+ .pxq-site-footer-inner>small{justify-self:start}
+ .pxq-site-footer-inner>span{font-size:8px}
+}
