@@ -31,7 +31,6 @@ import {
   Zap
 } from "lucide-react";
 import logo from "../images/ParcelX_Logo.svg";
-import IQRobot from "../component/IQRobot.jsx";
 import "../styles/parcelx-iq-product.css";
 
 const demoBaseUrl = "/px-new-pages/parcelx-iq-demo.html";
@@ -158,7 +157,6 @@ function ProductNav() {
 function DashboardPreview() {
   return (
     <div className="pxq-dashboard-wrap">
-      <IQRobot variant="hero" />
       <div className="pxq-dash-halo pxq-halo-one"/>
       <div className="pxq-dash-halo pxq-halo-two"/>
       <div className="pxq-dashboard-window">
@@ -246,11 +244,58 @@ function FAQItem({ item, index, open, onToggle }) {
 export default function ParcelXIQProduct() {
   const [deployment, setDeployment] = useState("standalone");
   const [faqOpen, setFaqOpen] = useState(0);
+  const [reportView, setReportView] = useState("zone");
 
   useEffect(() => {
     const previousTitle = document.title;
     document.title = "ParcelX IQ — AI-powered shipping intelligence";
     return () => { document.title = previousTitle; };
+  }, []);
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const revealTargets = document.querySelectorAll(
+      ".pxq-intro-grid, .pxq-value-row > div, .pxq-deployment .pxq-section-tag, .pxq-section-heading, .pxq-adoption-panel, .pxq-model-note, .pxq-cap-card, .pxq-analytics-copy, .pxq-report-board, .pxq-integration-head, .pxq-architecture, .pxq-integration-foot, .pxq-steps-head, .pxq-step-grid article, .pxq-steps-note, .pxq-faq-intro, .pxq-faq-item, .pxq-final-inner"
+    );
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      revealTargets.forEach((element) => element.classList.add("pxq-revealed"));
+      return undefined;
+    }
+
+    revealTargets.forEach((element, index) => {
+      element.classList.add("pxq-reveal");
+      element.style.setProperty("--pxq-reveal-delay", (index % 4) * 75 + "ms");
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("pxq-revealed");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14, rootMargin: "0px 0px -40px 0px" });
+
+    revealTargets.forEach((element) => observer.observe(element));
+
+    const progress = document.querySelector(".pxq-scroll-progress");
+    let frame = 0;
+    const updateProgress = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const amount = scrollable > 0 ? window.scrollY / scrollable : 0;
+        if (progress) progress.style.transform = "scaleX(" + Math.min(1, Math.max(0, amount)) + ")";
+      });
+    };
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", updateProgress);
+      cancelAnimationFrame(frame);
+    };
   }, []);
 
   const adoption = deployment === "standalone"
@@ -272,8 +317,17 @@ export default function ParcelXIQProduct() {
       };
   const AdoptionIcon = adoption.icon;
 
+  const reportRows = {
+    zone: [["North", 84], ["West", 72], ["South", 77], ["East", 61]],
+    courier: [["Courier A", 91], ["Courier B", 78], ["Courier C", 69], ["Courier D", 63]],
+    user: [["Operations", 88], ["Support", 76], ["Admin", 70], ["Warehouse", 64]]
+  };
+  const reportLabels = { zone: "Zone-wise", courier: "Courier-wise", user: "User-wise" };
+  const activeReportRows = reportRows[reportView];
+
   return (
     <main className="pxq-product">
+      <div className="pxq-scroll-progress" aria-hidden="true" />
       <ProductNav/>
 
       <section className="pxq-hero" id="top">
@@ -358,9 +412,13 @@ export default function ParcelXIQProduct() {
             <div className="pxq-analytics-points"><span><i className="dot-violet"/> Zone-wise reports</span><span><i className="dot-blue"/> Courier-wise reports</span><span><i className="dot-teal"/> User-wise reports</span></div>
           </div>
           <div className="pxq-report-board">
-            <div className="pxq-report-board-head"><span><b>Shipping analytics</b><small>Illustrative report preview</small></span><span className="pxq-report-filter">Select view⌄</span></div>
-            <div className="pxq-report-tabs"><span className="active">Zone-wise</span><span>Courier-wise</span><span>User-wise</span></div>
-            <div className="pxq-report-rows"><div><span>North</span><i><em style={{width:"84%"}}/></i><b>84%</b></div><div><span>West</span><i><em style={{width:"72%"}}/></i><b>72%</b></div><div><span>South</span><i><em style={{width:"77%"}}/></i><b>77%</b></div><div><span>East</span><i><em style={{width:"61%"}}/></i><b>61%</b></div></div>
+            <div className="pxq-report-board-head"><span><b>Shipping analytics</b><small>Illustrative report preview</small></span><span className="pxq-report-filter">{reportLabels[reportView]} view⌄</span></div>
+            <div className="pxq-report-tabs" role="tablist" aria-label="Analytics report type">
+              <button type="button" role="tab" aria-selected={reportView === "zone"} className={reportView === "zone" ? "active" : ""} onClick={() => setReportView("zone")}>Zone-wise</button>
+              <button type="button" role="tab" aria-selected={reportView === "courier"} className={reportView === "courier" ? "active" : ""} onClick={() => setReportView("courier")}>Courier-wise</button>
+              <button type="button" role="tab" aria-selected={reportView === "user"} className={reportView === "user" ? "active" : ""} onClick={() => setReportView("user")}>User-wise</button>
+            </div>
+            <div className="pxq-report-rows" key={reportView}>{activeReportRows.map(([label, value]) => <div key={label}><span>{label}</span><i><em style={{width:value + "%"}}/></i><b>{value}%</b></div>)}</div>
             <div className="pxq-report-footer"><span><Activity size={13}/> Example report layout</span><span>Illustrative data</span></div>
           </div>
         </div>
