@@ -52,6 +52,7 @@ export default function ParcelXIQDemo() {
       aura.style.setProperty("--iqd-cursor-x", event.clientX + "px");
       aura.style.setProperty("--iqd-cursor-y", event.clientY + "px");
       aura.classList.add("is-visible");
+      aura.classList.toggle("is-interactive", Boolean(event.target.closest("a, button, input, select, textarea, label")));
 
       if (formCard) {
         const rect = formCard.getBoundingClientRect();
@@ -75,7 +76,7 @@ export default function ParcelXIQDemo() {
     };
 
     const onPointerLeave = () => {
-      aura.classList.remove("is-visible");
+      aura.classList.remove("is-visible", "is-interactive", "is-pressed");
       formCard?.classList.remove("is-pointer-near");
       if (magnetic) {
         magnetic.style.removeProperty("--iqd-magnetic-x");
@@ -84,11 +85,17 @@ export default function ParcelXIQDemo() {
       }
     };
 
+    const onPointerDown = () => aura.classList.add("is-pressed");
+    const onPointerUp = () => aura.classList.remove("is-pressed");
     root.addEventListener("pointermove", onPointerMove, { passive: true });
     root.addEventListener("pointerleave", onPointerLeave);
+    root.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointerup", onPointerUp);
     return () => {
       root.removeEventListener("pointermove", onPointerMove);
       root.removeEventListener("pointerleave", onPointerLeave);
+      root.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointerup", onPointerUp);
     };
   }, []);
 
@@ -138,7 +145,7 @@ export default function ParcelXIQDemo() {
 
   return (
     <main className="iqd-page">
-      <div className="iqd-cursor-aura" aria-hidden="true"><span /></div>
+      <div className="iqd-cursor-aura" aria-hidden="true"><span className="iqd-cursor-glow" /><i className="iqd-cursor-ring" /><b className="iqd-cursor-dot" /></div>
       <header className="iqd-header">
         <a className="iqd-brand" href={productUrl} aria-label="Back to ParcelX IQ">
           <img src={logo} alt="ParcelX" /><span /><b>IQ</b>
