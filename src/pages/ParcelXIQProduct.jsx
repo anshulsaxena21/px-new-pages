@@ -257,6 +257,39 @@ export default function ParcelXIQProduct() {
     const revealTargets = document.querySelectorAll(
       ".pxq-intro-grid, .pxq-value-row > div, .pxq-deployment .pxq-section-tag, .pxq-section-heading, .pxq-adoption-panel, .pxq-model-note, .pxq-cap-card, .pxq-analytics-copy, .pxq-report-board, .pxq-integration-head, .pxq-architecture, .pxq-integration-foot, .pxq-steps-head, .pxq-step-grid article, .pxq-steps-note, .pxq-faq-intro, .pxq-faq-item, .pxq-final-inner"
     );
+    const animatedText = root?.querySelectorAll(
+      ".pxq-hero h1, .pxq-intro h2, .pxq-section-heading h2, .pxq-analytics-copy h2, .pxq-integration-head h2, .pxq-steps-head h2, .pxq-faq-intro h2, .pxq-final h2, .pxq-cap-card h3, .pxq-value-row b, .pxq-step-grid h3"
+    ) || [];
+
+    const splitIntoWords = (element) => {
+      if (element.dataset.pxqWordsReady) return;
+      let wordIndex = 0;
+      const textNodes = [];
+      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) {
+        if (walker.currentNode.textContent.trim()) textNodes.push(walker.currentNode);
+      }
+      textNodes.forEach((node) => {
+        const fragment = document.createDocumentFragment();
+        node.textContent.split(/(\\s+)/).forEach((part) => {
+          if (!part) return;
+          if (/^\\s+$/.test(part)) {
+            fragment.appendChild(document.createTextNode(part));
+          } else {
+            const word = document.createElement("span");
+            word.className = "pxq-word";
+            word.style.setProperty("--pxq-word-index", wordIndex++);
+            word.setAttribute("aria-hidden", "true");
+            word.textContent = part;
+            fragment.appendChild(word);
+          }
+        });
+        node.parentNode.replaceChild(fragment, node);
+      });
+      element.classList.add("pxq-word-motion");
+      element.dataset.pxqWordsReady = "true";
+    };
+    animatedText.forEach(splitIntoWords);
     if (reduceMotion || !("IntersectionObserver" in window)) {
       revealTargets.forEach((element) => element.classList.add("pxq-revealed"));
       return undefined;
@@ -270,13 +303,14 @@ export default function ParcelXIQProduct() {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("pxq-revealed");
+          entry.target.classList.add("pxq-revealed", "pxq-text-visible");
           observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.14, rootMargin: "0px 0px -40px 0px" });
 
     revealTargets.forEach((element) => observer.observe(element));
+    animatedText.forEach((element) => observer.observe(element));
 
     const root = document.querySelector(".pxq-product");
     const progress = root?.querySelector(".pxq-scroll-progress");
