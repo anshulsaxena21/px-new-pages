@@ -31,7 +31,6 @@ import {
   Zap
 } from "lucide-react";
 import logo from "../images/ParcelX_Logo.svg";
-import logo from "../images/ParcelX_Logo.svg";
 import "../styles/parcelx-iq-product.css";
 
 const demoBaseUrl = "/px-new-pages/parcelx-iq-demo.html";
