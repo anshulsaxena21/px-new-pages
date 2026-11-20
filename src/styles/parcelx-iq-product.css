@@ -590,7 +590,7 @@ html:has(.pxq-product){scroll-behavior:smooth}
 .pxq-product .pxq-value-row>div.pxq-mouse-tilted,
 .pxq-product .pxq-step-grid article.pxq-mouse-tilted,
 .pxq-product .pxq-architecture-core.pxq-mouse-tilted{transform:perspective(900px) rotateX(var(--pxq-tilt-y-angle,0deg)) rotateY(var(--pxq-tilt-x-angle,0deg)) translateY(-4px);box-shadow:0 22px 42px rgba(30,41,59,.11);transition:transform .08s linear,box-shadow .25s}
-.pxq-product .pxq-cap-card.pxq-mouse-tilted .pxq-cap-icon{transform:translateY(-3px) rotate(calc(var(--pxq-tilt-x-angle,0deg)*-2))}
+.pxq-product .pxq-cap-card.pxq-mouse-tilted .pxq-cap-icon{transform:translateY(-3px) rotate(var(--pxq-tilt-x-angle,0deg))}
 .pxq-product .pxq-btn.pxq-magnetic-active,
 .pxq-product .pxq-nav-cta.pxq-magnetic-active,
 .pxq-product .pxq-text-link.pxq-magnetic-active{transform:translate3d(var(--pxq-magnetic-x,0px),var(--pxq-magnetic-y,0px),0)}
