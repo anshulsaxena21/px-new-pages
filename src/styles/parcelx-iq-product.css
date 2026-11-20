@@ -469,3 +469,111 @@
  .pxq-site-footer-inner>small{justify-self:start}
  .pxq-site-footer-inner>span{font-size:max(14px, 8px)}
 }
+
+/* ---------------------------------------------------------
+   ParcelX IQ motion system — purposeful, page-wide movement
+   --------------------------------------------------------- */
+html:has(.pxq-product){scroll-behavior:smooth}
+.pxq-product{--pxq-ease:cubic-bezier(.2,.75,.25,1)}
+.pxq-scroll-progress{position:fixed;z-index:1200;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ff6600,#ffad72,#8c80df);transform:scaleX(0);transform-origin:left center;pointer-events:none;will-change:transform}
+.pxq-reveal{opacity:0;transform:translate3d(0,28px,0);transition:opacity .72s var(--pxq-ease),transform .72s var(--pxq-ease);transition-delay:var(--pxq-reveal-delay,0ms)}
+.pxq-revealed{opacity:1;transform:translate3d(0,0,0)}
+.pxq-product .pxq-hero-copy>*{animation:pxqHeroEnter .75s var(--pxq-ease) both}
+.pxq-product .pxq-hero-copy>.pxq-eyebrow{animation-delay:.04s}
+.pxq-product .pxq-hero-copy>h1{animation-delay:.13s}
+.pxq-product .pxq-hero-copy>p{animation-delay:.22s}
+.pxq-product .pxq-hero-copy>.pxq-hero-actions{animation-delay:.31s}
+.pxq-product .pxq-hero-copy>.pxq-hero-proof{animation-delay:.4s}
+.pxq-product .pxq-hero::before{content:"";position:absolute;z-index:-1;top:-18%;right:-8%;width:min(58vw,780px);aspect-ratio:1;border:1px solid rgba(129,117,220,.11);border-radius:50%;box-shadow:0 0 0 34px rgba(129,117,220,.025),0 0 0 88px rgba(129,117,220,.018);animation:pxqOrbFloat 18s ease-in-out infinite alternate;pointer-events:none}
+.pxq-product .pxq-hero-grid{animation:pxqGridDrift 32s linear infinite}
+.pxq-product .pxq-dashboard-window{animation:pxqDashboardEnter 1s .18s var(--pxq-ease) both}
+.pxq-product .pxq-dash-halo{animation:pxqHaloPulse 6s ease-in-out infinite alternate}
+.pxq-product .pxq-halo-two{animation-delay:1.2s}
+.pxq-product .pxq-kpi{transition:transform .32s var(--pxq-ease),border-color .32s,box-shadow .32s}
+.pxq-product .pxq-kpi:hover{transform:translateY(-4px);border-color:#d8ddec;box-shadow:0 10px 24px rgba(44,54,78,.09)}
+.pxq-product .pxq-kpi>span{transition:transform .35s var(--pxq-ease)}
+.pxq-product .pxq-kpi:hover>span{transform:rotate(-8deg) scale(1.1)}
+.pxq-product .pxq-dash-chart svg path[fill="url(#pxqArea)"]{transform-origin:left center;animation:pxqChartFill 1.5s .65s var(--pxq-ease) both}
+.pxq-product .pxq-dash-chart svg path[fill="none"]{stroke-dasharray:700;stroke-dashoffset:700;animation:pxqChartDraw 2s .6s var(--pxq-ease) forwards}
+.pxq-product .pxq-dash-chart svg path[fill="none"]:last-child{animation-delay:.9s}
+.pxq-product .pxq-float-chip{animation:pxqChipFloat 5.5s ease-in-out infinite}
+.pxq-product .pxq-float-bottom{animation-delay:1.2s}
+.pxq-product .pxq-section-tag>span{transition:color .25s,border-color .25s,background .25s,transform .25s}
+.pxq-product .pxq-revealed .pxq-section-tag>span{animation:pxqTagPop .55s .12s var(--pxq-ease) both}
+.pxq-product .pxq-value-row>div{transition:transform .35s var(--pxq-ease),box-shadow .35s,border-color .35s}
+.pxq-product .pxq-value-row>div:hover{transform:translateY(-6px);border-color:#dce1eb;box-shadow:0 18px 36px rgba(30,41,59,.08)}
+.pxq-product .pxq-value-row .value-icon{transition:transform .35s var(--pxq-ease)}
+.pxq-product .pxq-value-row>div:hover .value-icon{transform:translateY(-3px) rotate(-7deg) scale(1.08)}
+.pxq-product .pxq-mode-switch button{position:relative;transition:color .25s,background .35s,box-shadow .35s,transform .25s}
+.pxq-product .pxq-mode-switch button:active{transform:scale(.96)}
+.pxq-product .pxq-adoption-panel{transition:box-shadow .4s,border-color .4s}
+.pxq-product .pxq-adoption-icon{animation:pxqIconBreath 4.8s ease-in-out infinite}
+.pxq-product .pxq-adoption-panel .pxq-dashboard-window{animation:pxqPanelReveal .6s var(--pxq-ease) both}
+.pxq-product .pxq-adoption-panel .pxq-embed-browser{animation:pxqPanelReveal .6s var(--pxq-ease) both}
+.pxq-product .pxq-cap-card{transform-style:preserve-3d;transition:transform .38s var(--pxq-ease),border-color .32s,box-shadow .38s}
+.pxq-product .pxq-cap-card:hover{transform:translateY(-7px) rotateX(1.4deg);border-color:#d7dce7;box-shadow:0 20px 42px rgba(30,41,59,.09)}
+.pxq-product .pxq-cap-icon{transition:transform .4s var(--pxq-ease),box-shadow .4s}
+.pxq-product .pxq-cap-card:hover .pxq-cap-icon{transform:translateY(-3px) rotate(-8deg) scale(1.09);box-shadow:0 8px 17px rgba(40,48,70,.09)}
+.pxq-product .pxq-cap-top>span:first-child{transition:letter-spacing .3s,color .3s}
+.pxq-product .pxq-cap-card:hover .pxq-cap-top>span:first-child{letter-spacing:1.45px;color:#6b7483}
+.pxq-product .pxq-report-tabs{gap:6px}
+.pxq-product .pxq-report-tabs button{padding:7px 10px;border:0;border-radius:7px;color:#7e8997;background:#f6f7f9;font:700 14px "Instrument Sans",sans-serif;transition:color .25s,background .25s,transform .25s,box-shadow .25s}
+.pxq-product .pxq-report-tabs button:hover{transform:translateY(-2px);color:#6256c7}
+.pxq-product .pxq-report-tabs button.active{color:#6659c8;background:#f0eeff;box-shadow:inset 0 0 0 1px #e5e1ff}
+.pxq-product .pxq-report-rows>div{animation:pxqRowEnter .45s var(--pxq-ease) both}
+.pxq-product .pxq-report-rows>div:nth-child(2){animation-delay:55ms}
+.pxq-product .pxq-report-rows>div:nth-child(3){animation-delay:110ms}
+.pxq-product .pxq-report-rows>div:nth-child(4){animation-delay:165ms}
+.pxq-product .pxq-report-rows i em{transform-origin:left center;animation:pxqBarGrow .9s .15s var(--pxq-ease) both}
+.pxq-product .pxq-architecture-core{transition:transform .35s var(--pxq-ease),box-shadow .35s}
+.pxq-product .pxq-architecture-core:hover{transform:translateY(-5px) scale(1.025);box-shadow:0 16px 34px rgba(91,82,180,.13)}
+.pxq-product .pxq-core-mark{animation:pxqCoreGlow 4s ease-in-out infinite}
+.pxq-product .pxq-architecture-link>span{background:linear-gradient(90deg,#d7dce4 0%,#8b80df 50%,#d7dce4 100%);background-size:200% 100%;animation:pxqLineFlow 3s linear infinite}
+.pxq-product .pxq-step-grid article{transition:transform .35s var(--pxq-ease),box-shadow .35s,border-color .35s}
+.pxq-product .pxq-step-grid article:hover{transform:translateY(-6px);border-color:#dce1eb;box-shadow:0 16px 35px rgba(30,41,59,.075)}
+.pxq-product .step-icon{transition:transform .35s var(--pxq-ease)}
+.pxq-product .pxq-step-grid article:hover .step-icon{transform:rotate(-8deg) scale(1.1)}
+.pxq-product .pxq-faq-item>p{animation:pxqFaqOpen .35s var(--pxq-ease) both}
+.pxq-product .pxq-faq-item>button{transition:color .22s,padding .22s}
+.pxq-product .pxq-faq-item>button:hover{color:#e75c0b;padding-left:5px;padding-right:5px}
+.pxq-product .pxq-faq-plus{transition:transform .25s,color .25s,background .25s}
+.pxq-product .pxq-faq-item.active .pxq-faq-plus{transform:rotate(180deg)}
+.pxq-product .pxq-final-inner{transition:transform .45s,box-shadow .45s}
+.pxq-product .pxq-final-inner:hover{box-shadow:0 28px 65px rgba(23,34,49,.17)}
+.pxq-product .pxq-final-decoration{animation:pxqFinalOrbit 24s linear infinite}
+.pxq-product .pxq-final-decoration>i{animation:pxqFinalDot 3s ease-in-out infinite}
+.pxq-product .pxq-final-decoration>i:nth-child(3){animation-delay:.9s}
+.pxq-product .pxq-final-decoration>i:nth-child(4){animation-delay:1.7s}
+.pxq-product .pxq-btn svg,.pxq-product .pxq-nav-cta svg,.pxq-product .pxq-text-link svg{transition:transform .25s}
+.pxq-product .pxq-btn:hover svg,.pxq-product .pxq-nav-cta:hover svg,.pxq-product .pxq-text-link:hover svg{transform:translateX(4px)}
+.pxq-product .pxq-site-footer-inner nav a{transition:color .2s,transform .2s}
+.pxq-product .pxq-site-footer-inner nav a:hover{transform:translateY(-2px)}
+@keyframes pxqHeroEnter{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pxqDashboardEnter{from{opacity:0;transform:perspective(1400px) rotateY(-7deg) translateY(24px) scale(.985)}to{opacity:1;transform:perspective(1400px) rotateY(-2deg) translateY(0) scale(1)}}
+@keyframes pxqOrbFloat{from{transform:translate3d(0,0,0) rotate(0)}to{transform:translate3d(-24px,28px,0) rotate(12deg)}}
+@keyframes pxqGridDrift{from{background-position:0 0,0 0}to{background-position:0 84px,84px 0}}
+@keyframes pxqHaloPulse{from{transform:scale(.94);opacity:.55}to{transform:scale(1.06);opacity:1}}
+@keyframes pxqChipFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes pxqTagPop{from{transform:scale(.8) rotate(-8deg);opacity:.3}to{transform:scale(1) rotate(0);opacity:1}}
+@keyframes pxqIconBreath{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes pxqPanelReveal{from{opacity:.5;transform:translateY(12px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes pxqRowEnter{from{opacity:0;transform:translateX(-9px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pxqBarGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes pxqChartDraw{to{stroke-dashoffset:0}}
+@keyframes pxqChartFill{from{opacity:0;transform:scaleY(.6)}to{opacity:1;transform:scaleY(1)}}
+@keyframes pxqLineFlow{to{background-position:-200% 0}}
+@keyframes pxqCoreGlow{0%,100%{box-shadow:0 9px 20px rgba(105,96,200,.2)}50%{box-shadow:0 12px 27px rgba(105,96,200,.36)}}
+@keyframes pxqFaqOpen{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pxqFinalOrbit{to{transform:translateY(-50%) rotate(360deg)}}
+@keyframes pxqFinalDot{0%,100%{transform:scale(.8)}50%{transform:scale(1.2)}}
+@media(max-width:640px){
+ .pxq-product .pxq-cap-card:hover,.pxq-product .pxq-step-grid article:hover,.pxq-product .pxq-value-row>div:hover{transform:none}
+ .pxq-product .pxq-hero::before{width:100vw;right:-50vw}
+ .pxq-product .pxq-dashboard-window{animation:pxqDashboardMobile .8s .15s var(--pxq-ease) both}
+}
+@keyframes pxqDashboardMobile{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){
+ .pxq-product .pxq-hero-copy>*,.pxq-product .pxq-dashboard-window,.pxq-product .pxq-dash-halo,.pxq-product .pxq-float-chip,.pxq-product .pxq-hero::before,.pxq-product .pxq-hero-grid,.pxq-product .pxq-final-decoration,.pxq-product .pxq-core-mark,.pxq-product .pxq-architecture-link>span{animation:none!important}
+ .pxq-product .pxq-reveal{opacity:1;transform:none;transition:none}
+ .pxq-product .pxq-cap-card,.pxq-product .pxq-value-row>div,.pxq-product .pxq-step-grid article{transition:none}
+}
