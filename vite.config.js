@@ -10,6 +10,7 @@ export default defineConfig({
       input: {
         main: resolve(process.cwd(), "index.html"),
         parcelxIQ: resolve(process.cwd(), "parcelx-iq.html"),
+        parcelxIQProduct: resolve(process.cwd(), "parcelx-iq-product.html"),
         amazonSelfShip: resolve(process.cwd(), "amazon-self-ship.html"),
         knowledgeBase: resolve(process.cwd(), "knowledge-base.html")
       }
