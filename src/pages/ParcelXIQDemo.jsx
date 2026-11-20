@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, BadgeCheck, BarChart3, CheckCircle2, Headset, Layers3, LoaderCircle, LockKeyhole, PackageCheck, Sparkles, Ticket, Truck, Wallet } from "lucide-react";
 import logo from "../images/ParcelX_Logo.svg";
 import "../styles/parcelx-iq-demo.css";
@@ -35,6 +35,59 @@ export default function ParcelXIQDemo() {
   });
   const [status, setStatus] = useState("idle");
   const [statusMessage, setStatusMessage] = useState("");
+
+  useEffect(() => {
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!finePointer || reduceMotion) return undefined;
+
+    const root = document.querySelector(".iqd-page");
+    const aura = root?.querySelector(".iqd-cursor-aura");
+    const formCard = root?.querySelector(".iqd-form-card");
+    const magnetic = root?.querySelector(".iqd-form-submit button");
+    if (!root || !aura) return undefined;
+
+    const onPointerMove = (event) => {
+      if (event.pointerType !== "mouse") return;
+      aura.style.setProperty("--iqd-cursor-x", event.clientX + "px");
+      aura.style.setProperty("--iqd-cursor-y", event.clientY + "px");
+      aura.classList.add("is-visible");
+
+      if (formCard) {
+        const rect = formCard.getBoundingClientRect();
+        formCard.style.setProperty("--iqd-pointer-x", (event.clientX - rect.left) + "px");
+        formCard.style.setProperty("--iqd-pointer-y", (event.clientY - rect.top) + "px");
+        formCard.classList.toggle("is-pointer-near", event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom);
+      }
+
+      if (magnetic && event.target.closest(".iqd-form-submit button") === magnetic) {
+        const rect = magnetic.getBoundingClientRect();
+        const nx = (event.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+        const ny = (event.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+        magnetic.style.setProperty("--iqd-magnetic-x", (Math.max(-1, Math.min(1, nx)) * 5).toFixed(2) + "px");
+        magnetic.style.setProperty("--iqd-magnetic-y", (Math.max(-1, Math.min(1, ny)) * 3).toFixed(2) + "px");
+      } else if (magnetic) {
+        magnetic.style.removeProperty("--iqd-magnetic-x");
+        magnetic.style.removeProperty("--iqd-magnetic-y");
+      }
+    };
+
+    const onPointerLeave = () => {
+      aura.classList.remove("is-visible");
+      formCard?.classList.remove("is-pointer-near");
+      if (magnetic) {
+        magnetic.style.removeProperty("--iqd-magnetic-x");
+        magnetic.style.removeProperty("--iqd-magnetic-y");
+      }
+    };
+
+    root.addEventListener("pointermove", onPointerMove, { passive: true });
+    root.addEventListener("pointerleave", onPointerLeave);
+    return () => {
+      root.removeEventListener("pointermove", onPointerMove);
+      root.removeEventListener("pointerleave", onPointerLeave);
+    };
+  }, []);
 
   function update(event) {
     const { name, value } = event.target;
@@ -82,6 +135,7 @@ export default function ParcelXIQDemo() {
 
   return (
     <main className="iqd-page">
+      <div className="iqd-cursor-aura" aria-hidden="true"><span /></div>
       <header className="iqd-header">
         <a className="iqd-brand" href={productUrl} aria-label="Back to ParcelX IQ">
           <img src={logo} alt="ParcelX" /><span /><b>IQ</b>
