@@ -278,7 +278,8 @@ export default function ParcelXIQProduct() {
 
     revealTargets.forEach((element) => observer.observe(element));
 
-    const progress = document.querySelector(".pxq-scroll-progress");
+    const root = document.querySelector(".pxq-product");
+    const progress = root?.querySelector(".pxq-scroll-progress");
     let frame = 0;
     const updateProgress = () => {
       cancelAnimationFrame(frame);
