@@ -317,7 +317,110 @@ export default function ParcelXIQProduct() {
       };
   const AdoptionIcon = adoption.icon;
 
-  const reportRows = {
+  useEffect(() => {
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!finePointer || reduceMotion) return undefined;
+
+    const root = document.querySelector(".pxq-product");
+    const hero = root?.querySelector(".pxq-hero");
+    const aura = root?.querySelector(".pxq-cursor-aura");
+    if (!root || !aura) return undefined;
+
+    let tiltedElement = null;
+    let magneticElement = null;
+
+    const clearTilt = () => {
+      if (!tiltedElement) return;
+      tiltedElement.classList.remove("pxq-mouse-tilted");
+      tiltedElement.style.removeProperty("--pxq-tilt-x");
+      tiltedElement.style.removeProperty("--pxq-tilt-y");
+      tiltedElement = null;
+    };
+
+    const clearMagnet = () => {
+      if (!magneticElement) return;
+      magneticElement.style.removeProperty("--pxq-magnetic-x");
+      magneticElement.style.removeProperty("--pxq-magnetic-y");
+      magneticElement = null;
+    };
+
+    const onPointerMove = (event) => {
+      if (event.pointerType !== "mouse") return;
+      aura.style.setProperty("--pxq-cursor-x", event.clientX + "px");
+      aura.style.setProperty("--pxq-cursor-y", event.clientY + "px");
+      aura.classList.add("is-visible");
+
+      if (hero && hero.contains(event.target)) {
+        const rect = hero.getBoundingClientRect();
+        const nx = (event.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+        const ny = (event.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+        hero.style.setProperty("--pxq-parallax-x", Math.max(-1, Math.min(1, nx)).toFixed(3));
+        hero.style.setProperty("--pxq-parallax-y", Math.max(-1, Math.min(1, ny)).toFixed(3));
+      } else if (hero) {
+        hero.style.setProperty("--pxq-parallax-x", "0");
+        hero.style.setProperty("--pxq-parallax-y", "0");
+      }
+
+      const tiltTarget = event.target.closest(".pxq-cap-card, .pxq-value-row > div, .pxq-step-grid article, .pxq-architecture-core");
+      if (tiltTarget && root.contains(tiltTarget)) {
+        if (tiltedElement !== tiltTarget) {
+          clearTilt();
+          tiltedElement = tiltTarget;
+          tiltedElement.classList.add("pxq-mouse-tilted");
+        }
+        const rect = tiltTarget.getBoundingClientRect();
+        const nx = (event.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+        const ny = (event.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+        tiltTarget.style.setProperty("--pxq-tilt-x", Math.max(-1, Math.min(1, nx)).toFixed(3));
+        tiltTarget.style.setProperty("--pxq-tilt-y", Math.max(-1, Math.min(1, ny)).toFixed(3));
+      } else {
+        clearTilt();
+      }
+
+      const magnetTarget = event.target.closest(".pxq-btn, .pxq-nav-cta, .pxq-text-link");
+      if (magnetTarget && root.contains(magnetTarget)) {
+        if (magneticElement !== magnetTarget) clearMagnet();
+        magneticElement = magnetTarget;
+        const rect = magnetTarget.getBoundingClientRect();
+        const nx = (event.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+        const ny = (event.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+        magnetTarget.style.setProperty("--pxq-magnetic-x", (Math.max(-1, Math.min(1, nx)) * 6).toFixed(2) + "px");
+        magnetTarget.style.setProperty("--pxq-magnetic-y", (Math.max(-1, Math.min(1, ny)) * 4).toFixed(2) + "px");
+      } else {
+        clearMagnet();
+      }
+    };
+
+    const onPointerLeave = () => {
+      aura.classList.remove("is-visible");
+      if (hero) {
+        hero.style.setProperty("--pxq-parallax-x", "0");
+        hero.style.setProperty("--pxq-parallax-y", "0");
+      }
+      clearTilt();
+      clearMagnet();
+    };
+
+    const onPointerDown = () => aura.classList.add("is-pressed");
+    const onPointerUp = () => aura.classList.remove("is-pressed");
+
+    root.addEventListener("pointermove", onPointerMove, { passive: true });
+    root.addEventListener("pointerleave", onPointerLeave);
+    root.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointerup", onPointerUp);
+
+    return () => {
+      root.removeEventListener("pointermove", onPointerMove);
+      root.removeEventListener("pointerleave", onPointerLeave);
+      root.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointerup", onPointerUp);
+      clearTilt();
+      clearMagnet();
+    };
+  }, []);
+
+    const reportRows = {
     zone: [["North", 84], ["West", 72], ["South", 77], ["East", 61]],
     courier: [["Courier A", 91], ["Courier B", 78], ["Courier C", 69], ["Courier D", 63]],
     user: [["Operations", 88], ["Support", 76], ["Admin", 70], ["Warehouse", 64]]
@@ -328,6 +431,7 @@ export default function ParcelXIQProduct() {
   return (
     <main className="pxq-product">
       <div className="pxq-scroll-progress" aria-hidden="true" />
+      <div className="pxq-cursor-aura" aria-hidden="true"><span /></div>
       <ProductNav/>
 
       <section className="pxq-hero" id="top">
