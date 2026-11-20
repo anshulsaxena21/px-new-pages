@@ -286,6 +286,20 @@ export default function ParcelXIQProduct() {
         const scrollable = document.documentElement.scrollHeight - window.innerHeight;
         const amount = scrollable > 0 ? window.scrollY / scrollable : 0;
         if (progress) progress.style.transform = "scaleX(" + Math.min(1, Math.max(0, amount)) + ")";
+        root?.style.setProperty("--pxq-grid-scroll-y", (window.scrollY * 0.09).toFixed(1) + "px");
+        root?.style.setProperty("--pxq-orb-scroll-y", (window.scrollY * -0.035).toFixed(1) + "px");
+        const dashboard = root?.querySelector(".pxq-dashboard-wrap");
+        const report = root?.querySelector(".pxq-report-board");
+        const architecture = root?.querySelector(".pxq-architecture");
+        const scrollShift = (element, factor) => {
+          if (!element) return;
+          const rect = element.getBoundingClientRect();
+          const centerDistance = (window.innerHeight * 0.5 - (rect.top + rect.height * 0.5)) / Math.max(window.innerHeight, 1);
+          element.style.setProperty("--pxq-scroll-parallax-y", (Math.max(-1, Math.min(1, centerDistance)) * factor).toFixed(1) + "px");
+        };
+        scrollShift(dashboard, 11);
+        scrollShift(report, -8);
+        scrollShift(architecture, 7);
       });
     };
     window.addEventListener("scroll", updateProgress, { passive: true });
@@ -351,6 +365,7 @@ export default function ParcelXIQProduct() {
       aura.style.setProperty("--pxq-cursor-x", event.clientX + "px");
       aura.style.setProperty("--pxq-cursor-y", event.clientY + "px");
       aura.classList.add("is-visible");
+      aura.classList.toggle("is-interactive", Boolean(event.target.closest("a, button, input, select, textarea, label, [role=\u0027tab\u0027]")));
 
       if (hero && hero.contains(event.target)) {
         const rect = hero.getBoundingClientRect();
@@ -398,7 +413,7 @@ export default function ParcelXIQProduct() {
     };
 
     const onPointerLeave = () => {
-      aura.classList.remove("is-visible");
+      aura.classList.remove("is-visible", "is-interactive", "is-pressed");
       if (hero) {
         hero.style.setProperty("--pxq-parallax-x", "0");
         hero.style.setProperty("--pxq-parallax-y", "0");
@@ -436,7 +451,7 @@ export default function ParcelXIQProduct() {
   return (
     <main className="pxq-product">
       <div className="pxq-scroll-progress" aria-hidden="true" />
-      <div className="pxq-cursor-aura" aria-hidden="true"><span /></div>
+      <div className="pxq-cursor-aura" aria-hidden="true"><span className="pxq-cursor-glow" /><i className="pxq-cursor-ring" /><b className="pxq-cursor-dot" /></div>
       <ProductNav/>
 
       <section className="pxq-hero" id="top">
