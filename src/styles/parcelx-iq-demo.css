@@ -160,3 +160,17 @@
  .iqd-page .iqd-word{opacity:1;transform:none;filter:none;animation:none!important}
  .iqd-page .iqd-intro::after{animation:none!important}
 }
+
+
+/* Keep all animated headline words white on the black IQ intro */
+.iqd-page .iqd-intro h1,
+.iqd-page .iqd-intro h1 *,
+.iqd-page .iqd-intro h1 .iqd-word{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  background:none!important;
+  background-image:none!important;
+  background-clip:border-box!important;
+  -webkit-background-clip:border-box!important;
+  text-shadow:none!important;
+}
