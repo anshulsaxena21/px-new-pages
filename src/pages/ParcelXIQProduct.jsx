@@ -342,6 +342,7 @@ export default function ParcelXIQProduct() {
       if (!magneticElement) return;
       magneticElement.style.removeProperty("--pxq-magnetic-x");
       magneticElement.style.removeProperty("--pxq-magnetic-y");
+      magneticElement.classList.remove("pxq-magnetic-active");
       magneticElement = null;
     };
 
