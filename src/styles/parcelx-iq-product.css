@@ -1314,3 +1314,20 @@ html:has(.pxq-product){scroll-behavior:smooth}
    white-space:normal;margin-bottom:.09em!important;
  }
 }
+
+
+/* Final CTA headline scale — keep it impactful without overpowering the section */
+.pxq-product .pxq-final h2{
+  font-size:clamp(46px,5vw,68px)!important;
+  line-height:1.02!important;
+  letter-spacing:-.06em!important;
+}
+@media(max-width:1100px){
+ .pxq-product .pxq-final h2{font-size:clamp(44px,5.4vw,58px)!important}
+}
+@media(max-width:820px){
+ .pxq-product .pxq-final h2{font-size:clamp(42px,7vw,54px)!important}
+}
+@media(max-width:640px){
+ .pxq-product .pxq-final h2{font-size:clamp(34px,8.8vw,42px)!important;line-height:1.04!important}
+}
