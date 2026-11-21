@@ -615,13 +615,78 @@ export default function ParcelXIQProduct() {
         <div className="pxq-faq-list">{faqs.map((item,index)=><FAQItem key={item.q} item={item} index={index} open={faqOpen===index} onToggle={()=>setFaqOpen(faqOpen===index?-1:index)}/>)}</div>
       </section>
 
-      <section className="pxq-final pxq-shell">
+      <section className="pxq-final pxq-shell" id="get-started">
         <div className="pxq-final-inner">
-          <div className="pxq-final-decoration"><span/><i/><i/><i/></div>
-          <div className="pxq-section-tag"><span>LET'S TALK</span> YOUR NEXT SHIPPING WORKFLOW</div>
-          <h2>Make room for<br/><span>smarter shipping operations.</span></h2>
-          <p>Tell us how your team works today. We'll help you explore whether a standalone or embedded ParcelX IQ experience is right for your business.</p>
-          <div className="pxq-final-actions"><a className="pxq-btn pxq-btn-primary" href={demoUrl}>Request a product walkthrough <ArrowRight size={16}/></a><a className="pxq-btn pxq-btn-light" href={integrationUrl}>Discuss an integration <ArrowUpRight size={16}/></a></div>
+          <div className="pxq-final-ambient" aria-hidden="true">
+            <span className="pxq-final-ambient-orb pxq-final-ambient-orb-one"/>
+            <span className="pxq-final-ambient-orb pxq-final-ambient-orb-two"/>
+            <span className="pxq-final-ambient-grid"/>
+          </div>
+
+          <div className="pxq-final-topline">
+            <div className="pxq-final-kicker"><i/> LET'S TALK</div>
+            <span className="pxq-final-topline-copy">YOUR NEXT SHIPPING WORKFLOW</span>
+            <span className="pxq-final-topline-index">PARCELX IQ <b> / 08</b></span>
+          </div>
+
+          <div className="pxq-final-layout">
+            <div className="pxq-final-content">
+              <h2>
+                <span className="pxq-final-heading-line">Make room for</span>
+                <span className="pxq-final-heading-emphasis">smarter shipping</span>
+                <span className="pxq-final-heading-line pxq-final-heading-last">operations<span className="pxq-final-period">.</span></span>
+              </h2>
+              <p>Tell us how your team works today. We'll help you explore whether a standalone or embedded ParcelX IQ experience is right for your business.</p>
+              <div className="pxq-final-actions">
+                <a className="pxq-btn pxq-btn-primary pxq-final-primary" href={demoUrl}>
+                  <span>Request a product walkthrough</span><i><ArrowUpRight size={18}/></i>
+                </a>
+                <a className="pxq-btn pxq-btn-light pxq-final-secondary" href={integrationUrl}>
+                  <span>Discuss an integration</span><ArrowRight size={16}/>
+                </a>
+              </div>
+              <div className="pxq-final-footnote">
+                <span><i/> STANDALONE WORKSPACE</span>
+                <b/>
+                <span><i/> EMBEDDED EXPERIENCE</span>
+              </div>
+            </div>
+
+            <div className="pxq-final-visual" aria-hidden="true">
+              <div className="pxq-final-visual-glow"/>
+              <div className="pxq-final-ring pxq-final-ring-outer"/>
+              <div className="pxq-final-ring pxq-final-ring-mid"/>
+              <div className="pxq-final-ring pxq-final-ring-inner"/>
+              <div className="pxq-final-orbit pxq-final-orbit-one"><span/></div>
+              <div className="pxq-final-orbit pxq-final-orbit-two"><span/></div>
+              <div className="pxq-final-orbit pxq-final-orbit-three"><span/></div>
+
+              <div className="pxq-final-core">
+                <div className="pxq-final-core-icon"><BrainCircuit size={39}/></div>
+                <strong>IQ</strong>
+                <small>SHIPPING INTELLIGENCE</small>
+                <span className="pxq-final-core-scan"/>
+              </div>
+
+              <div className="pxq-final-float pxq-final-float-analytics">
+                <span className="pxq-final-float-icon"><BarChart3 size={17}/></span>
+                <span><small>SEE THE BIG PICTURE</small><b>Shipping analytics</b></span>
+                <i className="pxq-final-float-live"/>
+              </div>
+              <div className="pxq-final-float pxq-final-float-tracking">
+                <span className="pxq-final-float-icon"><PackageCheck size={17}/></span>
+                <span><small>STAY IN THE KNOW</small><b>Shipment visibility</b></span>
+              </div>
+              <div className="pxq-final-float pxq-final-float-workflow">
+                <span className="pxq-final-float-icon"><Workflow size={17}/></span>
+                <span><small>MOVE WORK FORWARD</small><b>Connected workflows</b></span>
+              </div>
+              <span className="pxq-final-spark pxq-final-spark-one">✦</span>
+              <span className="pxq-final-spark pxq-final-spark-two">✧</span>
+              <span className="pxq-final-spark pxq-final-spark-three">✦</span>
+            </div>
+          </div>
+          <div className="pxq-final-bottomline"><span>BUILT FOR THE WAY YOU SHIP</span><span>INTELLIGENCE THAT MOVES WITH YOU <ArrowUpRight size={13}/></span></div>
         </div>
       </section>
 
