@@ -494,20 +494,33 @@ export default function ParcelXIQProduct() {
 
       <section className="pxq-hero" id="top">
         <div className="pxq-hero-grid"/>
+        <div className="pxq-hero-backdrop-word" aria-hidden="true">IQ</div>
         <div className="pxq-shell pxq-hero-layout">
           <div className="pxq-hero-copy">
-            <div className="pxq-eyebrow"><span><Sparkles size={13}/></span> PARCELX IQ · SHIPPING INTELLIGENCE</div>
-            <h1>Shipping intelligence.<br/><span>Built around your business.</span></h1>
-            <p>Bring clarity to every part of your shipping operation. Use ParcelX IQ as a dedicated workspace—or explore embedding selected capabilities into your own website and seller portal.</p>
+            <div className="pxq-eyebrow"><span><Sparkles size={13}/></span> PARCELX IQ <i/> SHIPPING INTELLIGENCE</div>
+            <h1>Your entire shipping picture.<br/><span>Finally, in focus.</span></h1>
+            <p>Understand what’s moving, what needs attention and how your operation is performing—all from one connected ParcelX IQ experience.</p>
             <div className="pxq-hero-actions">
-              <a href={demoUrl} className="pxq-btn pxq-btn-primary">Request a product walkthrough <ArrowRight size={16}/></a>
-              <a href="#deployment" className="pxq-btn pxq-btn-secondary">Explore ways to use IQ <ArrowUpRight size={16}/></a>
+              <a href={demoUrl} className="pxq-btn pxq-btn-primary">See ParcelX IQ in action <ArrowRight size={16}/></a>
+              <a href="#capabilities" className="pxq-btn pxq-btn-secondary">Explore capabilities <ArrowUpRight size={16}/></a>
             </div>
-            <div className="pxq-hero-proof"><span><Check size={14}/> Standalone workspace</span><span><Check size={14}/> Embedded experience</span><span><Check size={14}/> Six core capabilities</span></div>
+            <div className="pxq-hero-proof">
+              <span><Check size={14}/> Standalone workspace</span>
+              <span><Check size={14}/> Embedded experience</span>
+              <span><Check size={14}/> Six connected capabilities</span>
+            </div>
           </div>
-          <DashboardPreview/>
         </div>
-        <div className="pxq-hero-bottom"><span>ONE PRODUCT</span><i/><span>TWO WAYS TO WORK</span><i/><span>YOUR SHIPPING, IN FOCUS</span></div>
+        <div className="pxq-hero-stage">
+          <div className="pxq-hero-stage-glow"/>
+          <div className="pxq-hero-stage-label pxq-hero-stage-label-left"><span><BarChart3 size={16}/></span><div><b>Performance at a glance</b><small>Shipping analytics</small></div></div>
+          <div className="pxq-hero-stage-label pxq-hero-stage-label-right"><span><Truck size={16}/></span><div><b>Every shipment in view</b><small>Tracking &amp; visibility</small></div></div>
+          <div className="pxq-hero-stage-inner"><DashboardPreview/></div>
+          <div className="pxq-hero-stage-caption"><span><i/> YOUR SHIPPING COMMAND CENTER</span><span>Illustrative product preview</span></div>
+        </div>
+        <div className="pxq-hero-bottom">
+          <span>ANALYTICS</span><i/><span>TRACKING</span><i/><span>TICKETS</span><i/><span>WALLET</span><i/><span>NDR</span><i/><span>SUPPORT</span>
+        </div>
       </section>
 
       <section className="pxq-intro pxq-shell" id="platform">
