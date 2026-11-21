@@ -948,3 +948,85 @@ html:has(.pxq-product){scroll-behavior:smooth}
   position:relative;
   z-index:2;
 }
+
+
+/* GLOBAL LIGHT-MODE HEADING FIX
+   Every title in a light section is solid near-black and visible.
+   Dark sections are intentionally excluded and remain white. */
+.pxq-product .pxq-hero-copy h1,
+.pxq-product .pxq-hero-copy h1 *,
+.pxq-product .pxq-intro h2,
+.pxq-product .pxq-intro h2 *,
+.pxq-product .pxq-capabilities h2,
+.pxq-product .pxq-capabilities h2 *,
+.pxq-product .pxq-capabilities h3,
+.pxq-product .pxq-capabilities h3 *,
+.pxq-product .pxq-steps h2,
+.pxq-product .pxq-steps h2 *,
+.pxq-product .pxq-steps h3,
+.pxq-product .pxq-steps h3 *,
+.pxq-product .pxq-faq h2,
+.pxq-product .pxq-faq h2 *,
+.pxq-product .pxq-value-row b,
+.pxq-product .pxq-value-row b *{
+  color:#080808!important;
+  -webkit-text-fill-color:#080808!important;
+  opacity:1!important;
+  visibility:visible!important;
+  filter:none!important;
+  background-color:transparent!important;
+  background-image:none!important;
+  background-clip:border-box!important;
+  -webkit-background-clip:border-box!important;
+  text-shadow:none!important;
+}
+.pxq-product .pxq-hero-copy h1 .pxq-word,
+.pxq-product .pxq-intro h2 .pxq-word,
+.pxq-product .pxq-capabilities h2 .pxq-word,
+.pxq-product .pxq-capabilities h3 .pxq-word,
+.pxq-product .pxq-steps h2 .pxq-word,
+.pxq-product .pxq-steps h3 .pxq-word,
+.pxq-product .pxq-faq h2 .pxq-word,
+.pxq-product .pxq-value-row b .pxq-word{
+  color:#080808!important;
+  -webkit-text-fill-color:#080808!important;
+  opacity:1!important;
+  visibility:visible!important;
+  filter:none!important;
+  transform:none!important;
+  animation:none!important;
+}
+/* Keep dark-surface headings white, including all nested animated words. */
+.pxq-product .pxq-deployment h2,
+.pxq-product .pxq-deployment h2 *,
+.pxq-product .pxq-deployment h3,
+.pxq-product .pxq-deployment h3 *,
+.pxq-product .pxq-analytics h2,
+.pxq-product .pxq-analytics h2 *,
+.pxq-product .pxq-integration h2,
+.pxq-product .pxq-integration h2 *,
+.pxq-product .pxq-final h2,
+.pxq-product .pxq-final h2 *{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  opacity:1!important;
+  visibility:visible!important;
+  background:none!important;
+  background-image:none!important;
+  background-clip:border-box!important;
+  -webkit-background-clip:border-box!important;
+  text-shadow:none!important;
+}
+.pxq-product .pxq-deployment h2 .pxq-word,
+.pxq-product .pxq-deployment h3 .pxq-word,
+.pxq-product .pxq-analytics h2 .pxq-word,
+.pxq-product .pxq-integration h2 .pxq-word,
+.pxq-product .pxq-final h2 .pxq-word{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  opacity:1!important;
+  visibility:visible!important;
+  filter:none!important;
+  transform:none!important;
+  animation:none!important;
+}
