@@ -327,6 +327,7 @@ export default function ParcelXIQProduct() {
         const dashboard = root?.querySelector(".pxq-dashboard-wrap");
         const report = root?.querySelector(".pxq-report-board");
         const architecture = root?.querySelector(".pxq-architecture");
+        const finaleVisual = root?.querySelector(".pxq-final-visual");
         const scrollShift = (element, factor) => {
           if (!element) return;
           const rect = element.getBoundingClientRect();
@@ -336,6 +337,7 @@ export default function ParcelXIQProduct() {
         scrollShift(dashboard, 11);
         scrollShift(report, -8);
         scrollShift(architecture, 7);
+        scrollShift(finaleVisual, -10);
       });
     };
     window.addEventListener("scroll", updateProgress, { passive: true });
@@ -418,7 +420,7 @@ export default function ParcelXIQProduct() {
         hero.style.setProperty("--pxq-dashboard-y", "0px");
       }
 
-      const tiltTarget = event.target.closest(".pxq-cap-card, .pxq-value-row > div, .pxq-step-grid article, .pxq-architecture-core");
+      const tiltTarget = event.target.closest(".pxq-cap-card, .pxq-value-row > div, .pxq-step-grid article, .pxq-architecture-core, .pxq-final-visual");
       if (tiltTarget && root.contains(tiltTarget)) {
         if (tiltedElement !== tiltTarget) {
           clearTilt();
