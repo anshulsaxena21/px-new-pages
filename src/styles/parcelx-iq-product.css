@@ -1331,3 +1331,19 @@ html:has(.pxq-product){scroll-behavior:smooth}
 @media(max-width:640px){
  .pxq-product .pxq-final h2{font-size:clamp(34px,8.8vw,42px)!important;line-height:1.04!important}
 }
+
+
+/* Standalone / embedded adoption title — ensure solid black on its light panel */
+.pxq-product .pxq-adoption-panel .pxq-adoption-copy h3,
+.pxq-product .pxq-adoption-panel .pxq-adoption-copy h3 *{
+  color:#080808!important;
+  -webkit-text-fill-color:#080808!important;
+  opacity:1!important;
+  visibility:visible!important;
+  filter:none!important;
+  background:none!important;
+  background-image:none!important;
+  background-clip:border-box!important;
+  -webkit-background-clip:border-box!important;
+  text-shadow:none!important;
+}
