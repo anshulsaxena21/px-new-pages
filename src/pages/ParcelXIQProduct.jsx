@@ -635,7 +635,7 @@ export default function ParcelXIQProduct() {
             <div className="pxq-final-content">
               <h2>
                 <span className="pxq-final-heading-line">Make room for</span>
-                <span className="pxq-final-heading-emphasis">smarter shipping</span>
+                <span className="pxq-final-heading-line pxq-final-heading-emphasis">smarter shipping</span>
                 <span className="pxq-final-heading-line pxq-final-heading-last">operations<span className="pxq-final-period">.</span></span>
               </h2>
               <p>Tell us how your team works today. We'll help you explore whether a standalone or embedded ParcelX IQ experience is right for your business.</p>
