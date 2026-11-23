@@ -172,6 +172,7 @@ export default function IQScrollScene() {
               if (disposed) return;
               api.setUserInteraction(false);
               api.setBackground({ color: [0.012, 0.018, 0.03] });
+              api.setEnableCameraConstraints(false);
               api.getCameraLookAt((error, camera) => {
                 if (disposed) return;
                 if (error || !camera?.position || !camera?.target) {
