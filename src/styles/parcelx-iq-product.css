@@ -1608,6 +1608,7 @@ html:has(.pxq-product){scroll-behavior:smooth}
 }
 .pxq-product .pxq-story-canvas{position:absolute;z-index:2;inset:0;display:block;width:100%;height:100%;opacity:0;transition:opacity .65s ease;pointer-events:none}
 .pxq-product .pxq-story-canvas.is-ready{opacity:1}
+.pxq-product .pxq-scroll-pin.is-3d-ready .pxq-story-canvas{opacity:1}
 .pxq-product .pxq-story-fallback{
   position:absolute;z-index:1;inset:0;display:grid;place-items:center;overflow:hidden;
   background:radial-gradient(ellipse at 50% 47%,rgba(255,102,0,.13),transparent 38%);

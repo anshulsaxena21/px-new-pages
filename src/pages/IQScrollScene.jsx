@@ -366,7 +366,7 @@ export default function IQScrollScene() {
           <div className="pxq-fallback-card card-two"><small>LIVE TRACKING</small><b>1,284</b></div>
           <div className="pxq-fallback-card card-three"><small>NDR ESCALATION</small><b>24</b></div>
         </div>
-        <canvas ref={canvasRef} className="pxq-story-canvas" aria-label="Interactive 3D ParcelX IQ shipping network, controlled by scrolling" />
+        <canvas ref={canvasRef} className={"pxq-story-canvas" + (webglReady ? " is-ready" : "")} aria-label="Interactive 3D ParcelX IQ shipping network, controlled by scrolling" />
         <div className="pxq-story-vignette" aria-hidden="true" />
         <div className="pxq-story-topline">
           <span><i /> PARCELX IQ / SHIPPING ECOSYSTEM</span>
