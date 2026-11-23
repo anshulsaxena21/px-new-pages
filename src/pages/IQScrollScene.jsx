@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 
+const MODEL_UID = "3040cb76b1a1466785435ab1a344cf1b";
+const VIEWER_API = "https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js";
+
 const chapters = [
   { tag: "01 / SHIPMENT", title: "It starts with a parcel.", body: "One shipment becomes the beginning of a connected story." },
   { tag: "02 / NETWORK", title: "Every route tells a story.", body: "Follow movement, milestones and delivery signals across your network." },
@@ -8,154 +11,126 @@ const chapters = [
 ];
 
 const clamp = (n, min = 0, max = 1) => Math.min(max, Math.max(min, n));
-const ease = (a, b, n) => {
-  const t = clamp((n - a) / (b - a));
-  return t * t * (3 - 2 * t);
-};
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = (t) => t * t * (3 - 2 * t);
 
-function makeCardTexture(THREE, eyebrow, title, metric, accent) {
-  const canvas = document.createElement("canvas");
-  canvas.width = 640;
-  canvas.height = 340;
-  const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "rgba(14,20,30,.96)";
-  ctx.beginPath();
-  ctx.roundRect(8, 8, 624, 324, 26);
-  ctx.fill();
-  ctx.strokeStyle = "rgba(255,255,255,.17)";
-  ctx.lineWidth = 2;
-  ctx.stroke();
-  ctx.fillStyle = accent;
-  ctx.beginPath();
-  ctx.arc(42, 48, 7, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.font = "700 22px Arial, sans-serif";
-  ctx.fillStyle = "rgba(230,235,244,.72)";
-  ctx.fillText(eyebrow, 64, 55);
-  ctx.font = "700 34px Arial, sans-serif";
-  ctx.fillStyle = "#ffffff";
-  ctx.fillText(title, 34, 118);
-  ctx.font = "800 76px Arial, sans-serif";
-  ctx.fillStyle = accent;
-  ctx.fillText(metric, 34, 226);
-  ctx.font = "600 20px Arial, sans-serif";
-  ctx.fillStyle = "rgba(211,220,232,.58)";
-  ctx.fillText("ILLUSTRATIVE IQ VIEW", 36, 284);
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  return texture;
+function loadSketchfabApi() {
+  if (window.Sketchfab) return Promise.resolve(window.Sketchfab);
+
+  return new Promise((resolve, reject) => {
+    let script = document.querySelector("script[data-sketchfab-viewer-api]");
+    if (script) {
+      script.addEventListener("load", () => resolve(window.Sketchfab), { once: true });
+      script.addEventListener("error", reject, { once: true });
+      if (window.Sketchfab) resolve(window.Sketchfab);
+      return;
+    }
+
+    script = document.createElement("script");
+    script.src = VIEWER_API;
+    script.async = true;
+    script.dataset.sketchfabViewerApi = "true";
+    script.onload = () => window.Sketchfab ? resolve(window.Sketchfab) : reject(new Error("Sketchfab API did not initialize."));
+    script.onerror = () => reject(new Error("Unable to load the Sketchfab Viewer API."));
+    document.head.appendChild(script);
+  });
 }
 
-function makeParcelLabel(THREE) {
-  const canvas = document.createElement("canvas");
-  canvas.width = 512;
-  canvas.height = 320;
-  const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#fff5ec";
-  ctx.beginPath();
-  ctx.roundRect(8, 8, 496, 304, 18);
-  ctx.fill();
-  ctx.fillStyle = "#1b2533";
-  ctx.font = "800 42px Arial, sans-serif";
-  ctx.fillText("PARCELX", 34, 88);
-  ctx.fillStyle = "#ff6600";
-  ctx.font = "800 30px Arial, sans-serif";
-  ctx.fillText("IQ", 36, 130);
-  ctx.strokeStyle = "rgba(27,37,51,.25)";
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(34, 162);
-  ctx.lineTo(476, 162);
-  ctx.stroke();
-  ctx.fillStyle = "#536174";
-  ctx.font = "600 20px Arial, sans-serif";
-  ctx.fillText("SHIPPING INTELLIGENCE", 34, 204);
-  ctx.fillStyle = "#1b2533";
-  ctx.font = "700 22px monospace";
-  ctx.fillText("PX  08  24  06", 34, 260);
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  return texture;
+function cameraAt(progress, basePosition, baseTarget) {
+  const dx = basePosition[0] - baseTarget[0];
+  const dy = basePosition[1] - baseTarget[1];
+  const dz = basePosition[2] - baseTarget[2];
+  const radius = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1;
+  const baseTheta = Math.atan2(dx, dz);
+  const basePhi = Math.acos(clamp(dy / radius, -1, 1));
+
+  const keys = [
+    { at: 0, orbit: 0, zoom: 1.04, tilt: 0 },
+    { at: 0.23, orbit: 0.42, zoom: 0.98, tilt: -0.025 },
+    { at: 0.5, orbit: 1.18, zoom: 1.02, tilt: 0.035 },
+    { at: 0.78, orbit: 1.96, zoom: 1.07, tilt: -0.025 },
+    { at: 1, orbit: 2.48, zoom: 1.16, tilt: 0.015 }
+  ];
+
+  let start = keys[0];
+  let end = keys[keys.length - 1];
+  for (let i = 0; i < keys.length - 1; i += 1) {
+    if (progress >= keys[i].at && progress <= keys[i + 1].at) {
+      start = keys[i];
+      end = keys[i + 1];
+      break;
+    }
+  }
+
+  const local = smooth(clamp((progress - start.at) / Math.max(0.0001, end.at - start.at)));
+  const orbit = lerp(start.orbit, end.orbit, local);
+  const zoom = lerp(start.zoom, end.zoom, local);
+  const phi = clamp(basePhi + lerp(start.tilt, end.tilt, local), 0.18, Math.PI - 0.18);
+  const distance = radius * zoom;
+  const theta = baseTheta + orbit;
+
+  return {
+    position: [
+      baseTarget[0] + Math.sin(phi) * Math.sin(theta) * distance,
+      baseTarget[1] + Math.cos(phi) * distance,
+      baseTarget[2] + Math.sin(phi) * Math.cos(theta) * distance
+    ],
+    target: baseTarget
+  };
 }
 
 export default function IQScrollScene() {
   const storyRef = useRef(null);
   const pinRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [webglReady, setWebglReady] = useState(false);
+  const iframeRef = useRef(null);
+  const apiRef = useRef(null);
+  const baseCameraRef = useRef(null);
+  const [viewerReady, setViewerReady] = useState(false);
+  const [viewerError, setViewerError] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
     let disposed = false;
     let raf = 0;
-    let renderer = null;
-    let scene = null;
-    let camera = null;
-    let parcelGroup = null;
-    let orbitGroup = null;
-    let routeItems = [];
-    let cards = [];
-    let dust = null;
-    let resizeObserver = null;
-    let cleanupListeners = null;
+    let lastSentAt = 0;
+    let lastSentProgress = -1;
     let lastStep = -1;
-    let pointerX = 0;
-    let pointerY = 0;
+    let resizeObserver;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const drawAtScroll = () => {
-      if (disposed || !renderer || !storyRef.current || !pinRef.current) return;
-      const story = storyRef.current;
-      const pinElement = pinRef.current;
-      const distance = Math.max(1, story.offsetHeight - pinElement.offsetHeight);
-      const rect = story.getBoundingClientRect();
-      const progress = reduceMotion ? 1 : clamp(-rect.top / distance);
-      const step = progress < .2 ? 0 : progress < .5 ? 1 : progress < .79 ? 2 : 3;
+    const getProgress = () => {
+      if (!storyRef.current || !pinRef.current) return 0;
+      if (reduceMotion) return 0;
+      const distance = Math.max(1, storyRef.current.offsetHeight - pinRef.current.offsetHeight);
+      return clamp(-storyRef.current.getBoundingClientRect().top / distance);
+    };
+
+    const drawAtScroll = (force = false) => {
+      if (disposed || !pinRef.current) return;
+      const progress = getProgress();
+      const step = progress < 0.2 ? 0 : progress < 0.5 ? 1 : progress < 0.79 ? 2 : 3;
+
       if (step !== lastStep) {
         lastStep = step;
         setActiveStep(step);
       }
 
-      const parcelIn = ease(.015, .2, progress);
-      const routesIn = ease(.17, .56, progress);
-      const insightIn = ease(.48, .84, progress);
-      const finalOut = ease(.79, 1, progress);
+      pinRef.current.style.setProperty("--pxq-story-progress", progress.toFixed(4));
+      const api = apiRef.current;
+      const camera = baseCameraRef.current;
+      if (!api || !camera) return;
 
-      parcelGroup.position.set(-.34 * finalOut, -.95 + parcelIn * 1.02, 0);
-      parcelGroup.scale.setScalar(.76 + parcelIn * .25 - finalOut * .12);
-      parcelGroup.rotation.set(.13 + progress * .08, -.72 + progress * 1.38, .05 + Math.sin(progress * Math.PI * 2) * .035);
+      const now = performance.now();
+      if (!force && (now - lastSentAt < 34 || Math.abs(progress - lastSentProgress) < 0.0025)) return;
+      lastSentAt = now;
+      lastSentProgress = progress;
 
-      orbitGroup.rotation.set(.84 + progress * .14, .15 + progress * .18, -.2 + progress * .8);
-      orbitGroup.children.forEach((ring, i) => {
-        ring.material.opacity = .06 + routesIn * (i === 0 ? .22 : .13);
-        ring.scale.setScalar(.84 + parcelIn * .16 + finalOut * .07);
-      });
-
-      routeItems.forEach((item, i) => {
-        item.line.material.opacity = .76 * routesIn;
-        item.line.geometry.setDrawRange(0, Math.floor(item.vertexCount * routesIn));
-        item.node.material.opacity = routesIn;
-        item.node.scale.setScalar(.5 + routesIn * .5);
-        const point = clamp(progress * 1.38 + i * .17);
-        item.dot.position.copy(item.curve.getPoint(point));
-        item.dot.material.opacity = routesIn * (progress > .2 ? .96 : 0);
-      });
-
-      cards.forEach((item, i) => {
-        item.sprite.material.opacity = insightIn;
-        item.sprite.position.x = item.startX + (item.endX - item.startX) * insightIn;
-        item.sprite.position.y = item.startY + (item.endY - item.startY) * insightIn;
-        item.sprite.scale.set(item.width * (.78 + insightIn * .22), item.height * (.78 + insightIn * .22), 1);
-        item.sprite.material.rotation = (i - 1) * .025 * (1 - insightIn);
-      });
-
-      if (dust) dust.rotation.z = progress * .11;
-      camera.position.x = pointerX * .12 - .05 * finalOut;
-      camera.position.y = pointerY * .1;
-      camera.position.z = (window.innerWidth < 600 ? 12.5 : 9.7) + finalOut * .8;
-      camera.lookAt(0, 0, 0);
-      pinElement.style.setProperty("--pxq-story-progress", progress.toFixed(4));
-      renderer.render(scene, camera);
+      const next = cameraAt(progress, camera.position, camera.target);
+      try {
+        api.setCameraLookAt(next.position, next.target, 0);
+      } catch (error) {
+        console.warn("Unable to update the Sketchfab camera.", error);
+      }
     };
 
     const requestDraw = () => {
@@ -166,181 +141,82 @@ export default function IQScrollScene() {
       });
     };
 
-    const onPointerMove = (event) => {
-      if (event.pointerType !== "mouse" || !pinRef.current) return;
-      const rect = pinRef.current.getBoundingClientRect();
-      pointerX = clamp((event.clientX - rect.left) / rect.width * 2 - 1, -1, 1);
-      pointerY = clamp(1 - (event.clientY - rect.top) / rect.height * 2, -1, 1);
-      requestDraw();
-    };
-
-    const onPointerLeave = () => {
-      pointerX = 0;
-      pointerY = 0;
-      requestDraw();
-    };
-
-    const init = async () => {
+    const initializeViewer = async () => {
       try {
-        const THREE = await import("three");
-        if (disposed || !canvasRef.current) return;
+        const Sketchfab = await loadSketchfabApi();
+        if (disposed || !iframeRef.current) return;
 
-        scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(38, 1, .1, 100);
-        camera.position.set(0, 0, 9.7);
-        renderer = new THREE.WebGLRenderer({
-          canvas: canvasRef.current,
-          alpha: true,
-          antialias: (window.devicePixelRatio || 1) <= 1.5,
-          powerPreference: "low-power"
+        const client = new Sketchfab("1.12.1", iframeRef.current);
+        client.init(MODEL_UID, {
+          autostart: 1,
+          camera: 0,
+          autospin: 0,
+          transparent: 0,
+          ui_controls: 0,
+          ui_infos: 0,
+          ui_settings: 0,
+          ui_help: 0,
+          ui_hint: 0,
+          ui_stop: 0,
+          ui_fullscreen: 0,
+          ui_vr: 0,
+          ui_ar: 0,
+          ui_animations: 0,
+          ui_watermark: 1,
+          ui_watermark_link: 1,
+          success: (api) => {
+            if (disposed) return;
+            apiRef.current = api;
+            api.start();
+            api.addEventListener("viewerready", () => {
+              if (disposed) return;
+              api.setUserInteraction(false);
+              api.setBackground({ color: [0.012, 0.018, 0.03] });
+              api.getCameraLookAt((error, camera) => {
+                if (disposed) return;
+                if (error || !camera?.position || !camera?.target) {
+                  setViewerError(true);
+                  return;
+                }
+                baseCameraRef.current = {
+                  position: camera.position.slice(),
+                  target: camera.target.slice()
+                };
+                setViewerReady(true);
+                drawAtScroll(true);
+              });
+            });
+          },
+          error: () => {
+            if (!disposed) setViewerError(true);
+          }
         });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 700 ? 1.15 : 1.5));
-        renderer.outputColorSpace = THREE.SRGBColorSpace;
-        renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.15;
-
-        scene.add(new THREE.AmbientLight(0xffffff, 1.3));
-        const key = new THREE.DirectionalLight(0xffd4b8, 3);
-        key.position.set(-4, 6, 7);
-        scene.add(key);
-        const orangeLight = new THREE.PointLight(0xff6600, 30, 18);
-        orangeLight.position.set(4, 1, 3);
-        scene.add(orangeLight);
-        const violetLight = new THREE.PointLight(0x747bff, 16, 15);
-        violetLight.position.set(-4, -2, -1);
-        scene.add(violetLight);
-
-        parcelGroup = new THREE.Group();
-        const parcelGeometry = new THREE.BoxGeometry(2.25, 1.62, 1.58);
-        parcelGroup.add(new THREE.Mesh(parcelGeometry, new THREE.MeshStandardMaterial({ color: 0xc88855, roughness: .76 })));
-        const tape = new THREE.Mesh(new THREE.BoxGeometry(.28, 1.64, .025), new THREE.MeshStandardMaterial({ color: 0xff762b, roughness: .5 }));
-        tape.position.set(.12, 0, .8);
-        parcelGroup.add(tape);
-        const topTape = new THREE.Mesh(new THREE.BoxGeometry(.28, .025, 1.59), new THREE.MeshStandardMaterial({ color: 0xff762b, roughness: .5 }));
-        topTape.position.set(.12, .82, 0);
-        parcelGroup.add(topTape);
-        const edges = new THREE.LineSegments(new THREE.EdgesGeometry(parcelGeometry), new THREE.LineBasicMaterial({ color: 0xffd0ae, transparent: true, opacity: .4 }));
-        parcelGroup.add(edges);
-        const label = new THREE.Mesh(
-          new THREE.PlaneGeometry(.84, .53),
-          new THREE.MeshBasicMaterial({ map: makeParcelLabel(THREE), transparent: true, side: THREE.DoubleSide })
-        );
-        label.position.set(-.42, -.18, .807);
-        parcelGroup.add(label);
-        scene.add(parcelGroup);
-
-        orbitGroup = new THREE.Group();
-        const ringA = new THREE.Mesh(new THREE.TorusGeometry(2.5, .012, 6, 160), new THREE.MeshBasicMaterial({ color: 0xff813e, transparent: true, opacity: .08, depthWrite: false }));
-        const ringB = new THREE.Mesh(new THREE.TorusGeometry(2.95, .008, 6, 160), new THREE.MeshBasicMaterial({ color: 0x8588ff, transparent: true, opacity: .06, depthWrite: false }));
-        ringA.rotation.x = .9;
-        ringB.rotation.set(1, .7, 0);
-        orbitGroup.add(ringA, ringB);
-        scene.add(orbitGroup);
-
-        const routeNodes = [
-          [-3.55, 1.55, -1.15], [-2.95, -1.6, -.95], [-.3, 2.25, -1.35],
-          [2.8, 1.65, -1.3], [3.45, -.85, -1.15], [1.25, -2.05, -1.2]
-        ];
-        const routeColors = [0xff873d, 0x8c8aff, 0xffa15e, 0x69b8db, 0xff873d, 0x8f91ff];
-        routeNodes.forEach((coords, i) => {
-          const end = new THREE.Vector3(coords[0], coords[1], coords[2]);
-          const curve = new THREE.CatmullRomCurve3([
-            new THREE.Vector3(-.15, .03, -.78),
-            new THREE.Vector3(end.x * .35, end.y * .28 + (i % 2 ? -.35 : .35), -1.05),
-            new THREE.Vector3(end.x * .72, end.y * .78, -1.25),
-            end
-          ]);
-          const geometry = new THREE.TubeGeometry(curve, 84, .012, 5, false);
-          geometry.setDrawRange(0, 0);
-          const line = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: routeColors[i], transparent: true, opacity: 0, depthWrite: false }));
-          scene.add(line);
-          const node = new THREE.Mesh(new THREE.SphereGeometry(.075, 14, 14), new THREE.MeshBasicMaterial({ color: routeColors[i], transparent: true, opacity: 0 }));
-          node.position.copy(end);
-          scene.add(node);
-          const dot = new THREE.Mesh(new THREE.SphereGeometry(.045, 10, 10), new THREE.MeshBasicMaterial({ color: 0xffc19a, transparent: true, opacity: 0, depthWrite: false }));
-          scene.add(dot);
-          routeItems.push({ curve, line, node, dot, vertexCount: geometry.attributes.position.count });
-        });
-
-        const cardSpecs = [
-          { eyebrow: "SHIPPING ANALYTICS", title: "Shipping volume", metric: "12,480", accent: "#ff955c", startX: -4.4, startY: 1.05, endX: -3.05, endY: 1.1, width: 2.1, height: 1.12 },
-          { eyebrow: "LIVE TRACKING", title: "In transit", metric: "1,284", accent: "#9c9aff", startX: 4.2, startY: .65, endX: 3.05, endY: .8, width: 2.05, height: 1.09 },
-          { eyebrow: "NDR ESCALATION", title: "Needs attention", metric: "24", accent: "#ffb56b", startX: 3.7, startY: -1.5, endX: 2.65, endY: -1.3, width: 1.9, height: 1.02 }
-        ];
-        cards = cardSpecs.map((spec) => {
-          const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
-            map: makeCardTexture(THREE, spec.eyebrow, spec.title, spec.metric, spec.accent),
-            transparent: true,
-            opacity: 0,
-            depthWrite: false
-          }));
-          sprite.position.set(spec.startX, spec.startY, .5);
-          sprite.scale.set(spec.width * .78, spec.height * .78, 1);
-          scene.add(sprite);
-          return { ...spec, sprite };
-        });
-
-        const particlePositions = new Float32Array(150 * 3);
-        for (let i = 0; i < 150; i += 1) {
-          particlePositions[i * 3] = (Math.random() - .5) * 10;
-          particlePositions[i * 3 + 1] = (Math.random() - .5) * 6;
-          particlePositions[i * 3 + 2] = -2 - Math.random() * 4;
-        }
-        const dustGeometry = new THREE.BufferGeometry();
-        dustGeometry.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
-        dust = new THREE.Points(dustGeometry, new THREE.PointsMaterial({ color: 0xb8b6ff, size: .025, transparent: true, opacity: .36, sizeAttenuation: true }));
-        scene.add(dust);
-
-        const resize = () => {
-          if (!pinRef.current || !renderer) return;
-          const rect = pinRef.current.getBoundingClientRect();
-          renderer.setSize(Math.max(1, rect.width), Math.max(1, rect.height), false);
-          camera.aspect = Math.max(1, rect.width) / Math.max(1, rect.height);
-          camera.fov = window.innerWidth < 600 ? 55 : 38;
-          camera.updateProjectionMatrix();
-          requestDraw();
-        };
-
-        resizeObserver = new ResizeObserver(resize);
-        if (pinRef.current) resizeObserver.observe(pinRef.current);
-        window.addEventListener("resize", resize);
-        window.addEventListener("scroll", requestDraw, { passive: true });
-        pinRef.current?.addEventListener("pointermove", onPointerMove, { passive: true });
-        pinRef.current?.addEventListener("pointerleave", onPointerLeave);
-        cleanupListeners = () => {
-          window.removeEventListener("resize", resize);
-          window.removeEventListener("scroll", requestDraw);
-          pinRef.current?.removeEventListener("pointermove", onPointerMove);
-          pinRef.current?.removeEventListener("pointerleave", onPointerLeave);
-        };
-
-        setWebglReady(true);
-        drawAtScroll();
       } catch (error) {
-        if (!disposed) {
-          console.warn("ParcelX IQ 3D scene could not be initialized; using the visual fallback.", error);
-          setWebglReady(false);
-        }
+        console.warn("Sketchfab viewer could not be initialized.", error);
+        if (!disposed) setViewerError(true);
       }
     };
 
-    init();
+    initializeViewer();
+    window.addEventListener("scroll", requestDraw, { passive: true });
+    window.addEventListener("resize", requestDraw, { passive: true });
+    resizeObserver = new ResizeObserver(requestDraw);
+    if (pinRef.current) resizeObserver.observe(pinRef.current);
+    requestDraw();
+
     return () => {
       disposed = true;
       if (raf) window.cancelAnimationFrame(raf);
-      cleanupListeners?.();
+      window.removeEventListener("scroll", requestDraw);
+      window.removeEventListener("resize", requestDraw);
       resizeObserver?.disconnect();
-      if (scene) {
-        scene.traverse((object) => {
-          object.geometry?.dispose?.();
-          const materials = Array.isArray(object.material) ? object.material : object.material ? [object.material] : [];
-          materials.forEach((material) => {
-            material.map?.dispose?.();
-            material.dispose?.();
-          });
-        });
+      try {
+        apiRef.current?.stop();
+      } catch (_) {
+        // The iframe may already have been released by the browser.
       }
-      renderer?.dispose();
+      apiRef.current = null;
+      baseCameraRef.current = null;
     };
   }, []);
 
@@ -350,23 +226,67 @@ export default function IQScrollScene() {
     if (!story || !pin) return;
     const distance = Math.max(0, story.offsetHeight - pin.offsetHeight);
     const target = window.scrollY + story.getBoundingClientRect().top + distance * (index / 3);
-    window.scrollTo({ top: target, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    window.scrollTo({
+      top: target,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+    });
   };
 
   const current = chapters[activeStep];
 
   return (
     <div className="pxq-scroll-story" ref={storyRef}>
-      <div className={"pxq-scroll-pin" + (webglReady ? " is-3d-ready" : "")} ref={pinRef}>
-        <div className="pxq-story-fallback" aria-hidden="true">
-          <div className="pxq-fallback-orbit orbit-one" />
-          <div className="pxq-fallback-orbit orbit-two" />
-          <div className="pxq-fallback-package"><span>PX</span><b>IQ</b></div>
-          <div className="pxq-fallback-card card-one"><small>SHIPPING ANALYTICS</small><b>12,480</b></div>
-          <div className="pxq-fallback-card card-two"><small>LIVE TRACKING</small><b>1,284</b></div>
-          <div className="pxq-fallback-card card-three"><small>NDR ESCALATION</small><b>24</b></div>
+      <div className={"pxq-scroll-pin" + (viewerReady ? " is-3d-ready" : "")} ref={pinRef}>
+        <iframe
+          ref={iframeRef}
+          className="pxq-sketchfab-viewer"
+          title="ParcelBox 3D model by Suphanee on Sketchfab"
+          allow="autoplay; fullscreen; xr-spatial-tracking"
+          allowFullScreen
+          mozallowfullscreen="true"
+          webkitallowfullscreen="true"
+          xr-spatial-tracking="true"
+          execution-while-out-of-viewport="true"
+          execution-while-not-rendered="true"
+          web-share="true"
+        />
+        <div className="pxq-story-fx" aria-hidden="true">
+          <div className="pxq-story-orbit orbit-one" />
+          <div className="pxq-story-orbit orbit-two" />
+          <svg className="pxq-story-routes" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="pxqRouteOrange"><stop stopColor="#ff6600" stopOpacity="0"/><stop offset=".55" stopColor="#ff8a4c"/><stop offset="1" stopColor="#ffb17e"/></linearGradient>
+              <linearGradient id="pxqRouteViolet"><stop stopColor="#858aff" stopOpacity="0"/><stop offset="1" stopColor="#858aff"/></linearGradient>
+            </defs>
+            <path className="route route-orange" d="M120 180 C300 110 350 350 590 340 S850 120 1080 215"/>
+            <path className="route route-violet" d="M110 525 C310 610 420 400 600 365 S850 580 1100 475"/>
+            <path className="route route-teal" d="M250 70 C360 220 430 230 600 350 S820 440 970 630"/>
+            <g className="route-nodes">
+              <circle cx="120" cy="180" r="6"/><circle cx="1080" cy="215" r="6"/>
+              <circle cx="110" cy="525" r="6"/><circle cx="1100" cy="475" r="6"/>
+              <circle cx="250" cy="70" r="6"/><circle cx="970" cy="630" r="6"/>
+            </g>
+          </svg>
+          <div className="pxq-story-fx-card fx-card-analytics"><small>SHIPPING ANALYTICS</small><b>12,480</b><span>Shipment volume</span></div>
+          <div className="pxq-story-fx-card fx-card-tracking"><small>LIVE TRACKING</small><b>1,284</b><span>In transit</span></div>
+          <div className="pxq-story-fx-card fx-card-ndr"><small>NDR ESCALATION</small><b>24</b><span>Needs attention</span></div>
         </div>
-        <canvas ref={canvasRef} className={"pxq-story-canvas" + (webglReady ? " is-ready" : "")} aria-label="Interactive 3D ParcelX IQ shipping network, controlled by scrolling" />
+        {!viewerReady && (
+          <div className="pxq-story-loading">
+            {viewerError ? (
+              <>
+                <b>3D preview unavailable</b>
+                <span>Open the original model on Sketchfab to explore it.</span>
+                <a href="https://sketchfab.com/3d-models/parcelbox-3040cb76b1a1466785435ab1a344cf1b" target="_blank" rel="noreferrer">View ParcelBox on Sketchfab <span>↗</span></a>
+              </>
+            ) : (
+              <>
+                <i />
+                <span>Loading the ParcelX IQ parcel model…</span>
+              </>
+            )}
+          </div>
+        )}
         <div className="pxq-story-vignette" aria-hidden="true" />
         <div className="pxq-story-topline">
           <span><i /> PARCELX IQ / SHIPPING ECOSYSTEM</span>
@@ -377,6 +297,9 @@ export default function IQScrollScene() {
             <small>{current.tag}</small>
             <h3>{current.title}</h3>
             <p>{current.body}</p>
+            <div className="pxq-story-credit">
+              3D asset: <a href="https://sketchfab.com/3d-models/parcelbox-3040cb76b1a1466785435ab1a344cf1b" target="_blank" rel="noreferrer">ParcelBox by Suphanee on Sketchfab</a>
+            </div>
           </div>
           <div className="pxq-story-controls" aria-label="Scroll animation chapters">
             <span>SCENE</span>
