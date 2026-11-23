@@ -281,9 +281,9 @@ export default function ParcelXIQProduct() {
 
       textNodes.forEach((node) => {
         const fragment = document.createDocumentFragment();
-        node.textContent.split(/(\\s+)/).forEach((part) => {
+        node.textContent.split(/(\s+)/).forEach((part) => {
           if (!part) return;
-          if (/^\\s+$/.test(part)) {
+          if (/^\s+$/.test(part)) {
             fragment.appendChild(document.createTextNode(part));
           } else {
             const word = document.createElement("span");
