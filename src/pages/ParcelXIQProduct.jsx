@@ -319,7 +319,7 @@ export default function ParcelXIQProduct() {
 
     let motionContext;
     motionContext = gsap.context(() => {
-      // Page-wide progress is tied to the actual document scroll range.
+      // Page-wide progress and ambient background drift share the document scroll.
       const progress = root.querySelector(".pxq-scroll-progress");
       if (progress) {
         gsap.fromTo(progress,
@@ -336,6 +336,21 @@ export default function ParcelXIQProduct() {
           }
         );
       }
+
+      gsap.fromTo(root,
+        { "--pxq-grid-scroll-y": "0px", "--pxq-orb-scroll-y": "0px" },
+        {
+          "--pxq-grid-scroll-y": "220px",
+          "--pxq-orb-scroll-y": "-90px",
+          ease: "none",
+          scrollTrigger: {
+            trigger: root,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.6
+          }
+        }
+      );
 
       // Section reveals use individual triggers so cards enter in a controlled rhythm.
       revealTargets.forEach((element, index) => {
@@ -394,9 +409,9 @@ export default function ParcelXIQProduct() {
         const element = root.querySelector(selector);
         if (!element) return;
         gsap.fromTo(element,
-          { y: -distance * 0.45 },
+          { "--pxq-scroll-parallax-y": (-distance * 0.45) + "px" },
           {
-            y: distance * 0.55,
+            "--pxq-scroll-parallax-y": (distance * 0.55) + "px",
             ease: "none",
             scrollTrigger: {
               trigger: element,
