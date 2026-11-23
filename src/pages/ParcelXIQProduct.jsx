@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   Activity,
   ArrowRight,
@@ -35,8 +33,6 @@ import {
 import logo from "../images/ParcelX_Logo.svg";
 import "../styles/parcelx-iq-product.css";
 import IQScrollScene from "./IQScrollScene.jsx";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const demoBaseUrl = "/px-new-pages/parcelx-iq-demo.html";
 const demoUrl = `${demoBaseUrl}?intent=demo`;
@@ -259,26 +255,22 @@ export default function ParcelXIQProduct() {
 
   useEffect(() => {
     const root = document.querySelector(".pxq-product");
-    if (!root) return undefined;
-
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const revealTargets = root.querySelectorAll(
-      ".pxq-intro-grid, .pxq-value-row > div, .pxq-deployment .pxq-section-tag, .pxq-section-heading, .pxq-adoption-panel, .pxq-model-note, .pxq-analytics-copy, .pxq-report-board, .pxq-integration-head, .pxq-architecture, .pxq-integration-foot, .pxq-steps-head, .pxq-step-grid article, .pxq-steps-note, .pxq-faq-intro, .pxq-faq-item, .pxq-final-inner"
+    const revealTargets = document.querySelectorAll(
+      ".pxq-intro-grid, .pxq-value-row > div, .pxq-deployment .pxq-section-tag, .pxq-section-heading, .pxq-adoption-panel, .pxq-model-note, .pxq-cap-card, .pxq-analytics-copy, .pxq-report-board, .pxq-integration-head, .pxq-architecture, .pxq-integration-foot, .pxq-steps-head, .pxq-step-grid article, .pxq-steps-note, .pxq-faq-intro, .pxq-faq-item, .pxq-final-inner"
     );
-    const animatedText = root.querySelectorAll(
-      ".pxq-intro h2, .pxq-section-heading h2, .pxq-analytics-copy h2, .pxq-integration-head h2, .pxq-steps-head h2, .pxq-faq-intro h2, .pxq-final h2, .pxq-value-row b, .pxq-step-grid h3"
-    );
+    const animatedText = root?.querySelectorAll(
+      ".pxq-hero h1, .pxq-intro h2, .pxq-section-heading h2, .pxq-analytics-copy h2, .pxq-integration-head h2, .pxq-steps-head h2, .pxq-faq-intro h2, .pxq-final h2, .pxq-cap-card h3, .pxq-value-row b, .pxq-step-grid h3"
+    ) || [];
 
     const splitIntoWords = (element) => {
       if (element.dataset.pxqWordsReady) return;
       let wordIndex = 0;
       const textNodes = [];
       const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
-
       while (walker.nextNode()) {
         if (walker.currentNode.textContent.trim()) textNodes.push(walker.currentNode);
       }
-
       textNodes.forEach((node) => {
         const fragment = document.createDocumentFragment();
         node.textContent.split(/(\s+)/).forEach((part) => {
@@ -295,186 +287,68 @@ export default function ParcelXIQProduct() {
         });
         node.parentNode.replaceChild(fragment, node);
       });
-
       element.setAttribute("aria-label", element.textContent);
       element.classList.add("pxq-word-motion");
       element.dataset.pxqWordsReady = "true";
     };
-
-    if (reduceMotion) {
-      gsap.set(revealTargets, { autoAlpha: 1, y: 0, clearProps: "filter" });
-      animatedText.forEach((element) => {
-        splitIntoWords(element);
-        gsap.set(element.querySelectorAll(".pxq-word"), {
-          autoAlpha: 1,
-          yPercent: 0,
-          rotation: 0,
-          filter: "none"
-        });
-      });
-      const progress = root.querySelector(".pxq-scroll-progress");
-      if (progress) gsap.set(progress, { scaleX: 1 });
+    animatedText.forEach(splitIntoWords);
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      revealTargets.forEach((element) => element.classList.add("pxq-revealed"));
+      animatedText.forEach((element) => element.classList.add("pxq-text-visible"));
       return undefined;
     }
 
-    let motionContext;
-    motionContext = gsap.context(() => {
-      // Page-wide progress and ambient background drift share the document scroll.
-      const progress = root.querySelector(".pxq-scroll-progress");
-      if (progress) {
-        gsap.fromTo(progress,
-          { scaleX: 0 },
-          {
-            scaleX: 1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: root,
-              start: "top top",
-              end: "bottom bottom",
-              scrub: 0.25
-            }
-          }
-        );
-      }
+    revealTargets.forEach((element, index) => {
+      element.classList.add("pxq-reveal");
+      element.style.setProperty("--pxq-reveal-delay", (index % 4) * 75 + "ms");
+    });
 
-      gsap.fromTo(root,
-        { "--pxq-grid-scroll-y": "0px", "--pxq-orb-scroll-y": "0px" },
-        {
-          "--pxq-grid-scroll-y": "220px",
-          "--pxq-orb-scroll-y": "-90px",
-          ease: "none",
-          scrollTrigger: {
-            trigger: root,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 0.6
-          }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("pxq-revealed", "pxq-text-visible");
+          observer.unobserve(entry.target);
         }
-      );
-
-      // Section reveals use individual triggers so cards enter in a controlled rhythm.
-      revealTargets.forEach((element, index) => {
-        gsap.fromTo(element,
-          { autoAlpha: 0, y: 38, filter: "blur(7px)" },
-          {
-            autoAlpha: 1,
-            y: 0,
-            filter: "blur(0px)",
-            duration: 0.82,
-            delay: (index % 3) * 0.055,
-            ease: "power3.out",
-            clearProps: "filter",
-            scrollTrigger: {
-              trigger: element,
-              start: "top 87%",
-              once: true
-            }
-          }
-        );
       });
+    }, { threshold: 0.14, rootMargin: "0px 0px -40px 0px" });
 
-      // Word reveals add a little editorial motion to section titles.
-      animatedText.forEach((element) => {
-        splitIntoWords(element);
-        const words = element.querySelectorAll(".pxq-word");
-        gsap.fromTo(words,
-          { autoAlpha: 0, yPercent: 115, rotation: 2, filter: "blur(7px)" },
-          {
-            autoAlpha: 1,
-            yPercent: 0,
-            rotation: 0,
-            filter: "blur(0px)",
-            duration: 0.72,
-            stagger: 0.055,
-            ease: "power3.out",
-            clearProps: "filter",
-            scrollTrigger: {
-              trigger: element,
-              start: "top 88%",
-              once: true
-            }
-          }
-        );
+    revealTargets.forEach((element) => observer.observe(element));
+    animatedText.forEach((element) => observer.observe(element));
+
+    const progress = root?.querySelector(".pxq-scroll-progress");
+    let frame = 0;
+    const updateProgress = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const amount = scrollable > 0 ? window.scrollY / scrollable : 0;
+        if (progress) progress.style.transform = "scaleX(" + Math.min(1, Math.max(0, amount)) + ")";
+        root?.style.setProperty("--pxq-grid-scroll-y", (window.scrollY * 0.09).toFixed(1) + "px");
+        root?.style.setProperty("--pxq-orb-scroll-y", (window.scrollY * -0.035).toFixed(1) + "px");
+        const dashboard = root?.querySelector(".pxq-dashboard-wrap");
+        const report = root?.querySelector(".pxq-report-board");
+        const architecture = root?.querySelector(".pxq-architecture");
+        const finaleVisual = root?.querySelector(".pxq-final-visual");
+        const scrollShift = (element, factor) => {
+          if (!element) return;
+          const rect = element.getBoundingClientRect();
+          const centerDistance = (window.innerHeight * 0.5 - (rect.top + rect.height * 0.5)) / Math.max(window.innerHeight, 1);
+          element.style.setProperty("--pxq-scroll-parallax-y", (Math.max(-1, Math.min(1, centerDistance)) * factor).toFixed(1) + "px");
+        };
+        scrollShift(dashboard, 11);
+        scrollShift(report, -8);
+        scrollShift(architecture, 7);
+        scrollShift(finaleVisual, -10);
       });
+    };
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress();
 
-      // Lightweight depth movement on large product visuals.
-      const parallaxItems = [
-        [".pxq-dashboard-wrap", -18],
-        [".pxq-report-board", 15],
-        [".pxq-architecture", -12],
-        [".pxq-final-visual", 18]
-      ];
-
-      parallaxItems.forEach(([selector, distance]) => {
-        const element = root.querySelector(selector);
-        if (!element) return;
-        gsap.fromTo(element,
-          { "--pxq-scroll-parallax-y": (-distance * 0.45) + "px" },
-          {
-            "--pxq-scroll-parallax-y": (distance * 0.55) + "px",
-            ease: "none",
-            scrollTrigger: {
-              trigger: element,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 0.65
-            }
-          }
-        );
-      });
-      // Pinned horizontal showcase: the six IQ capabilities travel through the viewport as the user scrolls.
-      const capabilitySection = root.querySelector(".pxq-capabilities");
-      const capabilityTrack = capabilitySection?.querySelector(".pxq-cap-grid");
-      const capabilityShell = capabilitySection?.querySelector(".pxq-shell");
-      const capabilityCards = capabilityTrack ? gsap.utils.toArray(".pxq-cap-card", capabilityTrack) : [];
-
-      if (
-        capabilitySection &&
-        capabilityTrack &&
-        capabilityShell &&
-        capabilityCards.length &&
-        window.matchMedia("(min-width: 901px)").matches
-      ) {
-        gsap.set(capabilityTrack, { x: 0 });
-        const horizontalDistance = () => Math.max(1, capabilityTrack.scrollWidth - capabilityShell.clientWidth);
-
-        const capabilityTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: capabilitySection,
-            start: "top top+=76",
-            end: () => "+=" + horizontalDistance(),
-            pin: true,
-            pinSpacing: true,
-            scrub: 0.9,
-            anticipatePin: 1,
-            invalidateOnRefresh: true
-          }
-        });
-
-        capabilityTimeline.to(capabilityTrack, {
-          x: () => -horizontalDistance(),
-          ease: "none",
-          duration: 1
-        }, 0);
-
-        capabilityTimeline.fromTo(capabilityCards,
-          { autoAlpha: 0.58, y: 54, scale: 0.94, rotateY: 7, transformOrigin: "50% 50%" },
-          {
-            autoAlpha: 1,
-            y: 0,
-            scale: 1,
-            rotateY: 0,
-            stagger: 0.095,
-            duration: 0.3,
-            ease: "power2.out"
-          },
-          0
-        );
-      }
-    }, root);
-
-    ScrollTrigger.refresh();
-    return () => motionContext?.revert();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", updateProgress);
+      cancelAnimationFrame(frame);
+    };
   }, []);
 
   const adoption = deployment === "standalone"
@@ -686,10 +560,7 @@ export default function ParcelXIQProduct() {
         <div className="pxq-section-tag"><span>03</span> WHAT IQ CAN DO</div>
         <div className="pxq-section-heading">
           <div><h2>Six capabilities.<br/><span>One connected workspace.</span></h2><p>Bring essential shipping tasks together—from understanding performance to following up on issues and getting the help you need.</p></div>
-          <div className="pxq-cap-heading-aside">
-            <span className="pxq-count">06 <i>CORE CAPABILITIES</i></span>
-            <span className="pxq-cap-scroll-hint">KEEP SCROLLING <ArrowRight size={15}/></span>
-          </div>
+          <span className="pxq-count">06 <i>CORE CAPABILITIES</i></span>
         </div>
         <div className="pxq-cap-grid">
           {capabilities.map(({id,number,title,text,detail,icon:Icon,tone}) => (
