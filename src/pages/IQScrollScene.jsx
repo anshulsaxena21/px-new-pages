@@ -166,12 +166,12 @@ export default function IQScrollScene() {
             end: () => "+=" + Math.max(1, storyRef.current.offsetHeight - pinRef.current.offsetHeight),
             scrub: 0.85,
             invalidateOnRefresh: true,
-            snap: {
+            snap: window.matchMedia("(min-width: 901px)").matches ? {
               snapTo: [0, 0.23, 0.5, 0.79, 1],
               duration: { min: 0.12, max: 0.38 },
               delay: 0.08,
               ease: "power2.out"
-            }
+            } : false
           }
         });
 
@@ -337,7 +337,10 @@ export default function IQScrollScene() {
     if (!story || !pin) return;
 
     const distance = Math.max(0, story.offsetHeight - pin.offsetHeight);
-    const target = window.scrollY + story.getBoundingClientRect().top + distance * (index / 3);
+    const stickyTop = parseFloat(window.getComputedStyle(pin).top) || 0;
+    const chapterStops = [0, 0.23, 0.5, 0.79];
+    const storyTop = window.scrollY + story.getBoundingClientRect().top;
+    const target = storyTop - stickyTop + distance * chapterStops[index];
 
     window.scrollTo({
       top: target,
