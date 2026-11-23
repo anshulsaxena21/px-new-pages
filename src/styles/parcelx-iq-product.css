@@ -1834,3 +1834,34 @@ html:has(.pxq-product){scroll-behavior:smooth}
   .pxq-product .pxq-story-loading>i{animation:none}
   .pxq-product .pxq-story-controls button i{transition:none}
 }
+
+
+/* GSAP pinned capability journey — desktop */
+@media (min-width:901px) and (prefers-reduced-motion:no-preference){
+  .pxq-product .pxq-capabilities{
+    display:flex;align-items:center;min-height:calc(100svh - 76px);
+    padding-top:54px;padding-bottom:54px;overflow:hidden;
+  }
+  .pxq-product .pxq-capabilities>.pxq-shell{width:min(calc(100% - clamp(36px,9vw,144px)),1280px)}
+  .pxq-product .pxq-cap-heading-aside{display:flex;flex-direction:column;align-items:flex-end;gap:15px}
+  .pxq-product .pxq-cap-scroll-hint{
+    display:inline-flex;align-items:center;gap:8px;color:#ff6600;
+    font-size:10px;font-weight:850;letter-spacing:1.4px;
+  }
+  .pxq-product .pxq-cap-grid{
+    display:flex;flex-wrap:nowrap;gap:18px;width:max-content;max-width:none;
+    perspective:1200px;will-change:transform;
+  }
+  .pxq-product .pxq-cap-card{
+    flex:0 0 clamp(310px,28vw,370px);width:clamp(310px,28vw,370px);
+    min-height:286px;transform-origin:center center;backface-visibility:hidden;
+  }
+}
+@media (max-width:900px){
+  .pxq-product .pxq-cap-heading-aside{display:flex;align-items:center;gap:12px}
+  .pxq-product .pxq-cap-scroll-hint{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .pxq-product .pxq-capabilities{height:auto;min-height:0;display:block;overflow:visible}
+  .pxq-product .pxq-cap-grid{display:grid;width:auto;max-width:none}
+}
