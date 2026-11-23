@@ -263,10 +263,10 @@ export default function ParcelXIQProduct() {
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const revealTargets = root.querySelectorAll(
-      ".pxq-intro-grid, .pxq-value-row > div, .pxq-deployment .pxq-section-tag, .pxq-section-heading, .pxq-adoption-panel, .pxq-model-note, .pxq-cap-card, .pxq-analytics-copy, .pxq-report-board, .pxq-integration-head, .pxq-architecture, .pxq-integration-foot, .pxq-steps-head, .pxq-step-grid article, .pxq-steps-note, .pxq-faq-intro, .pxq-faq-item, .pxq-final-inner"
+      ".pxq-intro-grid, .pxq-value-row > div, .pxq-deployment .pxq-section-tag, .pxq-section-heading, .pxq-adoption-panel, .pxq-model-note, .pxq-analytics-copy, .pxq-report-board, .pxq-integration-head, .pxq-architecture, .pxq-integration-foot, .pxq-steps-head, .pxq-step-grid article, .pxq-steps-note, .pxq-faq-intro, .pxq-faq-item, .pxq-final-inner"
     );
     const animatedText = root.querySelectorAll(
-      ".pxq-intro h2, .pxq-section-heading h2, .pxq-analytics-copy h2, .pxq-integration-head h2, .pxq-steps-head h2, .pxq-faq-intro h2, .pxq-final h2, .pxq-cap-card h3, .pxq-value-row b, .pxq-step-grid h3"
+      ".pxq-intro h2, .pxq-section-heading h2, .pxq-analytics-copy h2, .pxq-integration-head h2, .pxq-steps-head h2, .pxq-faq-intro h2, .pxq-final h2, .pxq-value-row b, .pxq-step-grid h3"
     );
 
     const splitIntoWords = (element) => {
@@ -422,6 +422,55 @@ export default function ParcelXIQProduct() {
           }
         );
       });
+      // Pinned horizontal showcase: the six IQ capabilities travel through the viewport as the user scrolls.
+      const capabilitySection = root.querySelector(".pxq-capabilities");
+      const capabilityTrack = capabilitySection?.querySelector(".pxq-cap-grid");
+      const capabilityShell = capabilitySection?.querySelector(".pxq-shell");
+      const capabilityCards = capabilityTrack ? gsap.utils.toArray(".pxq-cap-card", capabilityTrack) : [];
+
+      if (
+        capabilitySection &&
+        capabilityTrack &&
+        capabilityShell &&
+        capabilityCards.length &&
+        window.matchMedia("(min-width: 901px)").matches
+      ) {
+        gsap.set(capabilityTrack, { x: 0 });
+        const horizontalDistance = () => Math.max(1, capabilityTrack.scrollWidth - capabilityShell.clientWidth);
+
+        const capabilityTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: capabilitySection,
+            start: "top top+=76",
+            end: () => "+=" + horizontalDistance(),
+            pin: true,
+            pinSpacing: true,
+            scrub: 0.9,
+            anticipatePin: 1,
+            invalidateOnRefresh: true
+          }
+        });
+
+        capabilityTimeline.to(capabilityTrack, {
+          x: () => -horizontalDistance(),
+          ease: "none",
+          duration: 1
+        }, 0);
+
+        capabilityTimeline.fromTo(capabilityCards,
+          { autoAlpha: 0.58, y: 54, scale: 0.94, rotateY: 7, transformOrigin: "50% 50%" },
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            rotateY: 0,
+            stagger: 0.095,
+            duration: 0.3,
+            ease: "power2.out"
+          },
+          0
+        );
+      }
     }, root);
 
     ScrollTrigger.refresh();
@@ -637,7 +686,10 @@ export default function ParcelXIQProduct() {
         <div className="pxq-section-tag"><span>03</span> WHAT IQ CAN DO</div>
         <div className="pxq-section-heading">
           <div><h2>Six capabilities.<br/><span>One connected workspace.</span></h2><p>Bring essential shipping tasks together—from understanding performance to following up on issues and getting the help you need.</p></div>
-          <span className="pxq-count">06 <i>CORE CAPABILITIES</i></span>
+          <div className="pxq-cap-heading-aside">
+            <span className="pxq-count">06 <i>CORE CAPABILITIES</i></span>
+            <span className="pxq-cap-scroll-hint">KEEP SCROLLING <ArrowRight size={15}/></span>
+          </div>
         </div>
         <div className="pxq-cap-grid">
           {capabilities.map(({id,number,title,text,detail,icon:Icon,tone}) => (
