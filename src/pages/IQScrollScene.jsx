@@ -1,8 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const MODEL_UID = "3040cb76b1a1466785435ab1a344cf1b";
 const VIEWER_API = "https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js";
@@ -58,7 +54,6 @@ function cameraAt(progress, basePosition, baseTarget) {
 
   let start = keys[0];
   let end = keys[keys.length - 1];
-
   for (let i = 0; i < keys.length - 1; i += 1) {
     if (progress >= keys[i].at && progress <= keys[i + 1].at) {
       start = keys[i];
@@ -90,148 +85,61 @@ export default function IQScrollScene() {
   const iframeRef = useRef(null);
   const apiRef = useRef(null);
   const baseCameraRef = useRef(null);
-  const progressRef = useRef({ value: 0 });
   const [viewerReady, setViewerReady] = useState(false);
   const [viewerError, setViewerError] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
     let disposed = false;
-    let scrollContext = null;
+    let raf = 0;
     let lastSentAt = 0;
     let lastSentProgress = -1;
     let lastStep = -1;
-
+    let resizeObserver;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const progressDriver = progressRef.current;
 
-    const updateChapter = (progress) => {
-      const nextStep = progress < 0.2 ? 0 : progress < 0.5 ? 1 : progress < 0.79 ? 2 : 3;
-      if (nextStep !== lastStep) {
-        lastStep = nextStep;
-        setActiveStep(nextStep);
-      }
+    const getProgress = () => {
+      if (!storyRef.current || !pinRef.current) return 0;
+      if (reduceMotion) return 0;
+      const distance = Math.max(1, storyRef.current.offsetHeight - pinRef.current.offsetHeight);
+      return clamp(-storyRef.current.getBoundingClientRect().top / distance);
     };
 
-    const drawAtProgress = (rawProgress, force = false) => {
-      if (disposed) return;
+    const drawAtScroll = (force = false) => {
+      if (disposed || !pinRef.current) return;
+      const progress = getProgress();
+      const step = progress < 0.2 ? 0 : progress < 0.5 ? 1 : progress < 0.79 ? 2 : 3;
 
-      const progress = clamp(rawProgress);
-      if (pinRef.current) {
-        pinRef.current.style.setProperty("--pxq-story-progress", progress.toFixed(4));
+      if (step !== lastStep) {
+        lastStep = step;
+        setActiveStep(step);
       }
-      updateChapter(progress);
 
+      pinRef.current.style.setProperty("--pxq-story-progress", progress.toFixed(4));
       const api = apiRef.current;
       const camera = baseCameraRef.current;
       if (!api || !camera) return;
 
       const now = performance.now();
-      if (!force && (now - lastSentAt < 32 || Math.abs(progress - lastSentProgress) < 0.0018)) return;
-
+      if (!force && (now - lastSentAt < 34 || Math.abs(progress - lastSentProgress) < 0.0025)) return;
       lastSentAt = now;
       lastSentProgress = progress;
 
-      const nextCamera = cameraAt(progress, camera.position, camera.target);
+      const next = cameraAt(progress, camera.position, camera.target);
       try {
-        api.setCameraLookAt(nextCamera.position, nextCamera.target, 0);
+        api.setCameraLookAt(next.position, next.target, 0);
       } catch (error) {
         console.warn("Unable to update the Sketchfab camera.", error);
       }
     };
 
-    const setupScrollStory = () => {
-      if (disposed || !storyRef.current || !pinRef.current) return;
-
-      if (reduceMotion) {
-        drawAtProgress(0, true);
-        return;
-      }
-
-      scrollContext?.revert();
-      scrollContext = gsap.context(() => {
-        const routes = gsap.utils.toArray(".pxq-story-routes .route");
-        const routeNodes = gsap.utils.toArray(".pxq-story-routes .route-nodes circle");
-        const cards = gsap.utils.toArray(".pxq-story-fx-card");
-        const orbits = gsap.utils.toArray(".pxq-story-orbit");
-
-        const storyTimeline = gsap.timeline({
-          onUpdate: () => drawAtProgress(progressDriver.value),
-          scrollTrigger: {
-            trigger: storyRef.current,
-            start: () => {
-              const stickyTop = parseFloat(window.getComputedStyle(pinRef.current).top) || 0;
-              return "top top+=" + stickyTop;
-            },
-            end: () => "+=" + Math.max(1, storyRef.current.offsetHeight - pinRef.current.offsetHeight),
-            scrub: 0.85,
-            invalidateOnRefresh: true,
-            snap: window.matchMedia("(min-width: 901px)").matches ? {
-              snapTo: [0, 0.23, 0.5, 0.79, 1],
-              duration: { min: 0.12, max: 0.38 },
-              delay: 0.08,
-              ease: "power2.out"
-            } : false
-          }
-        });
-
-        // One master playhead drives the 3D camera and every overlay in the scene.
-        storyTimeline.to(progressDriver, {
-          value: 1,
-          duration: 1,
-          ease: "none"
-        }, 0);
-
-        // Orbit rings create a slow, dimensional movement around the parcel.
-        if (orbits[0]) {
-          storyTimeline.fromTo(orbits[0],
-            { rotation: -38, scale: 0.9, autoAlpha: 0.55 },
-            { rotation: 24, scale: 1.04, autoAlpha: 1, duration: 1, ease: "none" },
-            0
-          );
-        }
-        if (orbits[1]) {
-          storyTimeline.fromTo(orbits[1],
-            { rotation: 54, scale: 0.94, autoAlpha: 0.28 },
-            { rotation: -18, scale: 1.08, autoAlpha: 0.82, duration: 1, ease: "none" },
-            0
-          );
-        }
-
-        // Route paths draw into the scene as the story moves from shipment to network.
-        storyTimeline.fromTo(routes,
-          { strokeDashoffset: 1600, autoAlpha: 0 },
-          { strokeDashoffset: 0, autoAlpha: 1, duration: 0.32, stagger: 0.035, ease: "none" },
-          0.13
-        );
-
-        // Network nodes light up after the routes have appeared.
-        storyTimeline.fromTo(routeNodes,
-          { scale: 0, autoAlpha: 0, transformOrigin: "50% 50%" },
-          { scale: 1, autoAlpha: 1, duration: 0.12, stagger: 0.018, ease: "back.out(1.7)" },
-          0.38
-        );
-
-        // Operational data cards enter, hold, then leave before the final IQ reveal.
-        storyTimeline.fromTo(cards,
-          { autoAlpha: 0, y: 26, scale: 0.96 },
-          { autoAlpha: 1, y: 0, scale: 1, duration: 0.12, stagger: 0.035, ease: "power2.out" },
-          0.46
-        );
-        storyTimeline.to(cards,
-          { autoAlpha: 0, y: -16, duration: 0.08, stagger: 0.018, ease: "power2.in" },
-          0.88
-        );
-
-        drawAtProgress(progressDriver.value, true);
-      }, storyRef);
-
-      ScrollTrigger.refresh();
+    const requestDraw = () => {
+      if (raf || disposed) return;
+      raf = window.requestAnimationFrame(() => {
+        raf = 0;
+        drawAtScroll();
+      });
     };
-
-    setupScrollStory();
-    const refreshAfterLoad = () => ScrollTrigger.refresh();
-    window.addEventListener("load", refreshAfterLoad, { once: true });
 
     const initializeViewer = async () => {
       try {
@@ -276,8 +184,7 @@ export default function IQScrollScene() {
                   target: camera.target.slice()
                 };
                 setViewerReady(true);
-                drawAtProgress(progressDriver.value, true);
-                ScrollTrigger.refresh();
+                drawAtScroll(true);
               });
             });
           },
@@ -292,11 +199,18 @@ export default function IQScrollScene() {
     };
 
     initializeViewer();
+    window.addEventListener("scroll", requestDraw, { passive: true });
+    window.addEventListener("resize", requestDraw, { passive: true });
+    resizeObserver = new ResizeObserver(requestDraw);
+    if (pinRef.current) resizeObserver.observe(pinRef.current);
+    requestDraw();
 
     return () => {
       disposed = true;
-      window.removeEventListener("load", refreshAfterLoad);
-      scrollContext?.revert();
+      if (raf) window.cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", requestDraw);
+      window.removeEventListener("resize", requestDraw);
+      resizeObserver?.disconnect();
       try {
         apiRef.current?.stop();
       } catch (_) {
@@ -307,41 +221,12 @@ export default function IQScrollScene() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!pinRef.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
-
-    const copy = pinRef.current.querySelector(".pxq-story-copy");
-    if (!copy) return undefined;
-
-    const copyContext = gsap.context(() => {
-      gsap.fromTo(copy,
-        { autoAlpha: 0, y: 18, filter: "blur(7px)" },
-        {
-          autoAlpha: 1,
-          y: 0,
-          filter: "blur(0px)",
-          duration: 0.55,
-          stagger: 0.035,
-          ease: "power3.out",
-          clearProps: "filter"
-        }
-      );
-    }, pinRef);
-
-    return () => copyContext.revert();
-  }, [activeStep]);
-
   const jumpToStep = (index) => {
     const story = storyRef.current;
     const pin = pinRef.current;
     if (!story || !pin) return;
-
     const distance = Math.max(0, story.offsetHeight - pin.offsetHeight);
-    const stickyTop = parseFloat(window.getComputedStyle(pin).top) || 0;
-    const chapterStops = [0, 0.23, 0.5, 0.79];
-    const storyTop = window.scrollY + story.getBoundingClientRect().top;
-    const target = storyTop - stickyTop + distance * chapterStops[index];
-
+    const target = window.scrollY + story.getBoundingClientRect().top + distance * (index / 3);
     window.scrollTo({
       top: target,
       behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
