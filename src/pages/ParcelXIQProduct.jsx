@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import logo from "../images/ParcelX_Logo.svg";
 import "../styles/parcelx-iq-product.css";
+import IQScrollScene from "./IQScrollScene.jsx";
 
 const demoBaseUrl = "/px-new-pages/parcelx-iq-demo.html";
 const demoUrl = `${demoBaseUrl}?intent=demo`;
@@ -511,13 +512,7 @@ export default function ParcelXIQProduct() {
             </div>
           </div>
         </div>
-        <div className="pxq-hero-stage">
-          <div className="pxq-hero-stage-glow"/>
-          <div className="pxq-hero-stage-label pxq-hero-stage-label-left"><span><BarChart3 size={16}/></span><div><b>Performance at a glance</b><small>Shipping analytics</small></div></div>
-          <div className="pxq-hero-stage-label pxq-hero-stage-label-right"><span><Truck size={16}/></span><div><b>Every shipment in view</b><small>Tracking &amp; visibility</small></div></div>
-          <div className="pxq-hero-stage-inner"><DashboardPreview/></div>
-          <div className="pxq-hero-stage-caption"><span><i/> YOUR SHIPPING COMMAND CENTER</span><span>Illustrative product preview</span></div>
-        </div>
+        <IQScrollScene />
         <div className="pxq-hero-bottom">
           <span>ANALYTICS</span><i/><span>TRACKING</span><i/><span>TICKETS</span><i/><span>WALLET</span><i/><span>NDR</span><i/><span>SUPPORT</span>
         </div>
