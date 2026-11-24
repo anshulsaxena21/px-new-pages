@@ -867,3 +867,249 @@ body *:not(.ph):not(svg):not(path) {
     margin:14px 0 18px !important;
   }
 }
+
+
+/* Full storefront composition — restore the complete fashion tracking page */
+#trackingDetails{
+  display:grid;
+  grid-template-columns:minmax(0,1.85fr) minmax(220px,.9fr);
+  gap:20px;
+  width:min(1320px,calc(100% - 48px));
+  max-width:1320px;
+  margin:18px auto 28px;
+  padding:0;
+  align-items:start;
+}
+#trackingDetails .tracking-main{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  padding:20px;
+  border:1px solid #ededed;
+  border-radius:10px;
+  background:#fff;
+  overflow:visible;
+}
+#trackingDetails .tracking-aside{
+  display:flex !important;
+  flex-direction:column;
+  gap:16px;
+  min-width:0;
+}
+#trackingDetails .shipment-card{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  column-gap:16px;
+  align-items:center;
+  padding:20px 18px 16px;
+  border:1px solid #eee;
+  border-radius:10px;
+  min-width:0;
+}
+#trackingDetails .delivery-heading{
+  grid-column:1 / -1;
+  grid-row:1;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:14px;
+  line-height:1.35;
+  font-weight:600;
+}
+#trackingDetails .weekday{font-size:14px;font-weight:400}
+#trackingDetails .delivery-date{
+  grid-column:2;
+  grid-row:2;
+  align-self:center;
+  width:auto;
+  margin:4px 0 8px;
+  font-size:clamp(32px,3.2vw,44px) !important;
+  line-height:1.05 !important;
+  letter-spacing:-.045em !important;
+  font-weight:800 !important;
+  text-align:right !important;
+  white-space:nowrap !important;
+}
+#trackingDetails .status-row{
+  position:static;
+  grid-column:1;
+  grid-row:2;
+  justify-self:start;
+  align-self:center;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:4px 0 8px;
+  padding:0 0 12px;
+  border:0;
+  font-size:14px;
+  white-space:nowrap;
+}
+#trackingDetails .status-pill{
+  padding:6px 11px;
+  font-size:14px;
+  border-radius:20px;
+}
+#trackingDetails .tracking-id{
+  grid-column:1 / -1;
+  grid-row:3;
+  min-height:58px;
+  padding:9px 0;
+  border-top:1px solid #dedede;
+  border-bottom:1px solid #dedede;
+}
+#trackingDetails .tracking-id>span{font-size:14px;color:#888}
+#trackingDetails .tracking-id strong{font-size:14px;font-weight:500}
+#trackingDetails .courier-logo{
+  right:0;
+  bottom:10px;
+  width:94px;
+  max-height:32px;
+}
+#trackingDetails .latest-update{
+  grid-column:1 / -1;
+  grid-row:4;
+  padding-top:10px;
+  gap:5px;
+}
+#trackingDetails .latest-update strong{font-size:14px;font-weight:600}
+#trackingDetails .latest-update>span,
+#trackingDetails .latest-update small{font-size:14px;color:#222}
+#trackingDetails .journey{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  min-width:0;
+  padding:8px 0 4px;
+  margin:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  overflow:visible;
+  gap:0;
+}
+#trackingDetails .journey-line{
+  top:43px;
+  left:5%;
+  right:5%;
+  border-top:3px dotted #d5d5d5;
+}
+#trackingDetails .journey-line:after{
+  top:-3px;
+  border-top:3px dotted #20bd78;
+}
+#trackingDetails .journey-step{
+  align-items:center;
+  text-align:center;
+  gap:7px;
+  min-width:0;
+}
+#trackingDetails .journey-step small{
+  min-height:28px;
+  font-size:14px;
+  line-height:1.35;
+  color:#222;
+  font-weight:500;
+}
+#trackingDetails .journey-step .step-icon{
+  width:22px;height:22px;flex:0 0 22px;
+  border:0;
+  box-shadow:none;
+  font-size:14px;
+}
+#trackingDetails .journey-step .step-icon .ph{font-size:13px}
+#trackingDetails .journey-step b{
+  font-size:14px;
+  line-height:1.25;
+  font-weight:500;
+  white-space:nowrap;
+}
+#trackingDetails .journey-step.active b{color:#ff6600}
+#trackingDetails .history{
+  padding:18px 20px;
+  border-radius:9px;
+  background:#f8f8f8;
+}
+#trackingDetails .history-head{display:none}
+#trackingDetails .history-inner{
+  padding:18px;
+  border-radius:7px;
+  background:linear-gradient(110deg,#fbefec 0%,#f8edf5 100%);
+}
+#trackingDetails .history-table-wrap{
+  width:100%;
+  height:140px;
+  max-height:140px;
+  overflow:auto;
+  border:1px solid #e6e6e6;
+  border-radius:4px;
+  padding:0;
+  background:#fff;
+}
+#trackingDetails .history table{
+  width:max-content;
+  min-width:100%;
+  table-layout:auto;
+  border-collapse:separate;
+  border-spacing:0;
+}
+#trackingDetails .history th,
+#trackingDetails .history td{
+  min-width:110px;
+  padding:9px 10px;
+  font-size:14px;
+  white-space:nowrap;
+}
+#trackingDetails .history th:first-child,
+#trackingDetails .history td:first-child{min-width:125px}
+#trackingDetails .history th:nth-child(2),
+#trackingDetails .history td:nth-child(2){min-width:160px}
+#trackingDetails .history th:last-child,
+#trackingDetails .history td:last-child{min-width:110px}
+#trackingDetails .history th{
+  position:sticky;
+  top:0;
+  z-index:3;
+  background:#fff;
+  font-weight:600;
+}
+#trackingDetails .history th:first-child,
+#trackingDetails .history td:first-child{position:sticky;left:0}
+#trackingDetails .history th:first-child{z-index:5;background:#fff}
+#trackingDetails .history td:first-child{z-index:2;background:#fff}
+#trackingDetails .map-card{height:215px}
+#trackingDetails .order-meta{font-size:14px;padding:16px}
+#trackingDetails .mini-promo{min-height:145px;padding:16px}
+#trackingDetails .mini-promo strong{font-size:18px}
+#trackingDetails .promo-orbit{width:72px;height:72px}
+@media(max-width:700px){
+  #trackingDetails{
+    width:calc(100% - 32px);
+    grid-template-columns:minmax(0,1fr);
+    gap:16px;
+    margin:16px auto 24px;
+  }
+  #trackingDetails .tracking-main{padding:14px;gap:16px}
+  #trackingDetails .tracking-aside{
+    display:grid !important;
+    grid-template-columns:1fr 1fr;
+  }
+  #trackingDetails .map-card{grid-row:span 2;height:100%;min-height:220px}
+  #trackingDetails .journey{
+    min-width:560px;
+    padding:8px 4px 10px;
+  }
+  #trackingDetails .tracking-main{overflow-x:auto}
+  #trackingDetails .history{padding:14px}
+  #trackingDetails .history-inner{padding:10px}
+}
+@media(max-width:480px){
+  #trackingDetails{width:calc(100% - 24px)}
+  #trackingDetails .shipment-card{padding:16px 13px;column-gap:8px}
+  #trackingDetails .delivery-date{font-size:clamp(28px,8vw,36px) !important}
+  #trackingDetails .status-row{gap:5px;font-size:14px}
+  #trackingDetails .status-pill{padding:5px 8px;font-size:14px}
+  #trackingDetails .tracking-aside{grid-template-columns:1fr}
+  #trackingDetails .map-card{height:190px;min-height:0;grid-row:auto}
+  #trackingDetails .history-table-wrap{height:150px;max-height:150px}
+}
