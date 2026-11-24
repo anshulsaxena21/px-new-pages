@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS merchant_instagram_settings (
   merchant_id TEXT PRIMARY KEY,
+  public_store_key TEXT NOT NULL UNIQUE,
   username TEXT NOT NULL,
   feed_json TEXT,
   feed_cached_at INTEGER,
@@ -8,3 +9,6 @@ CREATE TABLE IF NOT EXISTS merchant_instagram_settings (
 
 CREATE INDEX IF NOT EXISTS idx_merchant_instagram_updated_at
   ON merchant_instagram_settings(updated_at);
+
+CREATE INDEX IF NOT EXISTS idx_merchant_instagram_public_store_key
+  ON merchant_instagram_settings(public_store_key);
