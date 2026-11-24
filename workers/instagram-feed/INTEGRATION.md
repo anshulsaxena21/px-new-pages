@@ -30,7 +30,7 @@ Keep `PARCELX_INTERNAL_API_KEY` only in the ParcelX server environment. Never pu
 
 ## 2. Meta requirements and supported accounts
 
-This implementation uses Instagram Business Discovery with the Instagram API with Facebook Login. The caller must be an Instagram Professional account (Business or Creator) linked to a Facebook Page, with the required Meta app permissions, including `instagram_basic`, `pages_show_list`, and `pages_read_engagement`. Meta app review / advanced access may be required before serving merchants outside app roles.
+This implementation uses Instagram Business Discovery with the Instagram API with Facebook Login. The Business Discovery caller must use an Instagram Professional account linked to a Facebook Page and a Facebook User access token. The baseline permissions for the Instagram User / Business Discovery request are `instagram_basic` and `pages_read_engagement`. `pages_show_list` can be useful during the setup flow to discover the linked Page, but is not listed as a baseline permission for this feed request. Meta app review / advanced access may be required before serving merchants outside app roles.
 
 The target account must be public and professional (Business or Creator). Consumer/personal and private Instagram accounts are not supported by this API. The Worker requests the four most recent media objects returned by Meta and falls back to the public Instagram profile link if media is unavailable.
 
@@ -43,7 +43,6 @@ Change the screenshot's Instagram field to a username rather than a full URL:
 - Label: Instagram Username
 - Placeholder: Enter Instagram username (e.g. parcelx.in)
 - Helper: Public Business or Creator accounts only
-- Optional toggle: Show latest 4 posts on tracking page
 
 When a merchant clicks Save, the **ParcelX dashboard backend** must first verify that the signed-in user can edit this merchant, then call:
 
