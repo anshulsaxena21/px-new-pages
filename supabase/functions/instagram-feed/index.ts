@@ -2,7 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const TABLE = "merchant_instagram_settings";
 const CACHE_TTL_MS = 30 * 60 * 1000;
-const GRAPH_VERSION = "v27.0";
+const GRAPH_VERSION = "v26.0";
 const USERNAME_RE = /^[A-Za-z0-9._]{1,30}$/;
 
 type InstagramPost = {
@@ -213,6 +213,113 @@ async function refreshFeed(row: Record<string, unknown>) {
   }
 }
 
+
+async function hashRateLimitKey(value: string): Promise<string> {
+  const bytes = new TextEncoder().encode(value);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest)).map((part) => part.toString(16).padStart(2, "0")).join("");
+}
+
+async function takePreviewRateLimitSlot(request: Request): Promise<boolean> {
+  const forwardedFor = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const clientAddress = request.headers.get("cf-connecting-ip") || forwardedFor || "unknown";
+  const ipHash = await hashRateLimitKey(clientAddress);
+
+  const allowed = await dbRequest("rpc/take_instagram_preview_slot", {
+    method: "POST",
+    body: JSON.stringify({
+      p_ip_hash: ipHash,
+      p_now: new Date().toISOString(),
+      p_limit: 12,
+      p_window_seconds: 60
+    })
+  });
+  return allowed === true;
+}
+
+async function handleUsernamePreview(request: Request) {
+  const url = new URL(request.url);
+  const username = normalizeUsername(url.searchParams.get("username"));
+  if (!username) {
+    return response({
+      ok: false,
+      code: "INVALID_USERNAME",
+      message: "Enter a valid Instagram username without @ or a profile URL."
+    }, 400);
+  }
+
+  if (!await takePreviewRateLimitSlot(request)) {
+    return response({
+      ok: false,
+      code: "RATE_LIMITED",
+      message: "Too many preview requests. Please wait a minute and try again."
+    }, 429);
+  }
+
+  const query = new URLSearchParams({
+    select: "username,posts,posts_fetched_at",
+    username: `eq.${username}`,
+    limit: "1"
+  });
+  const rows = await dbRequest(`${"instagram_preview_cache"}?${query.toString()}`);
+  const cached = Array.isArray(rows) ? rows[0] ?? null : null;
+  const existingPosts = Array.isArray(cached?.posts) ? cached.posts : [];
+  const fetchedAt = cached?.posts_fetched_at ? Date.parse(String(cached.posts_fetched_at)) : 0;
+  const isFresh = fetchedAt > 0 && Date.now() - fetchedAt < CACHE_TTL_MS;
+  if (isFresh) {
+    return response({
+      ok: true,
+      username,
+      profileUrl: profileUrl(username),
+      feedAvailable: existingPosts.length > 0,
+      posts: existingPosts.slice(0, 4),
+      cached: true
+    }, 200, true);
+  }
+
+  try {
+    const posts = await fetchInstagramPosts(username);
+    const now = new Date().toISOString();
+    await dbRequest("instagram_preview_cache?on_conflict=username", {
+      method: "POST",
+      headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
+      body: JSON.stringify({
+        username,
+        posts,
+        posts_fetched_at: now,
+        last_error: null,
+        updated_at: now
+      })
+    });
+
+    return response({
+      ok: true,
+      username,
+      profileUrl: profileUrl(username),
+      feedAvailable: posts.length > 0,
+      posts,
+      cached: false,
+      message: posts.length ? "" : "No public posts were returned. The profile may be private, personal, or unavailable through Instagram Business Discovery."
+    }, 200, true);
+  } catch (error) {
+    console.error("Instagram preview could not be refreshed", error instanceof Error ? error.message : "UNKNOWN");
+    const stalePosts = existingPosts.slice(0, 4);
+    return response({
+      ok: stalePosts.length > 0,
+      username,
+      profileUrl: profileUrl(username),
+      feedAvailable: stalePosts.length > 0,
+      posts: stalePosts,
+      cached: stalePosts.length > 0,
+      stale: stalePosts.length > 0,
+      code: "INSTAGRAM_UNAVAILABLE",
+      message: stalePosts.length
+        ? "Instagram could not be refreshed. Showing previously cached posts."
+        : "We couldn't load posts. Check that this is a public Business or Creator account and that Meta API access is configured."
+    }, stalePosts.length ? 200 : 503, true);
+  }
+}
+
 async function handleFeed(request: Request) {
   const url = new URL(request.url);
   const publicKey = normalizePublicKey(url.searchParams.get("store_key"));
@@ -306,7 +413,10 @@ Deno.serve(async (request: Request) => {
   if (request.method === "OPTIONS") return response(null, 204);
   try {
     const path = new URL(request.url).pathname.replace(/\/+$/, "");
-    if (request.method === "GET" && path.endsWith("/instagram-feed")) return await handleFeed(request);
+    if (request.method === "GET" && path.endsWith("/instagram-feed")) {
+      if (new URL(request.url).searchParams.has("username")) return await handleUsernamePreview(request);
+      return await handleFeed(request);
+    }
     if (request.method === "POST" && path.endsWith("/instagram-feed/settings")) return await handleSave(request);
     if (request.method === "DELETE" && path.endsWith("/instagram-feed/settings")) return await handleDisconnect(request);
     return response({ ok: false, code: "NOT_FOUND" }, 404);
