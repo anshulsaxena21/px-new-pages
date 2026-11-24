@@ -121,10 +121,10 @@ export default function FigmaImporter() {
       const isText = node.type === "TEXT";
       const tag = isText ? "p" : "div";
       const label = isText ? String(node.characters || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\{ /g,"&#123;") : "";
-      const children = (node.children || []).map(child => emit(child, node, depth + 1)).join("\\n");
+      const children = (node.children || []).map(child => emit(child, node, depth + 1)).join("\n");
       const content = isText ? label : children;
       const pad = "  ".repeat(depth);
-      return `${pad}<${tag} className="${cls}">${content ? "\\n" + content + "\\n" + pad : ""}</${tag}>`;
+      return `${pad}<${tag} className="${cls}">${content ? "\n" + content + "\n" + pad : ""}</${tag}>`;
     };
     const css = [];
     const rules = (node, parent = null) => {
@@ -137,7 +137,11 @@ export default function FigmaImporter() {
       const imageUrl = assetByNode.get(node.id);
       const style = node.style || {};
       const lines = [`.${className(node)} {`];
-      if (parent?.layoutMode === "HORIZONTAL" || parent?.layoutMode === "VERTICAL") {
+      if (!parent) {
+        lines.push("  position: relative;");
+        lines.push("  width: 100%;");
+        lines.push("  min-height: 100vh;");
+      } else if (parent?.layoutMode === "HORIZONTAL" || parent?.layoutMode === "VERTICAL") {
         lines.push("  position: relative;");
         lines.push(`  flex: ${node.layoutGrow ? "1 1 0" : "0 0 auto"};`);
         if (box.width) lines.push(`  width: ${box.width}px;`);
@@ -174,13 +178,13 @@ export default function FigmaImporter() {
         lines.push("  white-space: pre-wrap;");
       }
       lines.push("}");
-      css.push(lines.join("\\n"));
+      css.push(lines.join("\n"));
       (node.children || []).forEach(child => rules(child, node));
     };
     rules(design.document);
-    const jsx = `import React from "react";\\nimport "./FigmaExport.css";\\n\\nexport default function FigmaExport() {\\n  return (\\n    <main className="${className(design.document)}">\\n${(design.document.children || []).map(child => emit(child, design.document, 3)).join("\\n")}\\n    </main>\\n  );\\n}\\n`;
+    const jsx = `import React from "react";\nimport "./FigmaExport.css";\n\nexport default function FigmaExport() {\n  return (\n    <main className="${className(design.document)}">\n${(design.document.children || []).map(child => emit(child, design.document, 3)).join("\n")}\n    </main>\n  );\n}\n`;
     downloadText("FigmaExport.jsx", jsx, "text/javascript");
-    downloadText("FigmaExport.css", css.join("\\n\\n"), "text/css");
+    downloadText("FigmaExport.css", css.join("\n\n"), "text/css");
   }
 
   function exportAssetsManifest() { downloadText("figma-assets.json", JSON.stringify(design.assets || [], null, 2), "application/json"); }
