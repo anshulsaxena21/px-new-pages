@@ -103,6 +103,31 @@ async function findByPublicKey(publicKey: string) {
   return Array.isArray(rows) ? rows[0] ?? null : null;
 }
 
+async function logMetaTokenPermissions(accessToken: string) {
+  try {
+    const url = new URL(`https://graph.facebook.com/${GRAPH_VERSION}/me/permissions`);
+    const result = await fetch(url, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+    const body = await result.json().catch(() => ({}));
+    const permissions = Array.isArray(body?.data)
+      ? body.data.map((item: Record<string, unknown>) => ({
+          permission: String(item.permission ?? ""),
+          status: String(item.status ?? "")
+        }))
+      : [];
+    const apiError = body?.error ?? {};
+    console.error("Meta token permission diagnostic", JSON.stringify({
+      status: result.status,
+      permissions,
+      errorCode: apiError.code ?? null,
+      errorMessage: String(apiError.message ?? "").slice(0, 300)
+    }));
+  } catch (error) {
+    console.error("Meta token permission diagnostic failed", error instanceof Error ? error.message : "UNKNOWN");
+  }
+}
+
 async function fetchInstagramPosts(username: string): Promise<InstagramPost[]> {
   const accessToken = Deno.env.get("META_ACCESS_TOKEN");
   const instagramAccountId = Deno.env.get("META_INSTAGRAM_ACCOUNT_ID");
@@ -119,6 +144,9 @@ async function fetchInstagramPosts(username: string): Promise<InstagramPost[]> {
   const payload = await metaResponse.json().catch(() => ({}));
   if (!metaResponse.ok || payload?.error) {
     const apiError = payload?.error ?? {};
+    if (apiError.code === 10 || apiError.code === 200) {
+      await logMetaTokenPermissions(accessToken);
+    }
     console.error("Instagram Business Discovery request failed", JSON.stringify({
       status: metaResponse.status,
       type: apiError.type ?? null,
