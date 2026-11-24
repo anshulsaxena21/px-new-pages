@@ -668,43 +668,6 @@ export default function ParcelXIQProduct() {
 
             <div className="pxq-final-visual" aria-hidden="true">
               <div className="pxq-final-visual-glow"/>
-              <div className="pxq-final-visual-grid"/>
-              <div className="pxq-final-visual-sweep"/>
-              <svg className="pxq-final-network" viewBox="0 0 600 600" fill="none" aria-hidden="true">
-                <defs>
-                  <linearGradient id="pxqFinalRouteOrange" x1="70" y1="90" x2="520" y2="510" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#FFB184" stopOpacity=".12"/>
-                    <stop offset=".5" stopColor="#FF6A1A"/>
-                    <stop offset="1" stopColor="#FFB184" stopOpacity=".22"/>
-                  </linearGradient>
-                  <linearGradient id="pxqFinalRouteViolet" x1="520" y1="90" x2="80" y2="500" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#A69BFF" stopOpacity=".12"/>
-                    <stop offset=".55" stopColor="#9B8EFF"/>
-                    <stop offset="1" stopColor="#A69BFF" stopOpacity=".15"/>
-                  </linearGradient>
-                </defs>
-                <path className="pxq-final-network-base" d="M300 300 C360 260 420 180 510 112"/>
-                <path className="pxq-final-network-base" d="M300 300 C225 330 160 385 76 468"/>
-                <path className="pxq-final-network-base" d="M300 300 C390 355 458 425 526 510"/>
-                <path className="pxq-final-network-base" d="M300 300 C235 230 172 165 88 104"/>
-                <path id="pxq-final-route-analytics" className="pxq-final-network-route route-orange" d="M300 300 C360 260 420 180 510 112"/>
-                <path id="pxq-final-route-tracking" className="pxq-final-network-route route-violet" d="M300 300 C225 330 160 385 76 468"/>
-                <path id="pxq-final-route-workflow" className="pxq-final-network-route route-orange route-delay" d="M300 300 C390 355 458 425 526 510"/>
-                <path id="pxq-final-route-signals" className="pxq-final-network-route route-violet route-delay-two" d="M300 300 C235 230 172 165 88 104"/>
-                <g className="pxq-final-network-nodes">
-                  <circle cx="510" cy="112" r="5"/>
-                  <circle cx="76" cy="468" r="5"/>
-                  <circle cx="526" cy="510" r="5"/>
-                  <circle cx="88" cy="104" r="4"/>
-                  <circle cx="300" cy="300" r="8" className="pxq-final-network-origin"/>
-                </g>
-                <g className="pxq-final-network-packets">
-                  <circle r="4" className="packet-orange"><animateMotion dur="4.7s" repeatCount="indefinite"><mpath href="#pxq-final-route-analytics"/></animateMotion></circle>
-                  <circle r="3.5" className="packet-violet"><animateMotion dur="5.8s" begin="-2s" repeatCount="indefinite"><mpath href="#pxq-final-route-tracking"/></animateMotion></circle>
-                  <circle r="3.5" className="packet-orange"><animateMotion dur="6.2s" begin="-3.4s" repeatCount="indefinite"><mpath href="#pxq-final-route-workflow"/></animateMotion></circle>
-                  <circle r="3" className="packet-violet"><animateMotion dur="5.3s" begin="-1.7s" repeatCount="indefinite"><mpath href="#pxq-final-route-signals"/></animateMotion></circle>
-                </g>
-              </svg>
               <div className="pxq-final-ring pxq-final-ring-outer"/>
               <div className="pxq-final-ring pxq-final-ring-mid"/>
               <div className="pxq-final-ring pxq-final-ring-inner"/>
@@ -713,31 +676,25 @@ export default function ParcelXIQProduct() {
               <div className="pxq-final-orbit pxq-final-orbit-three"><span/></div>
 
               <div className="pxq-final-core">
-                <span className="pxq-final-core-aura"/>
                 <div className="pxq-final-core-icon"><BrainCircuit size={39}/></div>
                 <strong>IQ</strong>
                 <small>SHIPPING INTELLIGENCE</small>
                 <span className="pxq-final-core-scan"/>
-                <span className="pxq-final-core-status"><i/> CONNECTED</span>
               </div>
 
               <div className="pxq-final-float pxq-final-float-analytics">
                 <span className="pxq-final-float-icon"><BarChart3 size={17}/></span>
                 <span><small>SEE THE BIG PICTURE</small><b>Shipping analytics</b></span>
-                <span className="pxq-final-mini-bars"><i/><i/><i/><i/><i/><i/></span>
                 <i className="pxq-final-float-live"/>
               </div>
               <div className="pxq-final-float pxq-final-float-tracking">
                 <span className="pxq-final-float-icon"><PackageCheck size={17}/></span>
                 <span><small>STAY IN THE KNOW</small><b>Shipment visibility</b></span>
-                <span className="pxq-final-mini-route"><i/><i/><i/><i/></span>
               </div>
               <div className="pxq-final-float pxq-final-float-workflow">
                 <span className="pxq-final-float-icon"><Workflow size={17}/></span>
                 <span><small>MOVE WORK FORWARD</small><b>Connected workflows</b></span>
-                <span className="pxq-final-mini-nodes"><i/><i/><i/></span>
               </div>
-              <div className="pxq-final-visual-caption"><span><i/> SIGNALS IN MOTION</span><b>ONE IQ WORKSPACE</b></div>
               <span className="pxq-final-spark pxq-final-spark-one">✦</span>
               <span className="pxq-final-spark pxq-final-spark-two">✧</span>
               <span className="pxq-final-spark pxq-final-spark-three">✦</span>
