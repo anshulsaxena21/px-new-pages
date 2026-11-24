@@ -36,6 +36,29 @@ function flatten(nodes: any[], out: any[] = []): any[] {
   }
   return out;
 }
+
+function describeLayers(root: any, assets: any[] = []) {
+  const assetMap = new Map(assets.map(a => [a.nodeId, a.name]));
+  const rows: any[] = [];
+  const visit = (node: any, parents: string[] = []) => {
+    const b = node.absoluteBoundingBox || {}, st = node.style || {};
+    const paint = (items: any[] = []) => items.filter(p => p.visible !== false).map(p => p.type === "SOLID" && p.color
+      ? "#" + [p.color.r,p.color.g,p.color.b].map((v:number)=>Math.round(v*255).toString(16).padStart(2,"0")).join("").toUpperCase()
+      : p.type);
+    rows.push({
+      id:node.id,name:node.name||"Untitled",type:node.type,parent:parents.at(-1)||null,
+      hierarchy:[...parents,node.name||"Untitled"].join(" / "),
+      position:{x:b.x??null,y:b.y??null,width:b.width??null,height:b.height??null,rotation:node.rotation??0},
+      layout:{mode:node.layoutMode||"NONE",itemGap:node.itemSpacing??null,counterAxisSpacing:node.counterAxisSpacing??null,padding:{top:node.paddingTop??0,right:node.paddingRight??0,bottom:node.paddingBottom??0,left:node.paddingLeft??0},primaryAxisAlign:node.primaryAxisAlignItems||null,counterAxisAlign:node.counterAxisAlignItems||null},
+      typography:node.type==="TEXT"?{content:node.characters||"",fontFamily:st.fontFamily||null,fontStyle:st.fontPostScriptName||null,fontWeight:st.fontWeight??null,fontSize:st.fontSize??null,lineHeight:st.lineHeightPx??st.lineHeightPercent??null,letterSpacing:st.letterSpacing??null,textAlign:st.textAlignHorizontal||null}:null,
+      appearance:{fills:paint(node.fills||[]),strokes:paint(node.strokes||[]),strokeWeight:node.strokeWeight??null,opacity:node.opacity??1,cornerRadius:node.cornerRadius??null,effects:node.effects||[],blendMode:node.blendMode||null,clipsContent:!!node.clipsContent},
+      text:node.characters||null,asset:assetMap.get(node.id)||null
+    });
+    (node.children||[]).forEach((child:any)=>visit(child,[...parents,node.name||"Untitled"]));
+  };
+  visit(root); return rows;
+}
+
 function safeFileKey(value: unknown) {
   const key = String(value || "").trim();
   if (!/^[A-Za-z0-9]{10,80}$/.test(key)) throw new Error("Invalid Figma file key.");
@@ -190,6 +213,7 @@ Deno.serve(async (request: Request) => {
         version: filePayload.version || null,
         last_modified: lastModified,
         design_data: cleanNode(document),
+        layer_descriptions: describeLayers(document, storedAssets),
         assets: storedAssets,
         stats
       })
