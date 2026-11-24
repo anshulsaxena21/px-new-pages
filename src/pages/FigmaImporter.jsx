@@ -84,7 +84,7 @@ export default function FigmaImporter() {
       const { fileKey, nodeId } = parseFigmaUrl(figmaUrl);
       const response = await fetch(FUNCTION_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json", apikey: supabaseKey.trim(), Authorization: "Bearer " + supabaseKey.trim() },
+        headers: { "Content-Type": "application/json", apikey: supabaseKey.trim() },
         body: JSON.stringify({ fileKey, nodeId, figmaToken: token.trim() })
       });
       const payload = await response.json();
