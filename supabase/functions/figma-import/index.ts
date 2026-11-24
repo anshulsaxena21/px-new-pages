@@ -119,7 +119,7 @@ Deno.serve(async (request: Request) => {
       lastModified,
       version: filePayload.version || null,
       document: cleanNode(document),
-      assets,
+      assets: finalAssets,
       stats: {
         layers: nodes.length,
         text: nodes.filter(n => n.type === "TEXT").length,
