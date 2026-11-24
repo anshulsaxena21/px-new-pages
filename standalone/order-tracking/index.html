@@ -130,6 +130,15 @@
         </div>
         <a id="instagramFollowLink" class="instagram-follow" href="https://www.instagram.com/" hidden target="_blank" rel="noopener noreferrer">Follow on Instagram <i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
       </div>
+      <form id="instagramPreviewForm" class="instagram-preview-controls">
+        <label for="instagramUsernameInput">Preview any Instagram account</label>
+        <div class="instagram-preview-input-row">
+          <span aria-hidden="true">@</span>
+          <input id="instagramUsernameInput" name="username" type="text" value="parcelx.in" maxlength="255" placeholder="Enter Instagram username" autocomplete="off" spellcheck="false" required />
+          <button id="instagramLoadButton" type="submit">Load posts <i class="ph ph-arrow-right" aria-hidden="true"></i></button>
+        </div>
+        <p>Enter a public Instagram Business or Creator username to show its latest four posts.</p>
+      </form>
       <div id="instagramPostGrid" class="instagram-post-grid" aria-live="polite" aria-busy="false">
         <p id="instagramFeedMessage" class="instagram-feed-message">Instagram posts will appear here once this store's account is configured.</p>
       </div>
