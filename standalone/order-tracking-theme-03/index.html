@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="theme-color" content="#ffffff"/>
+  <meta name="description" content="Custom fashion order tracking experience"/>
+  <title>Track Your Order | The Souled Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css"/>
+  <link rel="stylesheet" href="./style.css"/>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Logoipsum home">Logoipsum<span>®</span></a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#top">Home</a><a href="#about">About</a><a href="#contact">Contact Us</a><a href="#products">Shop Now!</a>
+    </nav>
+  </header>
+  <div class="offer-bar">Flash Deal : Flat 50% off on orders above 1299 <img data-asset="assets/images/fire-1f525-1-2802-9904.png" alt="" class="fire-icon"/></div>
+
+  <main id="top">
+    <section class="campaign-hero">
+      <div class="hero-photo" data-bg="assets/images/image-2760-21028.png"></div>
+      <div class="hero-red-panel" aria-hidden="true"></div>
+      <div class="tracking-form-card">
+        <h1>Enter your waybill number to track your package</h1>
+        <div class="tracking-modes" role="tablist" aria-label="Tracking method">
+          <button type="button" class="mode active" role="tab" aria-selected="true" data-mode="waybill"><i class="ph-fill ph-check-circle"></i> Waybill</button>
+          <button type="button" class="mode" role="tab" aria-selected="false" data-mode="order"><i class="ph ph-circle"></i> Order ID</button>
+          <button type="button" class="mode" role="tab" aria-selected="false" data-mode="mobile"><i class="ph ph-circle"></i> Mobile Number</button>
+        </div>
+        <form id="trackingForm" class="tracking-input-row">
+          <label class="sr-only" for="trackingValue">Tracking number</label>
+          <input id="trackingValue" value="989687675" placeholder="Enter your waybill number" autocomplete="off"/>
+          <button type="submit">Track</button>
+        </form>
+        <p class="form-message" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="tracking-results" aria-label="Tracking result">
+      <div class="tracking-column">
+        <div class="result-shell">
+          <section class="delivery-card">
+            <div class="delivery-topline"><h2>Estimated Delivery Date</h2><span>Friday</span></div>
+            <div class="delivery-date">29 October</div>
+            <div class="status-line"><span>Status:</span><span class="status-chip"><i></i>Out for Delivery</span></div>
+            <div class="tracking-number">
+              <div><span>Tracking ID</span><strong>67564565768698</strong></div>
+              <img data-asset="assets/images/blue-dart-logo-transparent-1-2802-10094.png" alt="Blue Dart"/>
+            </div>
+            <div class="latest-scan">
+              <strong>Out for Delivery</strong>
+              <span>Location : NOI_Sector2, Bisrakh, Greater Noida</span>
+              <time>10 Mar, 12:30 PM</time>
+            </div>
+          </section>
+
+          <section class="shipment-timeline" aria-label="Shipment progress">
+            <div class="timeline-rail"><span></span></div>
+            <article class="timeline-step done"><div class="step-time">21 Nov<small>10:43 AM</small></div><span class="step-icon"><i class="ph ph-check"></i></span><b>Booked</b></article>
+            <article class="timeline-step done"><div class="step-time">21 Nov<small>10:43 AM</small></div><span class="step-icon"><i class="ph ph-check"></i></span><b>Manifested</b></article>
+            <article class="timeline-step done"><div class="step-time">21 Nov<small>10:43 AM</small></div><span class="step-icon"><i class="ph ph-check"></i></span><b>Picked</b></article>
+            <article class="timeline-step current"><div class="step-time">21 Nov<small>10:43 AM</small></div><span class="step-icon"><i class="ph ph-truck"></i></span><b>In-Transit <i class="ph ph-info"></i></b></article>
+            <article class="timeline-step"><div class="step-time">21 Nov<small>10:43 AM</small></div><span class="step-icon"><i class="ph ph-moped"></i></span><b>Out for Delivery</b></article>
+            <article class="timeline-step"><div class="step-time">21 Nov<small>10:43 AM</small></div><span class="step-icon"><i class="ph ph-package"></i></span><b>Delivered</b></article>
+          </section>
+
+          <section class="history-panel" aria-label="Tracking history">
+            <div class="history-inner">
+              <div class="history-scroll" tabindex="0" aria-label="Scrollable tracking history table">
+                <table class="history-table">
+                  <thead><tr><th>Scanned At</th><th>Location</th><th>Remark</th></tr></thead>
+                  <tbody>
+                    <tr><td>07 Nov,24 05:30 PM</td><td>Sirmathura, Sirmathura, RAJASTHAN</td><td>Text Cell</td></tr>
+                    <tr><td>09 Nov,24 11:12 AM</td><td>JAI/HUB, Jaipur, RAJASTHAN</td><td>Text Cell</td></tr>
+                    <tr><td>12 Nov,24 05:01 PM</td><td>BLR/FC1, BANGALORE, KARNATAKA</td><td>Text Cell</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+          <div class="map-panel"><img data-asset="assets/images/image-4-2802-10054.png" alt="Delivery location map"/></div>
+        </div>
+      </div>
+
+      <aside class="sidebar">
+        <section class="order-info">
+          <p>Order Placed : <strong>21 December 2024</strong></p>
+          <p>Order ID : <strong>#7886878</strong></p>
+        </section>
+        <section class="shopping-promo">
+          <div class="promo-copy"><h2>Loved Our Amazing<br/>Collection ?</h2><a href="#products">Shop More</a></div>
+          <img data-asset="assets/images/pngtree-3d-shopping-bag-empty-18739972-1-2802-10109.png" alt="Shopping bags"/>
+        </section>
+        <section class="store-video" aria-label="Store video preview">
+          <img data-asset="assets/images/image-2802-10114.png" alt="The Souled Store entrance"/>
+          <span class="video-play"><i class="ph-fill ph-play"></i></span>
+          <div class="video-controls"><i class="ph-fill ph-play"></i><span></span></div>
+        </section>
+      </aside>
+    </section>
+
+    <section class="products-section" id="products">
+      <div class="section-heading"><h2>Check our Products</h2><a href="#products">View All</a></div>
+      <div class="product-grid">
+        <a class="product-card" href="#products"><img data-asset="assets/images/image-2802-10141.png" alt="Navy blue t-shirt"/><span>DJI Phantom 2 Vision+</span><strong>Buy Now</strong></a>
+        <a class="product-card" href="#products"><img data-asset="assets/images/image-2802-10147.png" alt="Black graphic t-shirt"/><span>DJI Phantom 4 Multispectral</span><strong>Buy Now</strong></a>
+        <a class="product-card" href="#products"><img data-asset="assets/images/image-2802-10155.png" alt="Cream two-tone t-shirt"/><span>DJI Phantom 4 PRO</span><strong>Buy Now</strong></a>
+        <a class="product-card" href="#products"><img data-asset="assets/images/image-2802-10161.png" alt="Navy polo shirt"/><span>DJI Phantom 4 PRO</span><strong>Buy Now</strong></a>
+      </div>
+    </section>
+
+    <section class="bottom-banner" data-bg="assets/images/bg-2802-10189.png">
+      <div class="bottom-banner-copy"><h2>Loved Our Amazing<br/>Collection ?</h2><a href="#products">Check our Collection</a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div class="footer-contact"><strong>Connect with Us :</strong><a href="mailto:mail.brands@gmail.in"><i class="ph ph-envelope"></i> mail.brands@gmail.in</a><a href="tel:+919988776655"><i class="ph ph-phone"></i> +91 9988776655</a></div>
+    <div class="footer-social"><strong>Follow Us :</strong><a href="#contact" aria-label="Facebook"><i class="ph ph-facebook-logo"></i></a><a href="#contact" aria-label="Instagram"><i class="ph ph-instagram-logo"></i></a><a href="#contact" aria-label="YouTube"><i class="ph ph-youtube-logo"></i></a></div>
+  </footer>
+
+  <div class="asset-status" id="assetStatus" role="status">Loading design assets…</div>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
