@@ -3,7 +3,7 @@ import { Activity, ArrowDownToLine, ArrowRight, Box, Check, ChevronDown, Chevron
 
 const PROJECT_URL = "https://ovdxipfxychotaspfccl.supabase.co";
 const FUNCTION_URL = PROJECT_URL + "/functions/v1/figma-import";
-const DEFAULT_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || "";
+const DEFAULT_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_VQdW48kuUKdUigExZZnwDA_SuEa5Qce";
 
 function parseFigmaUrl(value) {
   const url = new URL(value.trim());
