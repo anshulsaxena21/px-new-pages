@@ -109,6 +109,80 @@ export default function FigmaImporter() {
   }
   function exportJson() { downloadText("figma-design.json", JSON.stringify(design, null, 2), "application/json"); }
   function exportTokens() { downloadText("figma-tokens.css", cssTokens(allNodes), "text/css"); }
+  function exportReact() {
+    if (!design?.document) return;
+    const assetByNode = new Map((design.assets || []).map(asset => [asset.nodeId, asset.url]));
+    const className = (node) => "figma-" + String(node.id || "layer").replace(/[^a-zA-Z0-9_-]/g, "-");
+    const cssColor = (paint) => paint?.type === "SOLID" && paint.color
+      ? `rgba(${Math.round(paint.color.r*255)}, ${Math.round(paint.color.g*255)}, ${Math.round(paint.color.b*255)}, ${paint.opacity ?? 1})`
+      : null;
+    const emit = (node, parent = null, depth = 2) => {
+      const cls = className(node);
+      const isText = node.type === "TEXT";
+      const tag = isText ? "p" : "div";
+      const label = isText ? String(node.characters || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\{ /g,"&#123;") : "";
+      const children = (node.children || []).map(child => emit(child, node, depth + 1)).join("\\n");
+      const content = isText ? label : children;
+      const pad = "  ".repeat(depth);
+      return `${pad}<${tag} className="${cls}">${content ? "\\n" + content + "\\n" + pad : ""}</${tag}>`;
+    };
+    const css = [];
+    const rules = (node, parent = null) => {
+      const box = node.absoluteBoundingBox || {};
+      const pbox = parent?.absoluteBoundingBox || {};
+      const auto = parent?.layoutMode === "HORIZONTAL" || parent?.layoutMode === "VERTICAL";
+      const fills = (node.fills || []).filter(p => p.visible !== false);
+      const solid = fills.find(p => p.type === "SOLID");
+      const image = fills.find(p => p.type === "IMAGE");
+      const imageUrl = assetByNode.get(node.id);
+      const style = node.style || {};
+      const lines = [`.${className(node)} {`];
+      if (parent?.layoutMode === "HORIZONTAL" || parent?.layoutMode === "VERTICAL") {
+        lines.push("  position: relative;");
+        lines.push(`  flex: ${node.layoutGrow ? "1 1 0" : "0 0 auto"};`);
+        if (box.width) lines.push(`  width: ${box.width}px;`);
+        if (box.height) lines.push(`  min-height: ${box.height}px;`);
+      } else {
+        lines.push("  position: absolute;");
+        if (box.x != null && pbox.x != null) lines.push(`  left: ${box.x-pbox.x}px;`);
+        if (box.y != null && pbox.y != null) lines.push(`  top: ${box.y-pbox.y}px;`);
+        if (box.width) lines.push(`  width: ${box.width}px;`);
+        if (box.height) lines.push(`  height: ${box.height}px;`);
+      }
+      if (node.layoutMode === "HORIZONTAL" || node.layoutMode === "VERTICAL") {
+        lines.push("  display: flex;");
+        lines.push(`  flex-direction: ${node.layoutMode === "HORIZONTAL" ? "row" : "column"};`);
+        if (node.itemSpacing != null) lines.push(`  gap: ${node.itemSpacing}px;`);
+        lines.push(`  padding: ${node.paddingTop||0}px ${node.paddingRight||0}px ${node.paddingBottom||0}px ${node.paddingLeft||0}px;`);
+        if (node.primaryAxisAlignItems) lines.push(`  justify-content: ${({MIN:"flex-start",CENTER:"center",MAX:"flex-end",SPACE_BETWEEN:"space-between"})[node.primaryAxisAlignItems] || "flex-start"};`);
+        if (node.counterAxisAlignItems) lines.push(`  align-items: ${({MIN:"flex-start",CENTER:"center",MAX:"flex-end",BASELINE:"baseline"})[node.counterAxisAlignItems] || "stretch"};`);
+      }
+      if (solid) lines.push(`  background-color: ${cssColor(solid)};`);
+      if (image && imageUrl) lines.push(`  background-image: url("${imageUrl}"); background-size: cover; background-position: center;`);
+      if (node.cornerRadius) lines.push(`  border-radius: ${node.cornerRadius}px;`);
+      if (node.opacity != null && node.opacity !== 1) lines.push(`  opacity: ${node.opacity};`);
+      if (isText) {
+        if (style.fontFamily) lines.push(`  font-family: "${style.fontFamily}", sans-serif;`);
+        if (style.fontSize) lines.push(`  font-size: ${style.fontSize}px;`);
+        if (style.fontWeight) lines.push(`  font-weight: ${style.fontWeight};`);
+        if (style.lineHeightPx) lines.push(`  line-height: ${style.lineHeightPx}px;`);
+        if (style.letterSpacing) lines.push(`  letter-spacing: ${style.letterSpacing}px;`);
+        if (style.textAlignHorizontal) lines.push(`  text-align: ${style.textAlignHorizontal.toLowerCase()};`);
+        const textFill = fills.find(p => p.type === "SOLID");
+        if (textFill) lines.push(`  color: ${cssColor(textFill)};`);
+        lines.push("  margin: 0;");
+        lines.push("  white-space: pre-wrap;");
+      }
+      lines.push("}");
+      css.push(lines.join("\\n"));
+      (node.children || []).forEach(child => rules(child, node));
+    };
+    rules(design.document);
+    const jsx = `import React from "react";\\nimport "./FigmaExport.css";\\n\\nexport default function FigmaExport() {\\n  return (\\n    <main className="${className(design.document)}">\\n${(design.document.children || []).map(child => emit(child, design.document, 3)).join("\\n")}\\n    </main>\\n  );\\n}\\n`;
+    downloadText("FigmaExport.jsx", jsx, "text/javascript");
+    downloadText("FigmaExport.css", css.join("\\n\\n"), "text/css");
+  }
+
   function exportAssetsManifest() { downloadText("figma-assets.json", JSON.stringify(design.assets || [], null, 2), "application/json"); }
 
   const renderTree = (node, depth = 0) => {
@@ -151,7 +225,7 @@ export default function FigmaImporter() {
 
       {!design ? <div className="empty-state"><div className="empty-illustration"><div className="empty-card card-back"/><div className="empty-card card-front"><Layers3 size={30}/><span/><span/></div><div className="empty-spark spark-one">✳</div><div className="empty-spark spark-two">✦</div></div><h2>Your design workspace is ready</h2><p>Import a Figma file to inspect its structure, typography, colors, measurements and downloadable assets.</p><div className="empty-capabilities"><span><Type size={15}/> Typography</span><span><Palette size={15}/> Colors</span><span><Ruler size={15}/> Spacing</span><span><ImageIcon size={15}/> Assets</span></div></div>
       : <div className="workspace">
-        <div className="project-heading"><div><div className="eyebrow">IMPORTED FILE</div><h2>{design.name || "Untitled Figma file"}</h2><small>{design.lastModified ? "Last modified " + new Date(design.lastModified).toLocaleString() : "Figma design file"} · {counts.layers} layers detected</small></div><div className="export-actions"><button className="secondary-button" onClick={exportJson}><FileJson size={15}/> Export JSON</button><button className="secondary-button" onClick={exportTokens}><Code2 size={15}/> CSS tokens</button><button className="primary-small" onClick={exportAssets}><ArrowDownToLine size={15}/> Download assets</button></div></div>
+        <div className="project-heading"><div><div className="eyebrow">IMPORTED FILE</div><h2>{design.name || "Untitled Figma file"}</h2><small>{design.lastModified ? "Last modified " + new Date(design.lastModified).toLocaleString() : "Figma design file"} · {counts.layers} layers detected</small></div><div className="export-actions"><button className="secondary-button" onClick={exportJson}><FileJson size={15}/> Export JSON</button><button className="secondary-button" onClick={exportTokens}><Code2 size={15}/> CSS tokens</button><button className="secondary-button" onClick={exportReact}><Code2 size={15}/> React + CSS</button><button className="primary-small" onClick={exportAssets}><ArrowDownToLine size={15}/> Download assets</button></div></div>
         <div className="stat-grid"><Stat icon={<Layers3/>} label="Total layers" value={counts.layers}/><Stat icon={<Type/>} label="Text layers" value={counts.text}/><Stat icon={<ImageIcon/>} label="Image fills" value={counts.images}/><Stat icon={<Frame/>} label="Vector layers" value={counts.vectors}/></div>
         <div className="inspector-layout">
           <section className="panel layers-panel"><div className="panel-heading"><div><Layers3 size={17}/><b>Layers</b><span className="count-pill">{counts.layers}</span></div></div><div className="layer-search"><Search size={15}/><input placeholder="Search layers..." value={query} onChange={e => setQuery(e.target.value)}/><kbd>⌘ K</kbd></div><div className="layer-list">{query ? filteredNodes.slice(0,120).map(n => <button key={n.id} className={`layer-row ${selected===n.id?"selected":""}`} onClick={() => setSelected(n.id)}><NodeIcon type={n.type}/><span className="layer-name">{n.name}</span><span className="layer-type">{n.type}</span></button>) : renderTree(design.document)}</div></section>
