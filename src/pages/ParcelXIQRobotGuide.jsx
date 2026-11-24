@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
 import "../styles/parcelx-iq-robot-guide.css";
+import robotModelUrl from "../../mini_robot (1).glb?url";
 
-const ROBOT_MODEL_URL = `${import.meta.env.BASE_URL}mini_robot%20(1).glb`;
+const ROBOT_MODEL_URL = robotModelUrl;
 
 function RobotCanvas() {
   const hostRef = useRef(null);
