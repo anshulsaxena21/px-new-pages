@@ -1,98 +1,82 @@
-# ParcelX merchant Instagram feed integration
+# ParcelX merchant Instagram feed — Supabase implementation
 
-This folder contains the customer-facing feed loader contract and a Cloudflare Worker API for a multi-merchant Instagram feed.
+The Instagram feed uses the connected Supabase project only. Cloudflare is not required.
 
-## What this adds
+## Supabase resources
 
-- One Instagram username per merchant, keyed internally by the ParcelX merchant ID.
-- A separate random public store key for read-only customer feed requests; internal merchant IDs are not exposed in tracking-page markup.
-- A public read endpoint for up to four recent eligible posts.
-- A private write endpoint for ParcelX's authenticated dashboard backend.
-- A 30-minute per-merchant feed cache in Cloudflare D1.
-- A profile-link fallback when Meta cannot return media.
-- No Meta access token or internal API key is exposed in the tracking page.
+- Project: `ovdxipfxychotaspfccl`
+- Project URL: `https://ovdxipfxychotaspfccl.supabase.co`
+- Database table: `public.merchant_instagram_settings`
+- Edge Function: `instagram-feed`
+- Public endpoint: `GET /functions/v1/instagram-feed?store_key=<public_store_key>`
+- Private save endpoint: `POST /functions/v1/instagram-feed/settings`
+- Private disconnect endpoint: `DELETE /functions/v1/instagram-feed/settings`
 
-## 1. Cloudflare setup
+The table is protected by RLS and has no policies for `anon` or `authenticated`. The Edge Function accesses it using the server-side service role only. The browser only receives a random UUID public store key and the four post objects.
 
-1. Create a Cloudflare D1 database named `parcelx-instagram-feed`.
-2. Run the SQL in `schema.sql`.
-3. Replace the D1 `database_id` placeholder in `wrangler.toml`.
-4. From this folder, run `npx wrangler deploy`.
-5. Add Worker secrets:
+## Required Edge Function secrets
 
-```bash
-npx wrangler secret put META_ACCESS_TOKEN
-npx wrangler secret put META_INSTAGRAM_ACCOUNT_ID
-npx wrangler secret put PARCELX_INTERNAL_API_KEY
-```
+Add these under Supabase Dashboard → Edge Functions → Secrets:
 
-Keep `PARCELX_INTERNAL_API_KEY` only in the ParcelX server environment. Never put it in dashboard JavaScript, browser storage, or this repository. The Meta token must also remain a Worker secret.
+- `META_ACCESS_TOKEN`: access token for the Instagram Professional account used as the Business Discovery caller.
+- `META_INSTAGRAM_ACCOUNT_ID`: ID of that connected Instagram Professional account.
+- `PARCELX_DASHBOARD_API_KEY`: generate a high-entropy value (for example, `openssl rand -hex 32`) and store the same value in the ParcelX dashboard backend's server-side environment.
+  
+Supabase's built-in `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are used by the function. Never copy service-role or Meta credentials into the browser or GitHub repository.
 
-## 2. Meta requirements and supported accounts
+The function uses Meta Graph API `v27.0`, currently the latest version listed by Meta as of November 24, 2026. See [Meta Graph API versions](https://developers.facebook.com/docs/graph-api/changelog/versions/) and [Facebook Platform versioning](https://developers.facebook.com/docs/graph-api/guides/versioning).
 
-This implementation uses Instagram Business Discovery with the Instagram API with Facebook Login. The Business Discovery caller must use an Instagram Professional account linked to a Facebook Page and a Facebook User access token. The baseline permissions for the Instagram User / Business Discovery request are `instagram_basic` and `pages_read_engagement`. `pages_show_list` can be useful during the setup flow to discover the linked Page, but is not listed as a baseline permission for this feed request. Meta app review / advanced access may be required before serving merchants outside app roles.
+## Dashboard integration contract
 
-The target account must be public and professional (Business or Creator). Consumer/personal and private Instagram accounts are not supported by this API. The Worker requests the four most recent media objects returned by Meta and falls back to the public Instagram profile link if media is unavailable.
+The Instagram dashboard field should save a username, rather than requiring a pasted embed URL.
 
-Meta's Graph API version is configurable with `META_GRAPH_API_VERSION`; the current default in this Worker config is `v27.0`.
-
-## 3. Dashboard save contract
-
-Change the screenshot's Instagram field to a username rather than a full URL:
-
-- Label: Instagram Username
-- Placeholder: Enter Instagram username (e.g. parcelx.in)
-- Helper: Public Business or Creator accounts only
-
-When a merchant clicks Save, the **ParcelX dashboard backend** must first verify that the signed-in user can edit this merchant, then call:
+After authenticating the dashboard user and verifying that they can edit this merchant, the **ParcelX server** calls:
 
 ```http
-PUT /internal/v1/merchants/{merchantId}/instagram
-Authorization: Bearer <PARCELX_INTERNAL_API_KEY>
+POST https://ovdxipfxychotaspfccl.supabase.co/functions/v1/instagram-feed/settings
+apikey: <SUPABASE_PUBLISHABLE_KEY>
+x-parcelx-dashboard-key: <PARCELX_DASHBOARD_API_KEY>
 Content-Type: application/json
 
 {
-  "username": "parcelx.in"
+  "merchant_id": "the-merchant-id-from-the-authenticated-session",
+  "username": "parcelx.in",
+  "enabled": true
 }
 ```
 
-The response contains a generated `publicStoreKey`. Persist that key in the merchant's custom tracking-page configuration, and inject it into that merchant's public tracking-page HTML. The backend must derive `merchantId` from the authenticated session, not trust an arbitrary merchant ID from the browser.
-
-To disconnect Instagram, the ParcelX backend calls:
-
-```http
-DELETE /internal/v1/merchants/{merchantId}/instagram
-Authorization: Bearer <PARCELX_INTERNAL_API_KEY>
-```
-
-## 4. Tracking-page renderer contract
-
-Before loading `standalone/order-tracking/script.js`, inject the current store's public key and Worker endpoint:
+The response includes `publicStoreKey`. Persist this on the merchant's custom tracking-page settings and inject it into the customer-facing HTML:
 
 ```html
 <script>
   window.PARCELX_TRACKING_CONFIG = {
-    instagramStoreKey: "generated-public-store-key",
-    instagramFeedEndpoint: "https://YOUR-WORKER.workers.dev/v1/instagram-feed"
+    instagramStoreKey: "the-publicStoreKey-returned-by-the-save-endpoint"
   };
 </script>
 ```
 
-The key is an opaque, randomly generated UUID. Do not expose any access token or internal API key in this object.
+Do not call the settings endpoint directly from browser JavaScript. The dashboard server must derive `merchant_id` from its authenticated session; it must not trust an arbitrary merchant ID supplied by the browser. Keep `PARCELX_DASHBOARD_API_KEY` server-side.
 
-The tracking page calls:
+To disconnect, the ParcelX server sends a `DELETE` request to the settings endpoint with the same headers and JSON body containing `merchant_id`.
+
+## Customer-facing feed
+
+The tracking template already calls the deployed Edge Function with:
 
 ```http
-GET /v1/instagram-feed?storeKey=generated-public-store-key
+GET https://ovdxipfxychotaspfccl.supabase.co/functions/v1/instagram-feed?store_key=<public_store_key>
+apikey: <SUPABASE_PUBLISHABLE_KEY>
 ```
 
-The API response includes `username`, `profileUrl`, `feedAvailable`, and up to four posts containing `mediaUrl`, `permalink`, `timestamp`, and `mediaType`.
+The Edge Function returns up to four posts and caches them per merchant for 30 minutes. It shows a profile-link fallback when Meta does not return feed media.
 
-The static GitHub Pages preview has no merchant context, so it displays a setup message until the real ParcelX tracking-page renderer injects the public store key and Worker endpoint. The ParcelX dashboard project and its merchant-settings backend are not included in this repository; that integration still needs to be connected there.
+## Instagram account eligibility
 
-## Files
+The current Business Discovery implementation is for eligible public Instagram Professional (Business or Creator) accounts. It is not a universal feed for personal or private accounts. The caller account and Meta app must have the appropriate Graph API permissions and production access. Meta review / advanced access may be needed before this works for accounts outside the app's roles.
 
-- `index.js`: Cloudflare Worker API.
-- `schema.sql`: D1 schema.
-- `wrangler.toml`: Worker deployment configuration.
-- `INTEGRATION.md`: dashboard and tracking renderer contract.
+## Deployment status and remaining integration
+
+- The settings table has been created in the connected Supabase project with RLS enabled.
+- The `instagram-feed` Edge Function is deployed with JWT gateway verification disabled; the GET route is public by opaque store key and write routes require the private dashboard API key.
+- Add the three secrets above before the function can fetch real posts or accept dashboard writes.
+- The separate ParcelX dashboard application is not present in this website repository. Its Save button still needs to call this private endpoint and persist `publicStoreKey` in its per-merchant tracking-page settings.
