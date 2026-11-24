@@ -83,7 +83,7 @@ if (mapElement && window.L) {
    ParcelX injects PARCELX_TRACKING_CONFIG for the current merchant at render time.
    No Instagram access token is ever sent to the browser. */
 (() => {
-  const section = document.querySelector("#communityInstagram");
+  const section = document.querySelector('[data-section="communityInstagram"]');
   const grid = document.querySelector("#instagramPostGrid");
   const message = document.querySelector("#instagramFeedMessage");
   const handleLink = document.querySelector("#instagramHandleLink");
@@ -92,7 +92,9 @@ if (mapElement && window.L) {
 
   const config = window.PARCELX_TRACKING_CONFIG || {};
   const storeKey = String(config.instagramStoreKey || "").trim();
-  const feedEndpoint = String(config.instagramFeedEndpoint || "").trim();
+  const supabaseUrl = "https://ovdxipfxychotaspfccl.supabase.co";
+  const supabasePublishableKey = "sb_publishable_VQdW48kuUKdUigExZZnwDA_SuEa5Qce";
+  const feedEndpoint = `${supabaseUrl}/functions/v1/instagram-feed`;
 
   const setMessage = (text, state = "idle") => {
     grid.replaceChildren();
@@ -189,7 +191,7 @@ if (mapElement && window.L) {
     let endpoint;
     try {
       endpoint = new URL(feedEndpoint, window.location.href);
-      endpoint.searchParams.set("storeKey", storeKey);
+      endpoint.searchParams.set("store_key", storeKey);
     } catch {
       setMessage("Instagram feed is not configured correctly.", "error");
       return;
@@ -202,7 +204,7 @@ if (mapElement && window.L) {
     try {
       const response = await fetch(endpoint.toString(), {
         method: "GET",
-        headers: { Accept: "application/json" },
+        headers: { Accept: "application/json", apikey: supabasePublishableKey },
         credentials: "omit"
       });
       if (!response.ok) throw new Error("Instagram feed request failed");
