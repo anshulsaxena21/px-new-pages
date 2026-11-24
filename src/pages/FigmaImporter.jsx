@@ -158,12 +158,14 @@ export default function FigmaImporter() {
         let legacy = [];
         try { legacy = JSON.parse(localStorage.getItem("px-figma-projects") || "[]"); } catch {}
         if (Array.isArray(legacy) && legacy.length) {
+          let migrationComplete = true;
           for (const project of legacy) {
             if (project?.id && project?.design?.document) {
-              try { await putSavedProject(project); } catch (migrationError) { console.warn("Legacy project migration skipped", migrationError); }
+              try { await putSavedProject(project); }
+              catch (migrationError) { migrationComplete = false; console.warn("Legacy project migration skipped", migrationError); }
             }
           }
-          try { localStorage.removeItem("px-figma-projects"); } catch {}
+          if (migrationComplete) { try { localStorage.removeItem("px-figma-projects"); } catch {} }
         }
         const items = await getSavedProjects();
         if (alive) setSavedProjects(items);
@@ -224,7 +226,7 @@ export default function FigmaImporter() {
       const assets = design.assets || [];
       const assetPaths = new Map();
       assets.forEach((asset,index) => {
-        const filename = safeFileName(asset.name, "asset-" + (index+1) + (asset.format === "svg" ? ".svg" : ".png"));
+        const filename = (index+1) + "-" + safeFileName(asset.name, "asset" + (asset.format === "svg" ? ".svg" : ".png"));
         assetPaths.set(asset.nodeId, "../" + (asset.format === "svg" ? "assets/vectors/" : "assets/images/") + filename);
       });
       const className = node => "figma-" + String(node.id || "layer").replace(/[^a-zA-Z0-9_-]/g, "-");
@@ -289,7 +291,7 @@ export default function FigmaImporter() {
       ];
       for(let i=0;i<assets.length;i++){
         const asset=assets[i];if(!asset.url)continue;
-        try{const response=await fetch(asset.url);if(!response.ok)throw new Error("HTTP "+response.status);const bytes=new Uint8Array(await response.arrayBuffer());files.push({name:(asset.format==="svg"?"assets/vectors/":"assets/images/")+safeFileName(asset.name,"asset-"+(i+1)),data:bytes});}
+        try{const response=await fetch(asset.url);if(!response.ok)throw new Error("HTTP "+response.status);const bytes=new Uint8Array(await response.arrayBuffer());files.push({name:(asset.format==="svg"?"assets/vectors/":"assets/images/")+(i+1)+"-"+safeFileName(asset.name,"asset"+(asset.format==="svg"?".svg":".png")),data:bytes});}
         catch(err){console.warn("React export skipped asset",asset.name,err);}
       }
       const projectName=safeFileName(design.name,"figma-project").replace(/\.[^.]+$/,"");
