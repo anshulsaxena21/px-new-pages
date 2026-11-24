@@ -993,3 +993,77 @@ img,iframe{max-width:100%}
 .instagram-heading h2 a[hidden]{display:none}
 @media(hover:none){.instagram-post-media:hover img{transform:none}}
 @media(prefers-reduced-motion:reduce){.instagram-post-media img{transition:none}}
+
+
+/* Temporary username-based Instagram preview controls */
+.instagram-preview-controls{
+  max-width:620px;
+  margin:22px 0 24px;
+}
+.instagram-preview-controls>label{
+  display:block;
+  margin-bottom:9px;
+  color:#252525;
+  font-size:13px;
+  font-weight:600;
+}
+.instagram-preview-input-row{
+  display:flex;
+  align-items:center;
+  min-height:48px;
+  overflow:hidden;
+  border:1px solid #e4e4e4;
+  border-radius:10px;
+  background:#fff;
+  transition:border-color .2s ease,box-shadow .2s ease;
+}
+.instagram-preview-input-row:focus-within{
+  border-color:#ff6600;
+  box-shadow:0 0 0 3px rgba(255,102,0,.09);
+}
+.instagram-preview-input-row>span{
+  padding-left:15px;
+  color:#898989;
+  font-size:15px;
+}
+.instagram-preview-input-row input{
+  width:100%;
+  min-width:0;
+  height:46px;
+  padding:0 10px;
+  border:0;
+  outline:none;
+  color:#171717;
+  background:transparent;
+  font:500 14px "Instrument Sans",Arial,sans-serif;
+}
+.instagram-preview-input-row input::placeholder{color:#a5a5a5}
+.instagram-preview-input-row button{
+  align-self:stretch;
+  flex:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:0 18px;
+  border:0;
+  background:#ff6600;
+  color:#fff;
+  font:600 13px "Instrument Sans",Arial,sans-serif;
+  cursor:pointer;
+  transition:background .2s ease;
+}
+.instagram-preview-input-row button:hover{background:#e95d00}
+.instagram-preview-input-row button:disabled{opacity:.65;cursor:wait}
+.instagram-preview-controls>p{
+  margin:8px 0 0;
+  color:#858585;
+  font-size:11px;
+  line-height:1.5;
+}
+@media(max-width:600px){
+  .instagram-preview-controls{width:100%;margin:16px 0 20px}
+  .instagram-preview-input-row{min-height:46px}
+  .instagram-preview-input-row input{font-size:13px}
+  .instagram-preview-input-row button{padding:0 12px;font-size:12px}
+}
