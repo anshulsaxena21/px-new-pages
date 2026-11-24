@@ -1,15 +1,16 @@
 # ParcelX merchant Instagram feed integration
 
-This folder contains the customer-facing feed loader contract and a Cloudflare Worker API for the multi-merchant Instagram feed.
+This folder contains the customer-facing feed loader contract and a Cloudflare Worker API for a multi-merchant Instagram feed.
 
 ## What this adds
 
-- One Instagram username per merchant, keyed by the ParcelX merchant ID.
-- A public read endpoint for that merchant's four most recent eligible posts.
+- One Instagram username per merchant, keyed internally by the ParcelX merchant ID.
+- A separate random public store key for read-only customer feed requests; internal merchant IDs are not exposed in tracking-page markup.
+- A public read endpoint for up to four recent eligible posts.
 - A private write endpoint for ParcelX's authenticated dashboard backend.
-- A 30-minute per-merchant cache in Cloudflare D1.
-- Profile-link fallback when Meta cannot return media.
-- No Meta access token is exposed in the tracking page.
+- A 30-minute per-merchant feed cache in Cloudflare D1.
+- A profile-link fallback when Meta cannot return media.
+- No Meta access token or internal API key is exposed in the tracking page.
 
 ## 1. Cloudflare setup
 
@@ -27,22 +28,24 @@ npx wrangler secret put PARCELX_INTERNAL_API_KEY
 
 Keep `PARCELX_INTERNAL_API_KEY` only in the ParcelX server environment. Never put it in dashboard JavaScript, browser storage, or this repository. The Meta token must also remain a Worker secret.
 
-## 2. Meta requirements
+## 2. Meta requirements and supported accounts
 
-The Meta app needs a connected Instagram professional account to act as the Business Discovery caller and the required Graph API access. Business Discovery returns public media for eligible Business and Creator accounts; it is not a universal feed for every personal or private account. Advanced access / Meta App Review may be required before serving accounts outside app roles.
+This implementation uses Instagram Business Discovery with the Instagram API with Facebook Login. The caller must be an Instagram Professional account (Business or Creator) linked to a Facebook Page, with the required Meta app permissions, including `instagram_basic`, `pages_show_list`, and `pages_read_engagement`. Meta app review / advanced access may be required before serving merchants outside app roles.
 
-The Worker requests the first four media objects returned by Meta. It falls back to the Instagram profile link when the target account is unsupported or media is unavailable.
+The target account must be public and professional (Business or Creator). Consumer/personal and private Instagram accounts are not supported by this API. The Worker requests the four most recent media objects returned by Meta and falls back to the public Instagram profile link if media is unavailable.
+
+Meta's Graph API version is configurable with `META_GRAPH_API_VERSION`; the current default in this Worker config is `v27.0`.
 
 ## 3. Dashboard save contract
 
-Change the dashboard's Instagram field to a username rather than a full URL:
+Change the screenshot's Instagram field to a username rather than a full URL:
 
 - Label: Instagram Username
 - Placeholder: Enter Instagram username (e.g. parcelx.in)
 - Helper: Public Business or Creator accounts only
 - Optional toggle: Show latest 4 posts on tracking page
 
-When the merchant clicks Save, the **ParcelX dashboard backend** must first verify that the signed-in user can edit this merchant, then call:
+When a merchant clicks Save, the **ParcelX dashboard backend** must first verify that the signed-in user can edit this merchant, then call:
 
 ```http
 PUT /internal/v1/merchants/{merchantId}/instagram
@@ -54,39 +57,39 @@ Content-Type: application/json
 }
 ```
 
-To disconnect Instagram:
+The response contains a generated `publicStoreKey`. Persist that key in the merchant's custom tracking-page configuration, and inject it into that merchant's public tracking-page HTML. The backend must derive `merchantId` from the authenticated session, not trust an arbitrary merchant ID from the browser.
+
+To disconnect Instagram, the ParcelX backend calls:
 
 ```http
 DELETE /internal/v1/merchants/{merchantId}/instagram
 Authorization: Bearer <PARCELX_INTERNAL_API_KEY>
 ```
 
-Do not call these internal endpoints directly from the browser. The dashboard server must derive `merchantId` from the authenticated session, rather than trusting an arbitrary client-supplied merchant ID.
-
 ## 4. Tracking-page renderer contract
 
-Before loading `standalone/order-tracking/script.js`, inject the current merchant context:
+Before loading `standalone/order-tracking/script.js`, inject the current store's public key and Worker endpoint:
 
 ```html
 <script>
   window.PARCELX_TRACKING_CONFIG = {
-    merchantId: "merchant_123",
+    instagramStoreKey: "generated-public-store-key",
     instagramFeedEndpoint: "https://YOUR-WORKER.workers.dev/v1/instagram-feed"
   };
 </script>
 ```
 
-Use the actual merchant ID from the server-side tenant context. Do not expose any access token or internal API key in this object.
+The key is an opaque, randomly generated UUID. Do not expose any access token or internal API key in this object.
 
-The customer page then calls:
+The tracking page calls:
 
 ```http
-GET /v1/instagram-feed?merchantId=merchant_123
+GET /v1/instagram-feed?storeKey=generated-public-store-key
 ```
 
-The API response includes `username`, `profileUrl`, `feedAvailable`, and up to four `posts` containing `mediaUrl`, `permalink`, `timestamp`, and `mediaType`.
+The API response includes `username`, `profileUrl`, `feedAvailable`, and up to four posts containing `mediaUrl`, `permalink`, `timestamp`, and `mediaType`.
 
-The static GitHub Pages preview has no merchant session, so it shows a setup message until the renderer injects its merchant ID and the Worker endpoint.
+The static GitHub Pages preview has no merchant context, so it displays a setup message until the real ParcelX tracking-page renderer injects the public store key and Worker endpoint. The ParcelX dashboard project and its merchant-settings backend are not included in this repository; that integration still needs to be connected there.
 
 ## Files
 
