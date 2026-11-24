@@ -79,19 +79,19 @@ if (mapElement && window.L) {
 }
 
 
-/* Merchant-specific Instagram feed.
-   ParcelX injects PARCELX_TRACKING_CONFIG for the current merchant at render time.
-   No Instagram access token is ever sent to the browser. */
+/* Temporary Instagram username preview.
+   This public demo calls Supabase; Meta credentials remain in the Edge Function. */
 (() => {
   const section = document.querySelector('[data-section="communityInstagram"]');
+  const form = document.querySelector("#instagramPreviewForm");
+  const input = document.querySelector("#instagramUsernameInput");
+  const loadButton = document.querySelector("#instagramLoadButton");
   const grid = document.querySelector("#instagramPostGrid");
-  const message = document.querySelector("#instagramFeedMessage");
   const handleLink = document.querySelector("#instagramHandleLink");
   const followLink = document.querySelector("#instagramFollowLink");
-  if (!section || !grid || !message || !followLink) return;
 
-  const config = window.PARCELX_TRACKING_CONFIG || {};
-  const storeKey = String(config.instagramStoreKey || "").trim();
+  if (!section || !form || !input || !loadButton || !grid) return;
+
   const supabaseUrl = "https://ovdxipfxychotaspfccl.supabase.co";
   const supabasePublishableKey = "sb_publishable_VQdW48kuUKdUigExZZnwDA_SuEa5Qce";
   const feedEndpoint = `${supabaseUrl}/functions/v1/instagram-feed`;
@@ -106,8 +106,18 @@ if (mapElement && window.L) {
     grid.setAttribute("aria-busy", "false");
   };
 
-  const safeUsername = (value) => {
-    const username = String(value || "").trim().replace(/^@/, "");
+  const normalizeUsername = (value) => {
+    let username = String(value || "").trim();
+    if (/^https?:\/\//i.test(username)) {
+      try {
+        const url = new URL(username);
+        if (!/(^|\.)instagram\.com$/i.test(url.hostname)) return "";
+        username = url.pathname.split("/").filter(Boolean)[0] || "";
+      } catch {
+        return "";
+      }
+    }
+    username = username.replace(/^@/, "").replace(/\/$/, "");
     return /^[A-Za-z0-9._]{1,30}$/.test(username) ? username : "";
   };
 
@@ -118,9 +128,23 @@ if (mapElement && window.L) {
     return new Intl.DateTimeFormat(undefined, { day: "numeric", month: "short" }).format(date);
   };
 
+  const updateProfileLinks = (username) => {
+    const profileUrl = `https://www.instagram.com/${encodeURIComponent(username)}/`;
+    if (handleLink) {
+      handleLink.textContent = `@${username}`;
+      handleLink.href = profileUrl;
+      handleLink.hidden = false;
+    }
+    if (followLink) {
+      followLink.href = profileUrl;
+      followLink.hidden = false;
+    }
+  };
+
   const renderPosts = (posts, username) => {
     grid.replaceChildren();
     const validPosts = Array.isArray(posts) ? posts.slice(0, 4) : [];
+
     validPosts.forEach((post) => {
       const permalink = typeof post.permalink === "string" && post.permalink.startsWith("https://www.instagram.com/")
         ? post.permalink
@@ -128,6 +152,7 @@ if (mapElement && window.L) {
 
       const card = document.createElement("article");
       card.className = "instagram-post-card";
+
       const link = document.createElement("a");
       link.className = "instagram-post-media";
       link.href = permalink;
@@ -135,8 +160,7 @@ if (mapElement && window.L) {
       link.rel = "noopener noreferrer";
       link.setAttribute("aria-label", `Open Instagram post from @${username}`);
 
-      const imageUrl = typeof post.mediaUrl === "string" && /^https:\/\//i.test(post.mediaUrl)
-        ? post.mediaUrl : "";
+      const imageUrl = typeof post.mediaUrl === "string" && /^https:\/\//i.test(post.mediaUrl) ? post.mediaUrl : "";
       if (imageUrl) {
         const image = document.createElement("img");
         image.src = imageUrl;
@@ -176,59 +200,60 @@ if (mapElement && window.L) {
     });
 
     if (!validPosts.length) {
-      setMessage("This account's posts aren't available for automatic display. You can still visit its Instagram profile.", "fallback");
+      setMessage("No posts were returned for this account. Make sure it is a public Business or Creator profile.", "fallback");
     } else {
       grid.setAttribute("aria-busy", "false");
     }
   };
 
-  const loadFeed = async () => {
-    if (!storeKey || !feedEndpoint) {
-      setMessage("Instagram posts will appear here once this store's account is configured.");
+  const loadFeed = async (rawUsername) => {
+    const username = normalizeUsername(rawUsername);
+    if (!username) {
+      setMessage("Enter a valid Instagram username, such as parcelx.in.", "error");
+      input.focus();
       return;
     }
 
-    let endpoint;
-    try {
-      endpoint = new URL(feedEndpoint, window.location.href);
-      endpoint.searchParams.set("store_key", storeKey);
-    } catch {
-      setMessage("Instagram feed is not configured correctly.", "error");
-      return;
-    }
-
+    input.value = username;
+    loadButton.disabled = true;
+    loadButton.dataset.originalText = loadButton.textContent;
+    loadButton.textContent = "Loading…";
     grid.setAttribute("aria-busy", "true");
-    setMessage("Loading the latest Instagram posts…", "loading");
+    setMessage(`Loading the latest posts from @${username}…`, "loading");
     grid.setAttribute("aria-busy", "true");
 
     try {
+      const endpoint = new URL(feedEndpoint);
+      endpoint.searchParams.set("username", username);
       const response = await fetch(endpoint.toString(), {
         method: "GET",
         headers: { Accept: "application/json", apikey: supabasePublishableKey },
         credentials: "omit"
       });
-      if (!response.ok) throw new Error("Instagram feed request failed");
-      const result = await response.json();
-      const username = safeUsername(result.username);
+      const result = await response.json().catch(() => ({}));
+      if (result.username) updateProfileLinks(normalizeUsername(result.username) || username);
 
-      if (username) {
-        const profileUrl = `https://www.instagram.com/${encodeURIComponent(username)}/`;
-        handleLink.textContent = `@${username}`;
-        handleLink.href = profileUrl;
-        handleLink.hidden = false;
-        followLink.href = profileUrl;
-        followLink.hidden = false;
-      }
-
-      if (!result.ok || !username) {
-        setMessage("Instagram posts will appear here once this store's account is configured.", "fallback");
+      if (!response.ok || !result.ok) {
+        setMessage(result.message || "Instagram posts could not be loaded. Please try again.", response.status === 429 ? "warning" : "error");
         return;
       }
-      renderPosts(result.posts, username);
+
+      if (Array.isArray(result.posts) && result.posts.length > 0) {
+        renderPosts(result.posts, username);
+      } else {
+        setMessage(result.message || "No eligible public posts were returned for this account.", "fallback");
+      }
     } catch {
-      setMessage("We couldn't load Instagram posts right now. Please try again later.", "error");
+      setMessage("We couldn't connect to Instagram right now. Please try again later.", "error");
+    } finally {
+      loadButton.disabled = false;
+      loadButton.textContent = "Load posts";
+      grid.setAttribute("aria-busy", "false");
     }
   };
 
-  loadFeed();
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    loadFeed(input.value);
+  });
 })();
