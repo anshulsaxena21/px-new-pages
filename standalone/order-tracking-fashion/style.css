@@ -247,3 +247,13 @@ body,button,input,textarea,select{font-family:"Instrument Sans",Arial,sans-serif
   .bottom-cta h2{font-size:22px}
   .courier-logo{width:78px;max-height:30px}
 }
+
+
+/* Global readability rule: no visible text below 14px on any viewport.
+   Icon glyphs are excluded so their visual sizing remains intentional. */
+html, body {
+  font-size: 14px;
+}
+body *:not(.ph):not(svg):not(path) {
+  font-size: max(14px, 1em) !important;
+}
