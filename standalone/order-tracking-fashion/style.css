@@ -737,3 +737,31 @@ body *:not(.ph):not(svg):not(path) {
   #trackingDetails .history-table-wrap{max-height:230px}
   #trackingDetails .history th,#trackingDetails .history td{font-size:14px;padding:12px 10px}
 }
+
+/* Keep status and delivery date side-by-side, as in the Figma hero card */
+#trackingDetails .shipment-card{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  align-items:center;
+  column-gap:24px;
+}
+#trackingDetails .delivery-heading{grid-column:1 / -1;grid-row:1}
+#trackingDetails .delivery-date{
+  grid-column:2;grid-row:2;
+  align-self:center;
+  margin:16px 0 12px;
+}
+#trackingDetails .status-row{
+  position:static;
+  grid-column:1;grid-row:2;
+  align-self:center;
+  justify-self:start;
+  margin:16px 0 12px;
+}
+#trackingDetails .tracking-id{grid-column:1 / -1;grid-row:3}
+#trackingDetails .latest-update{grid-column:1 / -1;grid-row:4}
+@media(max-width:600px){
+  #trackingDetails .shipment-card{display:block}
+  #trackingDetails .delivery-date{text-align:left;margin:18px 0 14px}
+  #trackingDetails .status-row{margin:0 0 16px}
+}
