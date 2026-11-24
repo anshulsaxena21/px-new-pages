@@ -2,7 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const TABLE = "merchant_instagram_settings";
 const CACHE_TTL_MS = 30 * 60 * 1000;
-const GRAPH_VERSION = "v26.0";
+const GRAPH_VERSION = "v27.0";
 const USERNAME_RE = /^[A-Za-z0-9._]{1,30}$/;
 
 type InstagramPost = {
