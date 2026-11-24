@@ -1,6 +1,7 @@
 const FEED_CACHE_SECONDS = 30 * 60;
 const USERNAME_PATTERN = /^[A-Za-z0-9._]{1,30}$/;
 const MERCHANT_ID_PATTERN = /^[A-Za-z0-9_-]{1,128}$/;
+const STORE_KEY_PATTERN = /^[0-9a-f-]{36}$/i;
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -20,17 +21,13 @@ function normalizeUsername(value) {
   return USERNAME_PATTERN.test(username) ? username.toLowerCase() : "";
 }
 
-function isMerchantId(value) {
-  return MERCHANT_ID_PATTERN.test(String(value || ""));
-}
-
 function profileUrl(username) {
   return `https://www.instagram.com/${encodeURIComponent(username)}/`;
 }
 
 async function getMerchantSettings(env, merchantId) {
   return env.DB.prepare(
-    "SELECT username, feed_json, feed_cached_at FROM merchant_instagram_settings WHERE merchant_id = ?"
+    "SELECT public_store_key, username, feed_json, feed_cached_at FROM merchant_instagram_settings WHERE merchant_id = ?"
   ).bind(merchantId).first();
 }
 
@@ -67,13 +64,15 @@ async function fetchBusinessDiscovery(env, username) {
 
 async function handleFeed(request, env) {
   const url = new URL(request.url);
-  const merchantId = url.searchParams.get("merchantId") || "";
-  if (!isMerchantId(merchantId)) return json({ ok: false, code: "INVALID_MERCHANT" }, 400);
+  const storeKey = url.searchParams.get("storeKey") || "";
+  if (!STORE_KEY_PATTERN.test(storeKey)) return json({ ok: false, code: "INVALID_STORE_KEY" }, 400);
   if (!env.DB) return json({ ok: false, code: "SERVICE_NOT_CONFIGURED" }, 503);
 
-  const settings = await getMerchantSettings(env, merchantId);
-  if (!settings?.username) return json({ ok: false, code: "NOT_CONFIGURED", username: "", posts: [] });
+  const settings = await env.DB.prepare(
+    "SELECT username, feed_json, feed_cached_at FROM merchant_instagram_settings WHERE public_store_key = ?"
+  ).bind(storeKey).first();
 
+  if (!settings?.username) return json({ ok: false, code: "NOT_CONFIGURED", username: "", posts: [] });
   const username = normalizeUsername(settings.username);
   if (!username) return json({ ok: false, code: "INVALID_CONFIGURATION", username: "", posts: [] }, 500);
 
@@ -93,8 +92,8 @@ async function handleFeed(request, env) {
       : { ok: true, username, profileUrl: profileUrl(username), feedAvailable: false, posts: [], message: "This account is not available through Instagram Business Discovery.", cached: false };
 
     await env.DB.prepare(
-      "UPDATE merchant_instagram_settings SET feed_json = ?, feed_cached_at = ? WHERE merchant_id = ?"
-    ).bind(JSON.stringify(result), now, merchantId).run();
+      "UPDATE merchant_instagram_settings SET feed_json = ?, feed_cached_at = ? WHERE public_store_key = ?"
+    ).bind(JSON.stringify(result), now, storeKey).run();
     return json(result);
   } catch (error) {
     const code = error.message === "META_NOT_CONFIGURED" ? "META_NOT_CONFIGURED" : "INSTAGRAM_UNAVAILABLE";
@@ -127,14 +126,17 @@ async function handleSettings(request, env, merchantId) {
   if (!username) return json({ ok: false, code: "INVALID_USERNAME", message: "Enter an Instagram username without a URL." }, 400);
 
   const now = Math.floor(Date.now() / 1000);
-  await env.DB.prepare(
-    `INSERT INTO merchant_instagram_settings (merchant_id, username, feed_json, feed_cached_at, updated_at)
-     VALUES (?, ?, NULL, NULL, ?)
-     ON CONFLICT(merchant_id) DO UPDATE SET username = excluded.username,
-       feed_json = NULL, feed_cached_at = NULL, updated_at = excluded.updated_at`
-  ).bind(merchantId, username, now).run();
+  const existing = await getMerchantSettings(env, merchantId);
+  const publicStoreKey = existing?.public_store_key || crypto.randomUUID();
 
-  return json({ ok: true, merchantId, username, profileUrl: profileUrl(username), configured: true });
+  await env.DB.prepare(
+    `INSERT INTO merchant_instagram_settings (merchant_id, public_store_key, username, feed_json, feed_cached_at, updated_at)
+     VALUES (?, ?, ?, NULL, NULL, ?)
+     ON CONFLICT(merchant_id) DO UPDATE SET public_store_key = excluded.public_store_key,
+       username = excluded.username, feed_json = NULL, feed_cached_at = NULL, updated_at = excluded.updated_at`
+  ).bind(merchantId, publicStoreKey, username, now).run();
+
+  return json({ ok: true, merchantId, username, publicStoreKey, profileUrl: profileUrl(username), configured: true });
 }
 
 export default {
@@ -157,7 +159,7 @@ export default {
       const match = url.pathname.match(/^\/internal\/v1\/merchants\/([^/]+)\/instagram$/);
       if (match && ["PUT", "DELETE"].includes(request.method)) {
         const merchantId = decodeURIComponent(match[1]);
-        if (!isMerchantId(merchantId)) return json({ ok: false, code: "INVALID_MERCHANT" }, 400);
+        if (!/^[A-Za-z0-9_-]{1,128}$/.test(merchantId)) return json({ ok: false, code: "INVALID_MERCHANT" }, 400);
         return await handleSettings(request, env, merchantId);
       }
       return json({ ok: false, code: "NOT_FOUND" }, 404);
