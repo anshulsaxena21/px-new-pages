@@ -15,17 +15,17 @@ type InstagramPost = {
 };
 
 function response(body: unknown, status = 200, publicCache = false) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, apikey, x-parcelx-dashboard-key",
-      "Cache-Control": publicCache ? "public, max-age=60, s-maxage=60" : "no-store",
-      "Vary": "Origin"
-    }
-  });
+  const headers = {
+    "Content-Type": "application/json; charset=utf-8",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, apikey, x-parcelx-dashboard-key",
+    "Cache-Control": publicCache ? "public, max-age=60, s-maxage=60" : "no-store",
+    "Vary": "Origin"
+  };
+  // A 204 preflight response must have a null body.
+  if (status === 204) return new Response(null, { status, headers });
+  return new Response(JSON.stringify(body), { status, headers });
 }
 
 function normalizeUsername(value: unknown): string {
