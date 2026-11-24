@@ -94,7 +94,7 @@ export default function FigmaImporter() {
       if (root?.id) setSelected(root.id);
       setExpanded({ [payload.document?.id]: true, [root?.id]: true });
     } catch (err) { setError(err.message || "Something went wrong while importing the design."); }
-    finally { setLoading(false); }
+    finally { setLoading(false); setToken(""); }
   }
 
   function exportAssets() {
