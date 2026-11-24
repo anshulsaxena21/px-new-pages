@@ -106,62 +106,96 @@ async function findByPublicKey(publicKey: string) {
 async function logMetaTokenPermissions(accessToken: string) {
   const authHeaders = { Authorization: `Bearer ${accessToken}` };
   const configuredInstagramId = Deno.env.get("META_INSTAGRAM_ACCOUNT_ID") ?? "";
+  const originalInstagramId = "17841447011292787";
   try {
-    const permissionsUrl = new URL(`https://graph.facebook.com/${GRAPH_VERSION}/me/permissions`);
-    const [permissionsResponse, meResponse, pagesResponse, sourceAccountResponse] = await Promise.all([
-      fetch(permissionsUrl, { headers: authHeaders }),
-      fetch(new URL(`https://graph.facebook.com/${GRAPH_VERSION}/me?fields=id,name`), { headers: authHeaders }),
-      fetch(new URL(`https://graph.facebook.com/${GRAPH_VERSION}/me/accounts?fields=id,name,instagram_business_account{id,username},tasks&limit=100`), { headers: authHeaders }),
-      fetch(new URL(`https://graph.facebook.com/${GRAPH_VERSION}/${encodeURIComponent(configuredInstagramId)}?fields=id,username`), { headers: authHeaders })
-    ]);
-    const [permissionsBody, meBody, pagesBody, sourceAccountBody] = await Promise.all([
-      permissionsResponse.json().catch(() => ({})),
-      meResponse.json().catch(() => ({})),
-      pagesResponse.json().catch(() => ({})),
-      sourceAccountResponse.json().catch(() => ({}))
-    ]);
+    const endpoints = [
+      ["permissions", `https://graph.facebook.com/${GRAPH_VERSION}/me/permissions`],
+      ["facebookUser", `https://graph.facebook.com/${GRAPH_VERSION}/me?fields=id,name`],
+      ["pages", `https://graph.facebook.com/${GRAPH_VERSION}/me/accounts?fields=id,name,instagram_business_account{id,username},tasks&limit=100`],
+      ["assignedInstagramAccounts", `https://graph.facebook.com/${GRAPH_VERSION}/me/assigned_instagram_accounts?fields=id,username,permitted_roles&limit=100`],
+      ["assignedPages", `https://graph.facebook.com/${GRAPH_VERSION}/me/assigned_pages?fields=id,name,instagram_business_account{id,username},tasks&limit=100`],
+      ["businesses", `https://graph.facebook.com/${GRAPH_VERSION}/me/businesses?fields=id,name&limit=100`],
+      ["configuredInstagramAccount", `https://graph.facebook.com/${GRAPH_VERSION}/${encodeURIComponent(configuredInstagramId)}?fields=id,username`],
+      ["originalInstagramAccount", `https://graph.facebook.com/${GRAPH_VERSION}/${encodeURIComponent(originalInstagramId)}?fields=id,username`]
+    ] as const;
+    const results = await Promise.all(endpoints.map(async ([key, endpoint]) => {
+      const result = await fetch(endpoint, { headers: authHeaders });
+      const body = await result.json().catch(() => ({}));
+      return [key, result.status, body] as const;
+    }));
+    const byKey = Object.fromEntries(results.map(([key, status, body]) => [key, { status, body }]));
+    const permissionsBody = byKey.permissions.body;
     const permissions = Array.isArray(permissionsBody?.data)
       ? permissionsBody.data.map((item: Record<string, unknown>) => ({
           permission: String(item.permission ?? ""),
           status: String(item.status ?? "")
         }))
       : [];
+    const flattenInstagram = (body: Record<string, unknown>) => {
+      const accounts = Array.isArray(body?.data) ? body.data : [];
+      return accounts.map((item: Record<string, unknown>) => ({
+        id: String(item.id ?? ""),
+        username: String(item.username ?? ""),
+        permittedRoles: Array.isArray(item.permitted_roles) ? item.permitted_roles : []
+      }));
+    };
+    const pagesBody = byKey.pages.body;
+    const assignedPagesBody = byKey.assignedPages.body;
     const pages = Array.isArray(pagesBody?.data) ? pagesBody.data : [];
-    const linkedInstagramAccounts = pages.flatMap((page: Record<string, unknown>) => {
+    const assignedPages = Array.isArray(assignedPagesBody?.data) ? assignedPagesBody.data : [];
+    const pageInstagramAccounts = [...pages, ...assignedPages].flatMap((page: Record<string, unknown>) => {
       const ig = page.instagram_business_account as Record<string, unknown> | undefined;
-      return ig ? [{
-        id: String(ig.id ?? ""),
-        username: String(ig.username ?? "")
-      }] : [];
+      return ig ? [{ id: String(ig.id ?? ""), username: String(ig.username ?? "") }] : [];
     });
-    const sourceAccount = sourceAccountBody && !sourceAccountBody.error
-      ? { id: String(sourceAccountBody.id ?? ""), username: String(sourceAccountBody.username ?? "") }
-      : null;
-    const getError = (body: Record<string, unknown>) => {
+    const assignedInstagramAccounts = flattenInstagram(byKey.assignedInstagramAccounts.body);
+    const configuredBody = byKey.configuredInstagramAccount.body;
+    const originalBody = byKey.originalInstagramAccount.body;
+    const businessesBody = byKey.businesses.body;
+    const errorSummary = (body: Record<string, unknown>) => {
       const error = body?.error as Record<string, unknown> | undefined;
       return error ? {
         code: error.code ?? null,
         subcode: error.error_subcode ?? null,
-        message: String(error.message ?? "").slice(0, 250)
+        message: String(error.message ?? "").slice(0, 220)
       } : null;
     };
+    const instagramIdsAvailable = [
+      ...assignedInstagramAccounts.map((a: Record<string, unknown>) => a.id),
+      ...pageInstagramAccounts.map((a: Record<string, unknown>) => a.id)
+    ];
     console.error("Meta account access diagnostic", JSON.stringify({
-      permissionsStatus: permissionsResponse.status,
+      permissionsStatus: byKey.permissions.status,
       permissions,
-      facebookUserStatus: meResponse.status,
-      facebookUserReturned: !meBody?.error && Boolean(meBody?.id),
-      pageListStatus: pagesResponse.status,
+      facebookUserStatus: byKey.facebookUser.status,
+      facebookUserReturned: !byKey.facebookUser.body?.error && Boolean(byKey.facebookUser.body?.id),
+      pageListStatus: byKey.pages.status,
       pageCount: pages.length,
-      linkedInstagramAccounts,
+      assignedInstagramAccountsStatus: byKey.assignedInstagramAccounts.status,
+      assignedInstagramAccounts,
+      assignedPagesStatus: byKey.assignedPages.status,
+      assignedPageCount: assignedPages.length,
+      linkedInstagramAccounts: pageInstagramAccounts,
+      businessListStatus: byKey.businesses.status,
+      businessCount: Array.isArray(businessesBody?.data) ? businessesBody.data.length : 0,
       configuredInstagramId,
-      configuredInstagramIdMatchesLinkedPage: linkedInstagramAccounts.some((ig: Record<string, string>) => ig.id === configuredInstagramId),
-      configuredInstagramAccountStatus: sourceAccountResponse.status,
-      configuredInstagramAccount: sourceAccount,
+      configuredInstagramAccount: configuredBody && !configuredBody.error
+        ? { id: String(configuredBody.id ?? ""), username: String(configuredBody.username ?? "") }
+        : null,
+      configuredInstagramIdMatchesAssignedAsset: instagramIdsAvailable.includes(configuredInstagramId),
+      originalInstagramId,
+      originalInstagramAccount: originalBody && !originalBody.error
+        ? { id: String(originalBody.id ?? ""), username: String(originalBody.username ?? "") }
+        : null,
+      originalInstagramIdMatchesAssignedAsset: instagramIdsAvailable.includes(originalInstagramId),
       errors: {
-        permissions: getError(permissionsBody),
-        facebookUser: getError(meBody),
-        pages: getError(pagesBody),
-        configuredInstagramAccount: getError(sourceAccountBody)
+        permissions: errorSummary(permissionsBody),
+        facebookUser: errorSummary(byKey.facebookUser.body),
+        pages: errorSummary(pagesBody),
+        assignedInstagramAccounts: errorSummary(byKey.assignedInstagramAccounts.body),
+        assignedPages: errorSummary(assignedPagesBody),
+        businesses: errorSummary(businessesBody),
+        configuredInstagramAccount: errorSummary(configuredBody),
+        originalInstagramAccount: errorSummary(originalBody)
       }
     }));
   } catch (error) {
