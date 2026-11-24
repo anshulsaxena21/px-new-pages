@@ -13,3 +13,6 @@
 .saved-project-row small{font-size:9px;color:#9ba1aa;margin-top:3px}
 .saved-project-row>button:last-child{border:0;background:transparent;color:#9ba1aa;cursor:pointer;padding:6px}
 @media(max-width:850px){.saved-projects{margin-top:16px}.saved-project-row{padding:8px}}
+
+.save-status{margin:12px 0 0;padding:9px 12px;border:1px solid #d7eee3;background:#f3fbf6;color:#26734d;border-radius:8px;font-size:11px;font-weight:600}
+.export-actions button:disabled{opacity:.55;cursor:not-allowed}
