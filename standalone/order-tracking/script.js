@@ -79,8 +79,8 @@ if (mapElement && window.L) {
 }
 
 
-/* Temporary Instagram username preview.
-   This public demo calls Supabase; Meta credentials remain in the Edge Function. */
+/* Public Instagram profile preview using Instagram's native embed.
+   This route does not call Business Discovery or require a Meta access token. */
 (() => {
   const section = document.querySelector('[data-section="communityInstagram"]');
   const form = document.querySelector("#instagramPreviewForm");
@@ -92,12 +92,12 @@ if (mapElement && window.L) {
 
   if (!section || !form || !input || !loadButton || !grid) return;
 
-  const supabaseUrl = "https://ovdxipfxychotaspfccl.supabase.co";
-  const supabasePublishableKey = "sb_publishable_VQdW48kuUKdUigExZZnwDA_SuEa5Qce";
-  const feedEndpoint = `${supabaseUrl}/functions/v1/instagram-feed`;
+  let embedScriptPromise = null;
+  let activeRequest = 0;
 
   const setMessage = (text, state = "idle") => {
     grid.replaceChildren();
+    grid.classList.remove("instagram-profile-mode");
     const note = document.createElement("p");
     note.className = "instagram-feed-message";
     note.dataset.state = state;
@@ -121,17 +121,10 @@ if (mapElement && window.L) {
     return /^[A-Za-z0-9._]{1,30}$/.test(username) ? username : "";
   };
 
-  const formatDate = (value) => {
-    if (!value) return "";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "";
-    return new Intl.DateTimeFormat(undefined, { day: "numeric", month: "short" }).format(date);
-  };
-
   const updateProfileLinks = (username) => {
-    const profileUrl = `https://www.instagram.com/${encodeURIComponent(username)}/`;
+    const profileUrl = "https://www.instagram.com/" + encodeURIComponent(username) + "/";
     if (handleLink) {
-      handleLink.textContent = `@${username}`;
+      handleLink.textContent = "@" + username;
       handleLink.href = profileUrl;
       handleLink.hidden = false;
     }
@@ -139,74 +132,54 @@ if (mapElement && window.L) {
       followLink.href = profileUrl;
       followLink.hidden = false;
     }
+    return profileUrl;
   };
 
-  const renderPosts = (posts, username) => {
-    grid.replaceChildren();
-    const validPosts = Array.isArray(posts) ? posts.slice(0, 4) : [];
-
-    validPosts.forEach((post) => {
-      const permalink = typeof post.permalink === "string" && post.permalink.startsWith("https://www.instagram.com/")
-        ? post.permalink
-        : `https://www.instagram.com/${encodeURIComponent(username)}/`;
-
-      const card = document.createElement("article");
-      card.className = "instagram-post-card";
-
-      const link = document.createElement("a");
-      link.className = "instagram-post-media";
-      link.href = permalink;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      link.setAttribute("aria-label", `Open Instagram post from @${username}`);
-
-      const imageUrl = typeof post.mediaUrl === "string" && /^https:\/\//i.test(post.mediaUrl) ? post.mediaUrl : "";
-      if (imageUrl) {
-        const image = document.createElement("img");
-        image.src = imageUrl;
-        image.alt = post.caption ? String(post.caption).slice(0, 140) : `Instagram post from @${username}`;
-        image.loading = "lazy";
-        image.decoding = "async";
-        link.append(image);
-      } else {
-        const fallback = document.createElement("span");
-        fallback.className = "instagram-post-fallback";
-        fallback.textContent = "View post on Instagram";
-        link.append(fallback);
-      }
-
-      const openIcon = document.createElement("span");
-      openIcon.className = "instagram-post-open";
-      openIcon.setAttribute("aria-hidden", "true");
-      openIcon.textContent = "↗";
-      link.append(openIcon);
-      card.append(link);
-
-      const meta = document.createElement("div");
-      meta.className = "instagram-post-meta";
-      const date = formatDate(post.timestamp);
-      if (date) {
-        const dateLabel = document.createElement("span");
-        dateLabel.textContent = date;
-        meta.append(dateLabel);
-      }
-      if (post.mediaType) {
-        const typeLabel = document.createElement("span");
-        typeLabel.textContent = post.mediaType === "VIDEO" ? "Reel / video" : post.mediaType === "CAROUSEL_ALBUM" ? "Carousel" : "Post";
-        meta.append(typeLabel);
-      }
-      card.append(meta);
-      grid.append(card);
-    });
-
-    if (!validPosts.length) {
-      setMessage("No posts were returned for this account. Make sure it is a public Business or Creator profile.", "fallback");
-    } else {
-      grid.setAttribute("aria-busy", "false");
+  const loadInstagramEmbedScript = () => {
+    if (window.instgrm && window.instgrm.Embeds && typeof window.instgrm.Embeds.process === "function") {
+      return Promise.resolve();
     }
+    if (embedScriptPromise) return embedScriptPromise;
+
+    embedScriptPromise = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.async = true;
+      script.src = "https://www.instagram.com/embed.js";
+      script.onload = resolve;
+      script.onerror = () => {
+        embedScriptPromise = null;
+        reject(new Error("INSTAGRAM_EMBED_SCRIPT_FAILED"));
+      };
+      document.body.append(script);
+    });
+    return embedScriptPromise;
   };
 
-  const loadFeed = async (rawUsername) => {
+  const renderProfileEmbed = (username, profileUrl) => {
+    grid.replaceChildren();
+    grid.classList.add("instagram-profile-mode");
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "instagram-profile-card";
+
+    const blockquote = document.createElement("blockquote");
+    blockquote.className = "instagram-media";
+    blockquote.setAttribute("data-instgrm-permalink", profileUrl);
+    blockquote.setAttribute("data-instgrm-version", "14");
+
+    const link = document.createElement("a");
+    link.href = profileUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "View @" + username + " on Instagram";
+    blockquote.append(link);
+
+    wrapper.append(blockquote);
+    grid.append(wrapper);
+    grid.setAttribute("aria-busy", "true");
+  };
+
+  const loadProfile = async (rawUsername) => {
     const username = normalizeUsername(rawUsername);
     if (!username) {
       setMessage("Enter a valid Instagram username, such as parcelx.in.", "error");
@@ -215,45 +188,39 @@ if (mapElement && window.L) {
     }
 
     input.value = username;
+    const requestId = ++activeRequest;
+    const profileUrl = updateProfileLinks(username);
+
     loadButton.disabled = true;
-    loadButton.dataset.originalText = loadButton.textContent;
     loadButton.textContent = "Loading…";
     grid.setAttribute("aria-busy", "true");
-    setMessage(`Loading the latest posts from @${username}…`, "loading");
-    grid.setAttribute("aria-busy", "true");
+    renderProfileEmbed(username, profileUrl);
 
     try {
-      const endpoint = new URL(feedEndpoint);
-      endpoint.searchParams.set("username", username);
-      const response = await fetch(endpoint.toString(), {
-        method: "GET",
-        headers: { Accept: "application/json", apikey: supabasePublishableKey },
-        credentials: "omit"
-      });
-      const result = await response.json().catch(() => ({}));
-      if (result.username) updateProfileLinks(normalizeUsername(result.username) || username);
-
-      if (!response.ok || !result.ok) {
-        setMessage(result.message || "Instagram posts could not be loaded. Please try again.", response.status === 429 ? "warning" : "error");
-        return;
+      await loadInstagramEmbedScript();
+      if (requestId !== activeRequest) return;
+      if (!window.instgrm || !window.instgrm.Embeds || typeof window.instgrm.Embeds.process !== "function") {
+        throw new Error("INSTAGRAM_EMBED_UNAVAILABLE");
       }
-
-      if (Array.isArray(result.posts) && result.posts.length > 0) {
-        renderPosts(result.posts, username);
-      } else {
-        setMessage(result.message || "No eligible public posts were returned for this account.", "fallback");
-      }
-    } catch {
-      setMessage("We couldn't connect to Instagram right now. Please try again later.", "error");
-    } finally {
-      loadButton.disabled = false;
-      loadButton.textContent = "Load posts";
+      window.instgrm.Embeds.process();
       grid.setAttribute("aria-busy", "false");
+    } catch {
+      if (requestId === activeRequest) {
+        setMessage("Instagram's profile embed could not be loaded. Check that the account is public and allows embeds, or open it directly on Instagram.", "error");
+      }
+    } finally {
+      if (requestId === activeRequest) {
+        loadButton.disabled = false;
+        loadButton.textContent = "Preview profile";
+        grid.setAttribute("aria-busy", "false");
+      }
     }
   };
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
-    loadFeed(input.value);
+    loadProfile(input.value);
   });
+
+  loadProfile(input.value);
 })();
