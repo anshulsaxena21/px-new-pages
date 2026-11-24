@@ -91,7 +91,7 @@ if (mapElement && window.L) {
   if (!section || !grid || !message || !followLink) return;
 
   const config = window.PARCELX_TRACKING_CONFIG || {};
-  const merchantId = String(config.merchantId || "").trim();
+  const storeKey = String(config.instagramStoreKey || "").trim();
   const feedEndpoint = String(config.instagramFeedEndpoint || "").trim();
 
   const setMessage = (text, state = "idle") => {
@@ -181,7 +181,7 @@ if (mapElement && window.L) {
   };
 
   const loadFeed = async () => {
-    if (!merchantId || !feedEndpoint) {
+    if (!storeKey || !feedEndpoint) {
       setMessage("Instagram posts will appear here once this store's account is configured.");
       return;
     }
@@ -189,7 +189,7 @@ if (mapElement && window.L) {
     let endpoint;
     try {
       endpoint = new URL(feedEndpoint, window.location.href);
-      endpoint.searchParams.set("merchantId", merchantId);
+      endpoint.searchParams.set("storeKey", storeKey);
     } catch {
       setMessage("Instagram feed is not configured correctly.", "error");
       return;
@@ -215,6 +215,7 @@ if (mapElement && window.L) {
         handleLink.href = profileUrl;
         handleLink.hidden = false;
         followLink.href = profileUrl;
+        followLink.hidden = false;
       }
 
       if (!result.ok || !username) {
