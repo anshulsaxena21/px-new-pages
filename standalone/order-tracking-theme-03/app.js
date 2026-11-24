@@ -1,6 +1,17 @@
 (() => {
-  const bundleUrl = new URL("../../px-custom-tracking-ds-website-wq3c-aefwrds-bundle.zip", window.location.href);
-  const statusEl = document.getElementById("assetStatus");
+  const ASSETS = {
+    "fire-1f525-1-2802-9904.png": "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/11016fae-7d90-40f3-b2ae-aba6db56756a",
+    "image-2760-21028.png": "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/384691f1-d93b-41c3-874a-d8358d9c2b76",
+    "blue-dart-logo-transparent-1-2802-10094.png": "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/0c93cf9f-9fd4-4a92-a919-b72b08af1806",
+    "image-4-2802-10054.png": "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/90643590-e0e9-4eb3-94e8-211d372196c5",
+    "pngtree-3d-shopping-bag-empty-18739972-1-2802-10109.png": "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/83b7c5bb-a4c2-4d8c-806e-63b87a521b3a",
+    "image-2802-10114.png": "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/45d0d681-1495-4d85-9eb8-5438304b4cb0",
+    "image-2802-10141.png": "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/3865ed56-4a3b-4735-a439-7c7049c828e2",
+    "image-2802-10147.png": "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/e9992b34-b312-47b4-9dd7-7a40a824307f",
+    "image-2802-10155.png": "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/01170749-d3fc-4c2f-81dc-8a0b388d5c40",
+    "image-2802-10161.png": "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/e663eeb6-a9a5-4958-94d0-264208b84fff",
+    "bg-2802-10189.png": "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/be907326-07b9-4e7f-a308-77d66acf9a1f"
+  };
 
   function setMessage(message, isError = false) {
     const node = document.querySelector(".form-message");
@@ -44,71 +55,52 @@
     });
   }
 
-  function findZipAsset(archive, requestedPath) {
-    const filename = requestedPath.split("/").pop().toLowerCase();
-    const entries = Object.values(archive.files).filter((entry) => !entry.dir);
-    const exact = entries.find((entry) => entry.name.toLowerCase() === requestedPath.toLowerCase());
-    if (exact) return exact;
-    const imageFolderMatch = entries.find((entry) => {
-      const name = entry.name.toLowerCase();
-      return name.endsWith("/assets/images/" + filename) || name.endsWith("/images/" + filename);
-    });
-    if (imageFolderMatch) return imageFolderMatch;
-    return entries.find((entry) => entry.name.split("/").pop().toLowerCase() === filename) || null;
-  }
-
-  async function loadDesignAssets() {
+  function loadDesignAssets() {
     const missing = [];
-    const objectUrls = [];
-    try {
-      if (!window.JSZip) throw new Error("The ZIP reader library did not load.");
-      const response = await fetch(bundleUrl.href, { cache: "no-cache" });
-      if (!response.ok) throw new Error("The design asset ZIP returned HTTP " + response.status + ".");
-      const archive = await window.JSZip.loadAsync(await response.arrayBuffer());
-
-      async function loadOne(element, requestedPath, isBackground) {
-        try {
-          const entry = findZipAsset(archive, requestedPath);
-          if (!entry) throw new Error("Not found in ZIP: " + requestedPath.split("/").pop());
-          const blob = await entry.async("blob");
-          const url = URL.createObjectURL(blob);
-          objectUrls.push(url);
-          if (isBackground) {
-            element.style.backgroundImage = "url('" + url + "')";
-          } else {
-            element.src = url;
-            element.removeAttribute("data-asset");
-          }
-          element.classList.add("asset-loaded");
-        } catch (error) {
-          missing.push(requestedPath.split("/").pop());
-          console.warn("[Theme 03] Could not load asset:", requestedPath, error);
-          if (!isBackground && element.tagName === "IMG") {
-            element.classList.add("asset-missing");
-            element.alt = element.alt || "Image unavailable";
-          }
+    const status = document.getElementById("assetStatus");
+    const jobs = [];
+    document.querySelectorAll("[data-asset]").forEach((element) => {
+      const filename = element.dataset.asset.split("/").pop();
+      const url = ASSETS[filename];
+      if (!url) {
+        missing.push(filename);
+        return;
+      }
+      element.src = url;
+      element.addEventListener("error", () => {
+        missing.push(filename);
+        element.classList.add("asset-missing");
+        if (status) {
+          status.textContent = "Could not load: " + [...new Set(missing)].join(", ");
+          status.classList.add("show");
         }
+      }, { once: true });
+      element.addEventListener("load", () => element.classList.add("asset-loaded"), { once: true });
+    });
+    document.querySelectorAll("[data-bg]").forEach((element) => {
+      const filename = element.dataset.bg.split("/").pop();
+      const url = ASSETS[filename];
+      if (!url) {
+        missing.push(filename);
+        return;
       }
-
-      const imageJobs = [...document.querySelectorAll("[data-asset]")].map((el) => loadOne(el, el.dataset.asset, false));
-      const backgroundJobs = [...document.querySelectorAll("[data-bg]")].map((el) => loadOne(el, el.dataset.bg, true));
-      await Promise.all([...imageJobs, ...backgroundJobs]);
-
-      if (statusEl) {
-        statusEl.textContent = missing.length
-          ? "Loaded with " + missing.length + " missing image(s): " + missing.join(", ")
-          : "All design assets loaded";
-        if (missing.length) statusEl.classList.add("show");
-        else statusEl.classList.remove("show");
-      }
-      document.documentElement.classList.add("assets-ready");
-      window.addEventListener("pagehide", () => objectUrls.forEach((url) => URL.revokeObjectURL(url)), { once: true });
-    } catch (error) {
-      console.error("[Theme 03] Asset bundle loading failed:", error);
-      if (statusEl) {
-        statusEl.textContent = "Could not load design bundle: " + error.message;
-        statusEl.classList.add("show");
-      }
+      const probe = new Image();
+      probe.onload = () => {
+        element.style.backgroundImage = "url('" + url + "')";
+        element.classList.add("asset-loaded");
+      };
+      probe.onerror = () => {
+        missing.push(filename);
+        if (status) {
+          status.textContent = "Could not load: " + [...new Set(missing)].join(", ");
+          status.classList.add("show");
+        }
+      };
+      probe.src = url;
+    });
+    if (status && missing.length) {
+      status.textContent = "Missing asset mapping: " + [...new Set(missing)].join(", ");
+      status.classList.add("show");
     }
   }
 
