@@ -100,6 +100,7 @@ export default function FigmaImporter() {
   const [activeTab, setActiveTab] = useState("layers");
   const [expanded, setExpanded] = useState({});
   const [copied, setCopied] = useState(false);
+  const [savedProjects, setSavedProjects] = useState(() => { try { return JSON.parse(localStorage.getItem("px-figma-projects") || "[]"); } catch { return []; } });
 
   const allNodes = useMemo(() => design ? walk([design.document]) : [], [design]);
   const selectedNode = selected ? allNodes.find((n) => n.id === selected) : null;
@@ -224,6 +225,25 @@ export default function FigmaImporter() {
 
   function exportAssetsManifest() { downloadText("figma-assets.json", JSON.stringify(design.assets || [], null, 2), "application/json"); }
 
+
+  function saveCurrentProject() {
+    if (!design?.document) return;
+    const entry = { id: design.importId || (crypto.randomUUID?.() || String(Date.now())), name: design.name || "Untitled Figma project", savedAt: new Date().toISOString(), design };
+    const next = [entry, ...savedProjects.filter(p => p.id !== entry.id)];
+    setSavedProjects(next);
+    try { localStorage.setItem("px-figma-projects", JSON.stringify(next)); setError(""); }
+    catch { setError("Browser storage is full. Download the ZIP to keep this project safely."); }
+  }
+  function openSavedProject(project) {
+    setDesign(project.design); setSelected(project.design.document?.children?.[0]?.id || project.design.document?.id || null);
+    setExpanded({ [project.design.document?.id]: true });
+    setError("");
+  }
+  function removeSavedProject(id) {
+    const next = savedProjects.filter(p => p.id !== id); setSavedProjects(next);
+    try { localStorage.setItem("px-figma-projects", JSON.stringify(next)); } catch {}
+  }
+
   function exportLayerDocs() {
     const docs=describeLayers(design.document,design.assets||[]),keys=["id","name","type","parent","hierarchy","position","layout","typography","appearance","text","asset"];
     const csv=[keys.join(","),...docs.map(row=>keys.map(k=>csvEscape(row[k])).join(","))].join("\n");
@@ -291,9 +311,10 @@ export default function FigmaImporter() {
         {showSettings && <div className="settings-panel"><label>Supabase publishable / anon key<input value={supabaseKey} onChange={e => setSupabaseKey(e.target.value)} placeholder="sb_publishable_... or legacy anon key"/></label><small>Used only to call the ParcelX Supabase Edge Function. Never enter a service-role or secret key here.</small></div>}
       </form>
 
-      {!design ? <div className="empty-state"><div className="empty-illustration"><div className="empty-card card-back"/><div className="empty-card card-front"><Layers3 size={30}/><span/><span/></div><div className="empty-spark spark-one">✳</div><div className="empty-spark spark-two">✦</div></div><h2>Your design workspace is ready</h2><p>Import a Figma file to inspect its structure, typography, colors, measurements and downloadable assets.</p><div className="empty-capabilities"><span><Type size={15}/> Typography</span><span><Palette size={15}/> Colors</span><span><Ruler size={15}/> Spacing</span><span><ImageIcon size={15}/> Assets</span></div></div>
+      {!design ? {savedProjects.length > 0 && <section className="saved-projects"><div className="saved-projects-head"><div><b>Saved on this device</b><small>Private browser library · {savedProjects.length} projects</small></div></div><div className="saved-project-list">{savedProjects.map(project => <div className="saved-project-row" key={project.id}><button onClick={() => openSavedProject(project)}><FileJson size={16}/><span><b>{project.name}</b><small>Saved {new Date(project.savedAt).toLocaleString()}</small></span></button><button aria-label="Remove saved project" onClick={() => removeSavedProject(project.id)}><X size={15}/></button></div>)}</div></section>}
+      <div className="empty-state"><div className="empty-illustration"><div className="empty-card card-back"/><div className="empty-card card-front"><Layers3 size={30}/><span/><span/></div><div className="empty-spark spark-one">✳</div><div className="empty-spark spark-two">✦</div></div><h2>Your design workspace is ready</h2><p>Import a Figma file to inspect its structure, typography, colors, measurements and downloadable assets.</p><div className="empty-capabilities"><span><Type size={15}/> Typography</span><span><Palette size={15}/> Colors</span><span><Ruler size={15}/> Spacing</span><span><ImageIcon size={15}/> Assets</span></div></div>
       : <div className="workspace">
-        <div className="project-heading"><div><div className="eyebrow">IMPORTED FILE</div><h2>{design.name || "Untitled Figma file"}</h2><small>{design.lastModified ? "Last modified " + new Date(design.lastModified).toLocaleString() : "Figma design file"} · {counts.layers} layers detected</small></div><div className="export-actions"><button className="secondary-button" onClick={exportJson}><FileJson size={15}/> Export JSON</button><button className="secondary-button" onClick={exportTokens}><Code2 size={15}/> CSS tokens</button><button className="secondary-button" onClick={exportReact}><Code2 size={15}/> React + CSS</button><button className="secondary-button" onClick={exportLayerDocs}><Layers3 size={15}/> Layer docs</button><button className="primary-small" onClick={downloadProjectZip} disabled={loading}><ArrowDownToLine size={15}/> {loading ? "Building ZIP..." : "Download project ZIP"}</button></div></div>
+        <div className="project-heading"><div><div className="eyebrow">IMPORTED FILE</div><h2>{design.name || "Untitled Figma file"}</h2><small>{design.lastModified ? "Last modified " + new Date(design.lastModified).toLocaleString() : "Figma design file"} · {counts.layers} layers detected</small></div><div className="export-actions"><button className="secondary-button" onClick={saveCurrentProject}><Check size={15}/> Save project</button><button className="secondary-button" onClick={exportJson}><FileJson size={15}/> Export JSON</button><button className="secondary-button" onClick={exportTokens}><Code2 size={15}/> CSS tokens</button><button className="secondary-button" onClick={exportReact}><Code2 size={15}/> React + CSS</button><button className="secondary-button" onClick={exportLayerDocs}><Layers3 size={15}/> Layer docs</button><button className="primary-small" onClick={downloadProjectZip} disabled={loading}><ArrowDownToLine size={15}/> {loading ? "Building ZIP..." : "Download project ZIP"}</button></div></div>
         <div className="stat-grid"><Stat icon={<Layers3/>} label="Total layers" value={counts.layers}/><Stat icon={<Type/>} label="Text layers" value={counts.text}/><Stat icon={<ImageIcon/>} label="Image fills" value={counts.images}/><Stat icon={<Frame/>} label="Vector layers" value={counts.vectors}/></div>
         <div className="inspector-layout">
           <section className="panel layers-panel"><div className="panel-heading"><div><Layers3 size={17}/><b>Layers</b><span className="count-pill">{counts.layers}</span></div></div><div className="layer-search"><Search size={15}/><input placeholder="Search layers..." value={query} onChange={e => setQuery(e.target.value)}/><kbd>⌘ K</kbd></div><div className="layer-list">{query ? filteredNodes.slice(0,120).map(n => <button key={n.id} className={`layer-row ${selected===n.id?"selected":""}`} onClick={() => setSelected(n.id)}><NodeIcon type={n.type}/><span className="layer-name">{n.name}</span><span className="layer-type">{n.type}</span></button>) : renderTree(design.document)}</div></section>
