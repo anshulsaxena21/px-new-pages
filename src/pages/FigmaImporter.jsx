@@ -153,9 +153,24 @@ export default function FigmaImporter() {
   const [storageReady, setStorageReady] = useState(false);
   useEffect(() => {
     let alive = true;
-    getSavedProjects().then(items => { if (alive) setSavedProjects(items); })
-      .catch(err => { if (alive) setError("Saved-project storage could not be opened: " + err.message); })
-      .finally(() => { if (alive) setStorageReady(true); });
+    (async () => {
+      try {
+        let legacy = [];
+        try { legacy = JSON.parse(localStorage.getItem("px-figma-projects") || "[]"); } catch {}
+        if (Array.isArray(legacy) && legacy.length) {
+          for (const project of legacy) {
+            if (project?.id && project?.design?.document) {
+              try { await putSavedProject(project); } catch (migrationError) { console.warn("Legacy project migration skipped", migrationError); }
+            }
+          }
+          try { localStorage.removeItem("px-figma-projects"); } catch {}
+        }
+        const items = await getSavedProjects();
+        if (alive) setSavedProjects(items);
+      } catch (err) {
+        if (alive) setError("Saved-project storage could not be opened: " + err.message);
+      } finally { if (alive) setStorageReady(true); }
+    })();
     return () => { alive = false; };
   }, []);
 
@@ -380,7 +395,7 @@ export default function FigmaImporter() {
         {showSettings && <div className="settings-panel"><label>Supabase publishable / anon key<input value={supabaseKey} onChange={e => setSupabaseKey(e.target.value)} placeholder="sb_publishable_... or legacy anon key"/></label><small>Used only to call the ParcelX Supabase Edge Function. Never enter a service-role or secret key here.</small></div>}
       </form>
 
-      {!design ? <>{savedProjects.length > 0 && <section className="saved-projects"><div className="saved-projects-head"><div><b>Saved on this device</b><small>Private browser library · {savedProjects.length} projects</small></div></div><div className="saved-project-list">{savedProjects.map(project => <div className="saved-project-row" key={project.id}><button onClick={() => openSavedProject(project)}><FileJson size={16}/><span><b>{project.name}</b><small>Saved {new Date(project.savedAt).toLocaleString()}</small></span></button><button aria-label="Remove saved project" onClick={() => removeSavedProject(project.id)}><X size={15}/></button></div>)}</div></section>}
+      {!design ? <>{savedProjects.length > 0 && <section className="saved-projects"><div className="saved-projects-head"><div><b>Saved on this device</b><small>Private browser library · {savedProjects.length} projects{!storageReady ? " · Loading…" : ""}</small></div></div><div className="saved-project-list">{savedProjects.map(project => <div className="saved-project-row" key={project.id}><button onClick={() => openSavedProject(project)}><FileJson size={16}/><span><b>{project.name}</b><small>Saved {new Date(project.savedAt).toLocaleString()}</small></span></button><button aria-label="Remove saved project" onClick={() => removeSavedProject(project.id)}><X size={15}/></button></div>)}</div></section>}
       <div className="empty-state"><div className="empty-illustration"><div className="empty-card card-back"/><div className="empty-card card-front"><Layers3 size={30}/><span/><span/></div><div className="empty-spark spark-one">✳</div><div className="empty-spark spark-two">✦</div></div><h2>Your design workspace is ready</h2><p>Import a Figma file to inspect its structure, typography, colors, measurements and downloadable assets.</p><div className="empty-capabilities"><span><Type size={15}/> Typography</span><span><Palette size={15}/> Colors</span><span><Ruler size={15}/> Spacing</span><span><ImageIcon size={15}/> Assets</span></div></div></>
       : <div className="workspace">
         <div className="project-heading"><div><div className="eyebrow">IMPORTED FILE</div><h2>{design.name || "Untitled Figma file"}</h2><small>{design.lastModified ? "Last modified " + new Date(design.lastModified).toLocaleString() : "Figma design file"} · {counts.layers} layers detected</small></div><div className="export-actions"><button className="secondary-button" onClick={saveCurrentProject} disabled={saveStatus === "Saving…"}><Check size={15}/> {saveStatus === "Saving…" ? "Saving…" : "Save project"}</button><button className="secondary-button" onClick={exportJson}><FileJson size={15}/> Export JSON</button><button className="secondary-button" onClick={exportTokens}><Code2 size={15}/> CSS tokens</button><button className="secondary-button" onClick={exportReact} disabled={loading}><Code2 size={15}/> React + CSS ZIP</button><button className="secondary-button" onClick={exportLayerDocs}><Layers3 size={15}/> Layer docs</button><button className="primary-small" onClick={downloadProjectZip} disabled={loading}><ArrowDownToLine size={15}/> {loading ? "Building ZIP..." : "Download project ZIP"}</button></div></div>
