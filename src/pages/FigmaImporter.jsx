@@ -52,6 +52,41 @@ function cssTokens(nodes) {
   return css + "}\n";
 }
 
+
+function describeLayers(root, assets = []) {
+  const assetMap = new Map(assets.map(a => [a.nodeId, a.name]));
+  const rows = [];
+  const visit = (node, parents = []) => {
+    const b = node.absoluteBoundingBox || {}, st = node.style || {};
+    const paints = (node.fills || []).filter(p => p.visible !== false).map(p => p.type === "SOLID" ? rgba(p.color, p.opacity ?? 1) : p.type);
+    const strokes = (node.strokes || []).filter(p => p.visible !== false).map(p => p.type === "SOLID" ? rgba(p.color, p.opacity ?? 1) : p.type);
+    rows.push({ id:node.id, name:node.name||"Untitled", type:node.type, parent:parents.at(-1)||null,
+      hierarchy:[...parents,node.name||"Untitled"].join(" / "),
+      position:{x:b.x??null,y:b.y??null,width:b.width??null,height:b.height??null,rotation:node.rotation??0},
+      layout:{mode:node.layoutMode||"NONE",itemGap:node.itemSpacing??null,counterAxisSpacing:node.counterAxisSpacing??null,padding:{top:node.paddingTop??0,right:node.paddingRight??0,bottom:node.paddingBottom??0,left:node.paddingLeft??0},primaryAxisAlign:node.primaryAxisAlignItems||null,counterAxisAlign:node.counterAxisAlignItems||null},
+      typography:node.type==="TEXT"?{content:node.characters||"",fontFamily:st.fontFamily||null,fontStyle:st.fontPostScriptName||null,fontWeight:st.fontWeight??null,fontSize:st.fontSize??null,lineHeight:st.lineHeightPx??st.lineHeightPercent??null,letterSpacing:st.letterSpacing??null,textAlign:st.textAlignHorizontal||null}:null,
+      appearance:{fills:paints,strokes,strokeWeight:node.strokeWeight??null,opacity:node.opacity??1,cornerRadius:node.cornerRadius??null,effects:node.effects||[],blendMode:node.blendMode||null,clipsContent:!!node.clipsContent},
+      text:node.characters||null,asset:assetMap.get(node.id)||null });
+    (node.children||[]).forEach(child=>visit(child,[...parents,node.name||"Untitled"]));
+  };
+  visit(root); return rows;
+}
+function csvEscape(v){const x=v==null?"":typeof v==="object"?JSON.stringify(v):String(v);return '"'+x.replace(/"/g,'""')+'"';}
+function crc32(bytes){let c=-1;for(let i=0;i<bytes.length;i++){c^=bytes[i];for(let j=0;j<8;j++)c=(c>>>1)^(0xEDB88320&-(c&1));}return(c^-1)>>>0;}
+function zipBlob(files){
+  const enc=new TextEncoder(),local=[],central=[];let offset=0;
+  const u16=v=>[v&255,(v>>>8)&255],u32=v=>[...u16(v&65535),...u16(v>>>16)];
+  for(const file of files){const name=enc.encode(file.name),data=file.data instanceof Uint8Array?file.data:enc.encode(String(file.data)),crc=crc32(data);
+    const h=new Uint8Array([...u32(0x04034b50),...u16(20),...u16(0),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(data.length),...u32(data.length),...u16(name.length),...u16(0),...name]);
+    local.push(h,data);
+    central.push(new Uint8Array([...u32(0x02014b50),...u16(20),...u16(20),...u16(0),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(data.length),...u32(data.length),...u16(name.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(offset),...name]));
+    offset+=h.length+data.length;
+  }
+  const size=central.reduce((n,a)=>n+a.length,0),end=new Uint8Array([...u32(0x06054b50),...u16(0),...u16(0),...u16(files.length),...u16(files.length),...u32(size),...u32(offset),...u16(0)]);
+  return new Blob([...local,...central,end],{type:"application/zip"});
+}
+function saveBlob(name,blob){const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);}
+
 export default function FigmaImporter() {
   const [figmaUrl, setFigmaUrl] = useState("");
   const [token, setToken] = useState("");
@@ -189,6 +224,35 @@ export default function FigmaImporter() {
 
   function exportAssetsManifest() { downloadText("figma-assets.json", JSON.stringify(design.assets || [], null, 2), "application/json"); }
 
+  function exportLayerDocs() {
+    const docs=describeLayers(design.document,design.assets||[]),keys=["id","name","type","parent","hierarchy","position","layout","typography","appearance","text","asset"];
+    const csv=[keys.join(","),...docs.map(row=>keys.map(k=>csvEscape(row[k])).join(","))].join("\n");
+    downloadText("layer-descriptions.json",JSON.stringify(docs,null,2),"application/json");
+    downloadText("layer-descriptions.csv",csv,"text/csv");
+  }
+  async function downloadProjectZip() {
+    if(!design?.document)return;
+    setLoading(true);setError("");
+    try{
+      const docs=describeLayers(design.document,design.assets||[]),keys=["id","name","type","parent","hierarchy","position","layout","typography","appearance","text","asset"];
+      const files=[
+        {name:"design-data/complete-design.json",data:JSON.stringify(design,null,2)},
+        {name:"design-data/layer-descriptions.json",data:JSON.stringify(docs,null,2)},
+        {name:"design-data/layer-descriptions.csv",data:[keys.join(","),...docs.map(row=>keys.map(k=>csvEscape(row[k])).join(","))].join("\n")},
+        {name:"design-data/design-tokens.css",data:cssTokens(allNodes)},
+        {name:"assets/asset-manifest.json",data:JSON.stringify(design.assets||[],null,2)},
+        {name:"README.md",data:"# "+(design.name||"Figma project")+"\n\nExported from ParcelX Studio.\n\n- design-data/complete-design.json: full extracted node tree and asset manifest\n- design-data/layer-descriptions.json: layer measurements, layout, typography and appearance\n- design-data/layer-descriptions.csv: spreadsheet-friendly layer inventory\n- design-data/design-tokens.css: extracted design tokens\n- assets/: downloaded image and vector assets\n"}
+      ];
+      const jsx="import React from 'react';\nimport './FigmaExport.css';\nexport default function FigmaExport(){return <main className=\"figma-root\">"+(design.document.children||[]).map(n=>"<section data-layer=\""+String(n.id||"").replace(/"/g,"")+"\">"+(n.type==="TEXT"?String(n.characters||"").replace(/</g,"&lt;"):(n.name||"Layer"))+"</section>").join("")+"</main>;}";
+      files.push({name:"code/FigmaExport.jsx",data:jsx},{name:"code/FigmaExport.css",data:cssTokens(allNodes)+"\n.figma-root{position:relative;width:100%;}\n"});
+      for(let i=0;i<(design.assets||[]).length;i++){const asset=design.assets[i];if(!asset.url)continue;try{const response=await fetch(asset.url);if(!response.ok)continue;const bytes=new Uint8Array(await response.arrayBuffer());files.push({name:(asset.format==="svg"?"assets/vectors/":"assets/images/")+(asset.name||("asset-"+(i+1))),data:bytes});}catch(err){console.warn("Asset skipped",asset.name,err);}}
+      const safe=(design.name||"figma-project").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"figma-project";
+      saveBlob(safe+"-bundle.zip",zipBlob(files));
+    }catch(err){setError("ZIP export failed: "+(err.message||"Unknown error"));}
+    finally{setLoading(false);}
+  }
+
+
   const renderTree = (node, depth = 0) => {
     if (!node) return null;
     const hasChildren = node.children?.length > 0;
@@ -229,7 +293,7 @@ export default function FigmaImporter() {
 
       {!design ? <div className="empty-state"><div className="empty-illustration"><div className="empty-card card-back"/><div className="empty-card card-front"><Layers3 size={30}/><span/><span/></div><div className="empty-spark spark-one">✳</div><div className="empty-spark spark-two">✦</div></div><h2>Your design workspace is ready</h2><p>Import a Figma file to inspect its structure, typography, colors, measurements and downloadable assets.</p><div className="empty-capabilities"><span><Type size={15}/> Typography</span><span><Palette size={15}/> Colors</span><span><Ruler size={15}/> Spacing</span><span><ImageIcon size={15}/> Assets</span></div></div>
       : <div className="workspace">
-        <div className="project-heading"><div><div className="eyebrow">IMPORTED FILE</div><h2>{design.name || "Untitled Figma file"}</h2><small>{design.lastModified ? "Last modified " + new Date(design.lastModified).toLocaleString() : "Figma design file"} · {counts.layers} layers detected</small></div><div className="export-actions"><button className="secondary-button" onClick={exportJson}><FileJson size={15}/> Export JSON</button><button className="secondary-button" onClick={exportTokens}><Code2 size={15}/> CSS tokens</button><button className="secondary-button" onClick={exportReact}><Code2 size={15}/> React + CSS</button><button className="primary-small" onClick={exportAssets}><ArrowDownToLine size={15}/> Download assets</button></div></div>
+        <div className="project-heading"><div><div className="eyebrow">IMPORTED FILE</div><h2>{design.name || "Untitled Figma file"}</h2><small>{design.lastModified ? "Last modified " + new Date(design.lastModified).toLocaleString() : "Figma design file"} · {counts.layers} layers detected</small></div><div className="export-actions"><button className="secondary-button" onClick={exportJson}><FileJson size={15}/> Export JSON</button><button className="secondary-button" onClick={exportTokens}><Code2 size={15}/> CSS tokens</button><button className="secondary-button" onClick={exportReact}><Code2 size={15}/> React + CSS</button><button className="secondary-button" onClick={exportLayerDocs}><Layers3 size={15}/> Layer docs</button><button className="primary-small" onClick={downloadProjectZip} disabled={loading}><ArrowDownToLine size={15}/> {loading ? "Building ZIP..." : "Download project ZIP"}</button></div></div>
         <div className="stat-grid"><Stat icon={<Layers3/>} label="Total layers" value={counts.layers}/><Stat icon={<Type/>} label="Text layers" value={counts.text}/><Stat icon={<ImageIcon/>} label="Image fills" value={counts.images}/><Stat icon={<Frame/>} label="Vector layers" value={counts.vectors}/></div>
         <div className="inspector-layout">
           <section className="panel layers-panel"><div className="panel-heading"><div><Layers3 size={17}/><b>Layers</b><span className="count-pill">{counts.layers}</span></div></div><div className="layer-search"><Search size={15}/><input placeholder="Search layers..." value={query} onChange={e => setQuery(e.target.value)}/><kbd>⌘ K</kbd></div><div className="layer-list">{query ? filteredNodes.slice(0,120).map(n => <button key={n.id} className={`layer-row ${selected===n.id?"selected":""}`} onClick={() => setSelected(n.id)}><NodeIcon type={n.type}/><span className="layer-name">{n.name}</span><span className="layer-type">{n.type}</span></button>) : renderTree(design.document)}</div></section>
