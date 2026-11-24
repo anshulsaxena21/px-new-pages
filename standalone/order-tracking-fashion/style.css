@@ -267,3 +267,105 @@ body *:not(.ph):not(svg):not(path) {
   --font-small:14px;
   --font-micro:14px;
 }
+
+
+/* Shipment journey — follow the six-stage visual treatment in
+   standalone/order-tracking: shared milestone grid, dotted rail,
+   green completed progress, and distinct active milestone. */
+.tracking-main .journey{
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  align-items:start;
+  gap:0;
+  padding:24px 0 20px;
+  margin:0;
+  isolation:isolate;
+}
+.tracking-main .journey-line{
+  position:absolute;
+  z-index:-1;
+  top:68px;
+  left:8.333%;
+  right:8.333%;
+  height:0;
+  border:0;
+  border-top:3px dotted #d8dce2;
+}
+.tracking-main .journey-line:after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:-3px;
+  width:60%;
+  border-top:3px solid #20bd78;
+}
+.tracking-main .journey-step{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  gap:11px;
+  min-width:0;
+  flex:initial;
+  text-align:center;
+  position:relative;
+  z-index:1;
+}
+.tracking-main .journey-step small{
+  display:block;
+  min-height:32px;
+  height:auto;
+  color:#505866;
+  font-size:14px;
+  line-height:1.4;
+  font-weight:500;
+  white-space:normal;
+}
+.tracking-main .journey-step .step-icon{
+  width:30px;
+  height:30px;
+  flex:0 0 30px;
+  border:3px solid #fff;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#f1f3f5;
+  color:#8a929d;
+  box-shadow:0 0 0 1px #e2e5e9;
+  font-size:14px;
+}
+.tracking-main .journey-step.complete .step-icon{
+  background:#20bd78;
+  color:#fff;
+  box-shadow:0 0 0 1px #20bd78;
+}
+.tracking-main .journey-step.active .step-icon{
+  background:#fff0e5;
+  color:#ff6600;
+  box-shadow:0 0 0 1px #ff6600;
+}
+.tracking-main .journey-step b{
+  display:block;
+  max-width:100%;
+  color:#20242b;
+  font-size:14px;
+  line-height:1.35;
+  font-weight:600;
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+.tracking-main .journey-step.active b{color:#e9671d}
+.tracking-main .journey-step:not(.complete):not(.active) b{color:#7b838e}
+.tracking-main .journey-step .step-icon .ph{font-size:16px;line-height:1}
+@media(max-width:760px){
+  .tracking-main .journey{
+    min-width:590px;
+    padding:22px 8px 18px;
+  }
+  .tracking-main .journey-line{top:66px}
+  .tracking-main .journey-step{gap:10px}
+  .tracking-main .journey-step small{font-size:14px}
+  .tracking-main .journey-step b{font-size:14px;white-space:normal}
+  .tracking-main{overflow-x:auto}
+}
