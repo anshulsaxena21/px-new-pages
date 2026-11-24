@@ -36,7 +36,7 @@ The function uses Supabase's built-in server secret key. Do not put Meta credent
 
 ## Meta account limitation
 
-The current implementation uses Meta Graph API `v26.0`, the latest released version shown in Meta's versions table as of November 24, 2026. Meta's changelog page may label a newer version separately, so the version is isolated as a constant in the Edge Function for easy upgrades.
+The current implementation uses Meta Graph API `v27.0`. Meta's current Platform Versioning guide identifies v27.0 as the latest Graph API version. The versions schedule page separately lists v26.0 as the latest dated release in its table, so the Platform Versioning guide is used for the current endpoint version.
 
 Business Discovery is intended for eligible public Instagram Professional (Business or Creator) accounts. Ordinary personal/consumer accounts and private accounts are not generally discoverable through this API. Meta App Review / Advanced Access may be required for production use with accounts outside the app's own roles.
 
