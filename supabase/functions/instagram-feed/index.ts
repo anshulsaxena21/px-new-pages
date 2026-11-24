@@ -104,27 +104,68 @@ async function findByPublicKey(publicKey: string) {
 }
 
 async function logMetaTokenPermissions(accessToken: string) {
+  const authHeaders = { Authorization: `Bearer ${accessToken}` };
+  const configuredInstagramId = Deno.env.get("META_INSTAGRAM_ACCOUNT_ID") ?? "";
   try {
-    const url = new URL(`https://graph.facebook.com/${GRAPH_VERSION}/me/permissions`);
-    const result = await fetch(url, {
-      headers: { Authorization: `Bearer ${accessToken}` }
-    });
-    const body = await result.json().catch(() => ({}));
-    const permissions = Array.isArray(body?.data)
-      ? body.data.map((item: Record<string, unknown>) => ({
+    const permissionsUrl = new URL(`https://graph.facebook.com/${GRAPH_VERSION}/me/permissions`);
+    const [permissionsResponse, meResponse, pagesResponse, sourceAccountResponse] = await Promise.all([
+      fetch(permissionsUrl, { headers: authHeaders }),
+      fetch(new URL(`https://graph.facebook.com/${GRAPH_VERSION}/me?fields=id,name`), { headers: authHeaders }),
+      fetch(new URL(`https://graph.facebook.com/${GRAPH_VERSION}/me/accounts?fields=id,name,instagram_business_account{id,username},tasks&limit=100`), { headers: authHeaders }),
+      fetch(new URL(`https://graph.facebook.com/${GRAPH_VERSION}/${encodeURIComponent(configuredInstagramId)}?fields=id,username`), { headers: authHeaders })
+    ]);
+    const [permissionsBody, meBody, pagesBody, sourceAccountBody] = await Promise.all([
+      permissionsResponse.json().catch(() => ({})),
+      meResponse.json().catch(() => ({})),
+      pagesResponse.json().catch(() => ({})),
+      sourceAccountResponse.json().catch(() => ({}))
+    ]);
+    const permissions = Array.isArray(permissionsBody?.data)
+      ? permissionsBody.data.map((item: Record<string, unknown>) => ({
           permission: String(item.permission ?? ""),
           status: String(item.status ?? "")
         }))
       : [];
-    const apiError = body?.error ?? {};
-    console.error("Meta token permission diagnostic", JSON.stringify({
-      status: result.status,
+    const pages = Array.isArray(pagesBody?.data) ? pagesBody.data : [];
+    const linkedInstagramAccounts = pages.flatMap((page: Record<string, unknown>) => {
+      const ig = page.instagram_business_account as Record<string, unknown> | undefined;
+      return ig ? [{
+        id: String(ig.id ?? ""),
+        username: String(ig.username ?? "")
+      }] : [];
+    });
+    const sourceAccount = sourceAccountBody && !sourceAccountBody.error
+      ? { id: String(sourceAccountBody.id ?? ""), username: String(sourceAccountBody.username ?? "") }
+      : null;
+    const getError = (body: Record<string, unknown>) => {
+      const error = body?.error as Record<string, unknown> | undefined;
+      return error ? {
+        code: error.code ?? null,
+        subcode: error.error_subcode ?? null,
+        message: String(error.message ?? "").slice(0, 250)
+      } : null;
+    };
+    console.error("Meta account access diagnostic", JSON.stringify({
+      permissionsStatus: permissionsResponse.status,
       permissions,
-      errorCode: apiError.code ?? null,
-      errorMessage: String(apiError.message ?? "").slice(0, 300)
+      facebookUserStatus: meResponse.status,
+      facebookUserReturned: !meBody?.error && Boolean(meBody?.id),
+      pageListStatus: pagesResponse.status,
+      pageCount: pages.length,
+      linkedInstagramAccounts,
+      configuredInstagramId,
+      configuredInstagramIdMatchesLinkedPage: linkedInstagramAccounts.some((ig: Record<string, string>) => ig.id === configuredInstagramId),
+      configuredInstagramAccountStatus: sourceAccountResponse.status,
+      configuredInstagramAccount: sourceAccount,
+      errors: {
+        permissions: getError(permissionsBody),
+        facebookUser: getError(meBody),
+        pages: getError(pagesBody),
+        configuredInstagramAccount: getError(sourceAccountBody)
+      }
     }));
   } catch (error) {
-    console.error("Meta token permission diagnostic failed", error instanceof Error ? error.message : "UNKNOWN");
+    console.error("Meta account access diagnostic failed", error instanceof Error ? error.message : "UNKNOWN");
   }
 }
 
