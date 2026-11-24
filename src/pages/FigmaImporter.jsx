@@ -1,9 +1,57 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Activity, ArrowDownToLine, ArrowRight, Box, Check, ChevronDown, ChevronRight, CircleHelp, Code2, Copy, FileImage, FileJson, Figma, Frame, Image as ImageIcon, Layers3, Link2, LoaderCircle, LockKeyhole, Palette, Ruler, Search, Settings2, Sparkles, Type, X } from "lucide-react";
 
 const PROJECT_URL = "https://ovdxipfxychotaspfccl.supabase.co";
 const FUNCTION_URL = PROJECT_URL + "/functions/v1/figma-import";
 const DEFAULT_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_VQdW48kuUKdUigExZZnwDA_SuEa5Qce";
+
+
+const PROJECT_DB_NAME = "parcelx-figma-studio";
+const PROJECT_STORE = "saved-projects";
+function openProjectDB() {
+  return new Promise((resolve, reject) => {
+    if (!("indexedDB" in window)) return reject(new Error("This browser does not support IndexedDB."));
+    const request = indexedDB.open(PROJECT_DB_NAME, 1);
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains(PROJECT_STORE)) db.createObjectStore(PROJECT_STORE, { keyPath: "id" });
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error || new Error("Could not open local project storage."));
+    request.onblocked = () => reject(new Error("Project storage is blocked by another browser tab. Close duplicate importer tabs and retry."));
+  });
+}
+async function putSavedProject(project) {
+  const db = await openProjectDB();
+  try { await new Promise((resolve, reject) => {
+    const tx = db.transaction(PROJECT_STORE, "readwrite");
+    tx.objectStore(PROJECT_STORE).put(project);
+    tx.oncomplete = resolve;
+    tx.onerror = () => reject(tx.error || new Error("Could not save the project."));
+    tx.onabort = () => reject(tx.error || new Error("Project save was cancelled."));
+  }); } finally { db.close(); }
+}
+async function getSavedProjects() {
+  const db = await openProjectDB();
+  try { return await new Promise((resolve, reject) => {
+    const request = db.transaction(PROJECT_STORE, "readonly").objectStore(PROJECT_STORE).getAll();
+    request.onsuccess = () => resolve((request.result || []).sort((a,b) => new Date(b.savedAt)-new Date(a.savedAt)));
+    request.onerror = () => reject(request.error || new Error("Could not read saved projects."));
+  }); } finally { db.close(); }
+}
+async function deleteSavedProject(id) {
+  const db = await openProjectDB();
+  try { await new Promise((resolve, reject) => {
+    const tx = db.transaction(PROJECT_STORE, "readwrite");
+    tx.objectStore(PROJECT_STORE).delete(id);
+    tx.oncomplete = resolve;
+    tx.onerror = () => reject(tx.error || new Error("Could not delete saved project."));
+  }); } finally { db.close(); }
+}
+function safeFileName(value, fallback = "asset") {
+  const name = String(value || fallback).split(/[\\\\/]/).pop().replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-+|-+$/g, "");
+  return name || fallback;
+}
 
 function parseFigmaUrl(value) {
   const url = new URL(value.trim());
@@ -33,8 +81,8 @@ function rgba(color, opacity = 1) {
 function downloadText(name, content, type = "text/plain") {
   const blob = new Blob([content], { type });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement("a"); a.href = url; a.download = name; a.click();
-  URL.revokeObjectURL(url);
+  const a = document.createElement("a"); a.href = url; a.download = name; a.style.display = "none"; document.body.appendChild(a); a.click(); a.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1500);
 }
 function cssTokens(nodes) {
   const colors = new Map(); const fonts = new Map(); const radii = new Set(); const spaces = new Set();
@@ -100,7 +148,16 @@ export default function FigmaImporter() {
   const [activeTab, setActiveTab] = useState("layers");
   const [expanded, setExpanded] = useState({});
   const [copied, setCopied] = useState(false);
-  const [savedProjects, setSavedProjects] = useState(() => { try { return JSON.parse(localStorage.getItem("px-figma-projects") || "[]"); } catch { return []; } });
+  const [savedProjects, setSavedProjects] = useState([]);
+  const [saveStatus, setSaveStatus] = useState("");
+  const [storageReady, setStorageReady] = useState(false);
+  useEffect(() => {
+    let alive = true;
+    getSavedProjects().then(items => { if (alive) setSavedProjects(items); })
+      .catch(err => { if (alive) setError("Saved-project storage could not be opened: " + err.message); })
+      .finally(() => { if (alive) setStorageReady(true); });
+    return () => { alive = false; };
+  }, []);
 
   const allNodes = useMemo(() => design ? walk([design.document]) : [], [design]);
   const selectedNode = selected ? allNodes.find((n) => n.id === selected) : null;
@@ -145,103 +202,115 @@ export default function FigmaImporter() {
   }
   function exportJson() { downloadText("figma-design.json", JSON.stringify(design, null, 2), "application/json"); }
   function exportTokens() { downloadText("figma-tokens.css", cssTokens(allNodes), "text/css"); }
-  function exportReact() {
-    if (!design?.document) return;
-    const assetByNode = new Map((design.assets || []).map(asset => [asset.nodeId, asset.url]));
-    const className = (node) => "figma-" + String(node.id || "layer").replace(/[^a-zA-Z0-9_-]/g, "-");
-    const cssColor = (paint) => paint?.type === "SOLID" && paint.color
-      ? `rgba(${Math.round(paint.color.r*255)}, ${Math.round(paint.color.g*255)}, ${Math.round(paint.color.b*255)}, ${paint.opacity ?? 1})`
-      : null;
-    const emit = (node, parent = null, depth = 2) => {
-      const cls = className(node);
-      const isText = node.type === "TEXT";
-      const tag = isText ? "p" : "div";
-      const label = isText ? String(node.characters || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\{ /g,"&#123;") : "";
-      const children = (node.children || []).map(child => emit(child, node, depth + 1)).join("\n");
-      const content = isText ? label : children;
-      const pad = "  ".repeat(depth);
-      return `${pad}<${tag} className="${cls}">${content ? "\n" + content + "\n" + pad : ""}</${tag}>`;
-    };
-    const css = [];
-    const rules = (node, parent = null) => {
-      const box = node.absoluteBoundingBox || {};
-      const pbox = parent?.absoluteBoundingBox || {};
-      const auto = parent?.layoutMode === "HORIZONTAL" || parent?.layoutMode === "VERTICAL";
-      const fills = (node.fills || []).filter(p => p.visible !== false);
-      const solid = fills.find(p => p.type === "SOLID");
-      const image = fills.find(p => p.type === "IMAGE");
-      const imageUrl = assetByNode.get(node.id);
-      const style = node.style || {};
-      const lines = [`.${className(node)} {`];
-      if (!parent) {
-        lines.push("  position: relative;");
-        lines.push("  width: 100%;");
-        lines.push("  min-height: 100vh;");
-      } else if (parent?.layoutMode === "HORIZONTAL" || parent?.layoutMode === "VERTICAL") {
-        lines.push("  position: relative;");
-        lines.push(`  flex: ${node.layoutGrow ? "1 1 0" : "0 0 auto"};`);
-        if (box.width) lines.push(`  width: ${box.width}px;`);
-        if (box.height) lines.push(`  min-height: ${box.height}px;`);
-      } else {
-        lines.push("  position: absolute;");
-        if (box.x != null && pbox.x != null) lines.push(`  left: ${box.x-pbox.x}px;`);
-        if (box.y != null && pbox.y != null) lines.push(`  top: ${box.y-pbox.y}px;`);
-        if (box.width) lines.push(`  width: ${box.width}px;`);
-        if (box.height) lines.push(`  height: ${box.height}px;`);
+  async function exportReact() {
+    if (!design?.document) { setError("Import a Figma design before exporting React."); return; }
+    setLoading(true); setError("");
+    try {
+      const assets = design.assets || [];
+      const assetPaths = new Map();
+      assets.forEach((asset,index) => {
+        const filename = safeFileName(asset.name, "asset-" + (index+1) + (asset.format === "svg" ? ".svg" : ".png"));
+        assetPaths.set(asset.nodeId, "../" + (asset.format === "svg" ? "assets/vectors/" : "assets/images/") + filename);
+      });
+      const className = node => "figma-" + String(node.id || "layer").replace(/[^a-zA-Z0-9_-]/g, "-");
+      const cssColor = paint => paint?.type === "SOLID" && paint.color
+        ? "rgba(" + Math.round(paint.color.r*255) + ", " + Math.round(paint.color.g*255) + ", " + Math.round(paint.color.b*255) + ", " + (paint.opacity ?? 1) + ")"
+        : null;
+      const emit = (node,depth=2) => {
+        const isText=node.type==="TEXT",tag=isText?"p":"div";
+        const escapeText=value=>String(value||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\{/g,"&#123;").replace(/\}/g,"&#125;");
+        const content=isText?escapeText(node.characters):(node.children||[]).map(child=>emit(child,depth+1)).join("\n");
+        const pad="  ".repeat(depth);
+        return pad+"<"+tag+' className="'+className(node)+'">'+(content?"\n"+content+"\n"+pad:"")+"</"+tag+">";
+      };
+      const css=[];
+      const rules=(node,parent=null)=>{
+        const box=node.absoluteBoundingBox||{},pbox=parent?.absoluteBoundingBox||{};
+        const fills=(node.fills||[]).filter(p=>p.visible!==false),solid=fills.find(p=>p.type==="SOLID"),image=fills.find(p=>p.type==="IMAGE");
+        const assetPath=assetPaths.get(node.id),style=node.style||{},lines=["."+className(node)+" {"];
+        if(!parent) lines.push("  position: relative;","  width: 100%;","  min-height: 100vh;");
+        else if(parent.layoutMode==="HORIZONTAL"||parent.layoutMode==="VERTICAL"){
+          lines.push("  position: relative;","  flex: "+(node.layoutGrow?"1 1 0":"0 0 auto")+";");
+          if(box.width!=null)lines.push("  width: "+box.width+"px;");
+          if(box.height!=null)lines.push("  min-height: "+box.height+"px;");
+        } else {
+          lines.push("  position: absolute;");
+          if(box.x!=null&&pbox.x!=null)lines.push("  left: "+(box.x-pbox.x)+"px;");
+          if(box.y!=null&&pbox.y!=null)lines.push("  top: "+(box.y-pbox.y)+"px;");
+          if(box.width!=null)lines.push("  width: "+box.width+"px;");
+          if(box.height!=null)lines.push("  height: "+box.height+"px;");
+        }
+        if(node.layoutMode==="HORIZONTAL"||node.layoutMode==="VERTICAL"){
+          lines.push("  display: flex;","  flex-direction: "+(node.layoutMode==="HORIZONTAL"?"row":"column")+";");
+          if(node.itemSpacing!=null)lines.push("  gap: "+node.itemSpacing+"px;");
+          lines.push("  padding: "+[node.paddingTop||0,node.paddingRight||0,node.paddingBottom||0,node.paddingLeft||0].map(v=>v+"px").join(" ")+";");
+          const justify={MIN:"flex-start",CENTER:"center",MAX:"flex-end",SPACE_BETWEEN:"space-between"},align={MIN:"flex-start",CENTER:"center",MAX:"flex-end",BASELINE:"baseline"};
+          if(node.primaryAxisAlignItems)lines.push("  justify-content: "+(justify[node.primaryAxisAlignItems]||"flex-start")+";");
+          if(node.counterAxisAlignItems)lines.push("  align-items: "+(align[node.counterAxisAlignItems]||"stretch")+";");
+        }
+        if(solid)lines.push("  background-color: "+cssColor(solid)+";");
+        if(image&&assetPath)lines.push('  background-image: url("'+assetPath+'");',"  background-size: cover;","  background-position: center;");
+        if(node.cornerRadius)lines.push("  border-radius: "+node.cornerRadius+"px;");
+        if(node.opacity!=null&&node.opacity!==1)lines.push("  opacity: "+node.opacity+";");
+        if(node.strokeWeight){const stroke=(node.strokes||[]).find(p=>p.type==="SOLID"&&p.visible!==false);if(stroke)lines.push("  border: "+node.strokeWeight+"px solid "+cssColor(stroke)+";");}
+        if(node.type==="TEXT"){
+          if(style.fontFamily)lines.push('  font-family: "'+String(style.fontFamily).replace(/"/g,"")+'", sans-serif;');
+          if(style.fontSize)lines.push("  font-size: "+style.fontSize+"px;");
+          if(style.fontWeight)lines.push("  font-weight: "+style.fontWeight+";");
+          if(style.lineHeightPx)lines.push("  line-height: "+style.lineHeightPx+"px;");
+          if(style.letterSpacing)lines.push("  letter-spacing: "+style.letterSpacing+"px;");
+          if(style.textAlignHorizontal)lines.push("  text-align: "+style.textAlignHorizontal.toLowerCase()+";");
+          const textFill=fills.find(p=>p.type==="SOLID");if(textFill)lines.push("  color: "+cssColor(textFill)+";");
+          lines.push("  margin: 0;","  white-space: pre-wrap;");
+        }
+        lines.push("}");css.push(lines.join("\n"));(node.children||[]).forEach(child=>rules(child,node));
+      };
+      rules(design.document);
+      const jsx='import React from "react";\nimport "./FigmaExport.css";\n\nexport default function FigmaExport() {\n  return (\n    <main className="'+className(design.document)+'">\n'+(design.document.children||[]).map(child=>emit(child,3)).join("\n")+'\n    </main>\n  );\n}\n';
+      const files=[
+        {name:"code/FigmaExport.jsx",data:jsx},
+        {name:"code/FigmaExport.css",data:css.join("\n\n")+"\n"},
+        {name:"README.md",data:"# React + CSS export\n\nCopy the code and assets folders into your React app. FigmaExport.jsx imports FigmaExport.css. Image fills use relative paths under assets. React must be installed in the target project.\n"}
+      ];
+      for(let i=0;i<assets.length;i++){
+        const asset=assets[i];if(!asset.url)continue;
+        try{const response=await fetch(asset.url);if(!response.ok)throw new Error("HTTP "+response.status);const bytes=new Uint8Array(await response.arrayBuffer());files.push({name:(asset.format==="svg"?"assets/vectors/":"assets/images/")+safeFileName(asset.name,"asset-"+(i+1)),data:bytes});}
+        catch(err){console.warn("React export skipped asset",asset.name,err);}
       }
-      if (node.layoutMode === "HORIZONTAL" || node.layoutMode === "VERTICAL") {
-        lines.push("  display: flex;");
-        lines.push(`  flex-direction: ${node.layoutMode === "HORIZONTAL" ? "row" : "column"};`);
-        if (node.itemSpacing != null) lines.push(`  gap: ${node.itemSpacing}px;`);
-        lines.push(`  padding: ${node.paddingTop||0}px ${node.paddingRight||0}px ${node.paddingBottom||0}px ${node.paddingLeft||0}px;`);
-        if (node.primaryAxisAlignItems) lines.push(`  justify-content: ${({MIN:"flex-start",CENTER:"center",MAX:"flex-end",SPACE_BETWEEN:"space-between"})[node.primaryAxisAlignItems] || "flex-start"};`);
-        if (node.counterAxisAlignItems) lines.push(`  align-items: ${({MIN:"flex-start",CENTER:"center",MAX:"flex-end",BASELINE:"baseline"})[node.counterAxisAlignItems] || "stretch"};`);
-      }
-      if (solid) lines.push(`  background-color: ${cssColor(solid)};`);
-      if (image && imageUrl) lines.push(`  background-image: url("${imageUrl}"); background-size: cover; background-position: center;`);
-      if (node.cornerRadius) lines.push(`  border-radius: ${node.cornerRadius}px;`);
-      if (node.opacity != null && node.opacity !== 1) lines.push(`  opacity: ${node.opacity};`);
-      if (isText) {
-        if (style.fontFamily) lines.push(`  font-family: "${style.fontFamily}", sans-serif;`);
-        if (style.fontSize) lines.push(`  font-size: ${style.fontSize}px;`);
-        if (style.fontWeight) lines.push(`  font-weight: ${style.fontWeight};`);
-        if (style.lineHeightPx) lines.push(`  line-height: ${style.lineHeightPx}px;`);
-        if (style.letterSpacing) lines.push(`  letter-spacing: ${style.letterSpacing}px;`);
-        if (style.textAlignHorizontal) lines.push(`  text-align: ${style.textAlignHorizontal.toLowerCase()};`);
-        const textFill = fills.find(p => p.type === "SOLID");
-        if (textFill) lines.push(`  color: ${cssColor(textFill)};`);
-        lines.push("  margin: 0;");
-        lines.push("  white-space: pre-wrap;");
-      }
-      lines.push("}");
-      css.push(lines.join("\n"));
-      (node.children || []).forEach(child => rules(child, node));
-    };
-    rules(design.document);
-    const jsx = `import React from "react";\nimport "./FigmaExport.css";\n\nexport default function FigmaExport() {\n  return (\n    <main className="${className(design.document)}">\n${(design.document.children || []).map(child => emit(child, design.document, 3)).join("\n")}\n    </main>\n  );\n}\n`;
-    downloadText("FigmaExport.jsx", jsx, "text/javascript");
-    downloadText("FigmaExport.css", css.join("\n\n"), "text/css");
+      const projectName=safeFileName(design.name,"figma-project").replace(/\.[^.]+$/,"");
+      saveBlob(projectName+"-react-css.zip",zipBlob(files));
+      setSaveStatus("React + CSS bundle downloaded");
+    } catch(err){setError("React + CSS export failed: "+(err.message||"Unknown error"));}
+    finally{setLoading(false);}
   }
 
   function exportAssetsManifest() { downloadText("figma-assets.json", JSON.stringify(design.assets || [], null, 2), "application/json"); }
 
 
-  function saveCurrentProject() {
-    if (!design?.document) return;
-    const entry = { id: design.importId || (crypto.randomUUID?.() || String(Date.now())), name: design.name || "Untitled Figma project", savedAt: new Date().toISOString(), design };
-    const next = [entry, ...savedProjects.filter(p => p.id !== entry.id)];
-    setSavedProjects(next);
-    try { localStorage.setItem("px-figma-projects", JSON.stringify(next)); setError(""); }
-    catch { setError("Browser storage is full. Download the ZIP to keep this project safely."); }
+  async function saveCurrentProject() {
+    if (!design?.document) { setError("Import a Figma design before saving."); return; }
+    setSaveStatus("Saving…"); setError("");
+    const entry = { id: design.importId || (globalThis.crypto?.randomUUID?.() || "px-" + Date.now()), name: design.name || "Untitled Figma project", savedAt: new Date().toISOString(), design };
+    try {
+      await putSavedProject(entry);
+      setSavedProjects(await getSavedProjects());
+      setSaveStatus("Saved on this device · " + new Date(entry.savedAt).toLocaleTimeString());
+      window.setTimeout(() => setSaveStatus(current => current.startsWith("Saved on this device") ? "" : current), 5000);
+    } catch (err) {
+      setSaveStatus("");
+      setError("Could not save in browser storage: " + err.message + ". Downloading a backup instead.");
+      try { downloadText(safeFileName(entry.name, "figma-project") + "-backup.json", JSON.stringify(entry, null, 2), "application/json"); }
+      catch (backupError) { setError("Save failed: " + err.message + ". Backup download also failed: " + backupError.message); }
+    }
   }
   function openSavedProject(project) {
     setDesign(project.design); setSelected(project.design.document?.children?.[0]?.id || project.design.document?.id || null);
     setExpanded({ [project.design.document?.id]: true });
-    setError("");
+    setError(""); setSaveStatus("Opened saved project");
   }
-  function removeSavedProject(id) {
-    const next = savedProjects.filter(p => p.id !== id); setSavedProjects(next);
-    try { localStorage.setItem("px-figma-projects", JSON.stringify(next)); } catch {}
+  async function removeSavedProject(id) {
+    try { await deleteSavedProject(id); setSavedProjects(await getSavedProjects()); setSaveStatus("Saved project deleted"); }
+    catch (err) { setError("Could not delete saved project: " + err.message); }
   }
 
   function exportLayerDocs() {
@@ -314,8 +383,8 @@ export default function FigmaImporter() {
       {!design ? <>{savedProjects.length > 0 && <section className="saved-projects"><div className="saved-projects-head"><div><b>Saved on this device</b><small>Private browser library · {savedProjects.length} projects</small></div></div><div className="saved-project-list">{savedProjects.map(project => <div className="saved-project-row" key={project.id}><button onClick={() => openSavedProject(project)}><FileJson size={16}/><span><b>{project.name}</b><small>Saved {new Date(project.savedAt).toLocaleString()}</small></span></button><button aria-label="Remove saved project" onClick={() => removeSavedProject(project.id)}><X size={15}/></button></div>)}</div></section>}
       <div className="empty-state"><div className="empty-illustration"><div className="empty-card card-back"/><div className="empty-card card-front"><Layers3 size={30}/><span/><span/></div><div className="empty-spark spark-one">✳</div><div className="empty-spark spark-two">✦</div></div><h2>Your design workspace is ready</h2><p>Import a Figma file to inspect its structure, typography, colors, measurements and downloadable assets.</p><div className="empty-capabilities"><span><Type size={15}/> Typography</span><span><Palette size={15}/> Colors</span><span><Ruler size={15}/> Spacing</span><span><ImageIcon size={15}/> Assets</span></div></div></>
       : <div className="workspace">
-        <div className="project-heading"><div><div className="eyebrow">IMPORTED FILE</div><h2>{design.name || "Untitled Figma file"}</h2><small>{design.lastModified ? "Last modified " + new Date(design.lastModified).toLocaleString() : "Figma design file"} · {counts.layers} layers detected</small></div><div className="export-actions"><button className="secondary-button" onClick={saveCurrentProject}><Check size={15}/> Save project</button><button className="secondary-button" onClick={exportJson}><FileJson size={15}/> Export JSON</button><button className="secondary-button" onClick={exportTokens}><Code2 size={15}/> CSS tokens</button><button className="secondary-button" onClick={exportReact}><Code2 size={15}/> React + CSS</button><button className="secondary-button" onClick={exportLayerDocs}><Layers3 size={15}/> Layer docs</button><button className="primary-small" onClick={downloadProjectZip} disabled={loading}><ArrowDownToLine size={15}/> {loading ? "Building ZIP..." : "Download project ZIP"}</button></div></div>
-        <div className="stat-grid"><Stat icon={<Layers3/>} label="Total layers" value={counts.layers}/><Stat icon={<Type/>} label="Text layers" value={counts.text}/><Stat icon={<ImageIcon/>} label="Image fills" value={counts.images}/><Stat icon={<Frame/>} label="Vector layers" value={counts.vectors}/></div>
+        <div className="project-heading"><div><div className="eyebrow">IMPORTED FILE</div><h2>{design.name || "Untitled Figma file"}</h2><small>{design.lastModified ? "Last modified " + new Date(design.lastModified).toLocaleString() : "Figma design file"} · {counts.layers} layers detected</small></div><div className="export-actions"><button className="secondary-button" onClick={saveCurrentProject} disabled={saveStatus === "Saving…"}><Check size={15}/> {saveStatus === "Saving…" ? "Saving…" : "Save project"}</button><button className="secondary-button" onClick={exportJson}><FileJson size={15}/> Export JSON</button><button className="secondary-button" onClick={exportTokens}><Code2 size={15}/> CSS tokens</button><button className="secondary-button" onClick={exportReact} disabled={loading}><Code2 size={15}/> React + CSS ZIP</button><button className="secondary-button" onClick={exportLayerDocs}><Layers3 size={15}/> Layer docs</button><button className="primary-small" onClick={downloadProjectZip} disabled={loading}><ArrowDownToLine size={15}/> {loading ? "Building ZIP..." : "Download project ZIP"}</button></div></div>
+        {saveStatus && <div className="save-status" role="status">{saveStatus}</div>}<div className="stat-grid"><Stat icon={<Layers3/>} label="Total layers" value={counts.layers}/><Stat icon={<Type/>} label="Text layers" value={counts.text}/><Stat icon={<ImageIcon/>} label="Image fills" value={counts.images}/><Stat icon={<Frame/>} label="Vector layers" value={counts.vectors}/></div>
         <div className="inspector-layout">
           <section className="panel layers-panel"><div className="panel-heading"><div><Layers3 size={17}/><b>Layers</b><span className="count-pill">{counts.layers}</span></div></div><div className="layer-search"><Search size={15}/><input placeholder="Search layers..." value={query} onChange={e => setQuery(e.target.value)}/><kbd>⌘ K</kbd></div><div className="layer-list">{query ? filteredNodes.slice(0,120).map(n => <button key={n.id} className={`layer-row ${selected===n.id?"selected":""}`} onClick={() => setSelected(n.id)}><NodeIcon type={n.type}/><span className="layer-name">{n.name}</span><span className="layer-type">{n.type}</span></button>) : renderTree(design.document)}</div></section>
           <section className="panel details-panel"><div className="detail-tabs"><button className={activeTab==="layers"?"active":""} onClick={()=>setActiveTab("layers")}>Properties</button><button className={activeTab==="assets"?"active":""} onClick={()=>setActiveTab("assets")}>Assets <span>{design.assets?.length || 0}</span></button></div>
