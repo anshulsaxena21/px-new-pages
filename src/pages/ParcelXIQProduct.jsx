@@ -33,6 +33,7 @@ import {
 import logo from "../images/ParcelX_Logo.svg";
 import "../styles/parcelx-iq-product.css";
 import IQScrollScene from "./IQScrollScene.jsx";
+import ParcelXIQRobotGuide from "./ParcelXIQRobotGuide.jsx";
 
 const demoBaseUrl = "/px-new-pages/parcelx-iq-demo.html";
 const demoUrl = `${demoBaseUrl}?intent=demo`;
@@ -129,6 +130,7 @@ function ProductNav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const links = [
     ["Platform", "#platform"],
+    ["Meet IQ", "#meet-iq"],
     ["Capabilities", "#capabilities"],
     ["Ways to use IQ", "#deployment"],
     ["Integration", "#integration"],
@@ -518,6 +520,8 @@ export default function ParcelXIQProduct() {
         </div>
       </section>
 
+      <ParcelXIQRobotGuide capabilities={capabilities} demoUrl={demoUrl} />
+
       <section className="pxq-intro pxq-shell" id="platform">
         <div className="pxq-section-tag"><span>01</span> THE PRODUCT</div>
         <div className="pxq-intro-grid">
@@ -564,7 +568,7 @@ export default function ParcelXIQProduct() {
         </div>
         <div className="pxq-cap-grid">
           {capabilities.map(({id,number,title,text,detail,icon:Icon,tone}) => (
-            <article className={"pxq-cap-card cap-" + tone} key={id}>
+            <article id={"capability-" + id} className={"pxq-cap-card cap-" + tone} key={id}>
               <div className="pxq-cap-top"><span>{number} / IQ MODULE</span><CapabilityIcon icon={Icon} tone={tone}/></div>
               <h3>{title}</h3><p>{text}</p><div className="pxq-cap-detail">{detail}</div>
               <span className="pxq-cap-arrow"><ArrowUpRight size={16}/></span>
