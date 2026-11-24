@@ -503,3 +503,265 @@ body *:not(.ph):not(svg):not(path) {
   .tracking-main .history-table-wrap{height:232px}
   .tracking-main .history table{min-width:640px}
 }
+
+
+/* Figma tracking result composition */
+#trackingDetails{
+  display:block;
+  width:min(1100px,calc(100% - 64px));
+  max-width:1100px;
+  margin:28px auto 32px;
+  padding:0;
+}
+#trackingDetails .tracking-main{
+  display:flex;
+  flex-direction:column;
+  gap:42px;
+  width:100%;
+  padding:0;
+  border:0;
+  background:transparent;
+  overflow:visible;
+}
+#trackingDetails .tracking-aside{display:none!important}
+#trackingDetails .shipment-card{
+  min-height:0;
+  padding:38px 40px 34px;
+  border:1px solid #e7e7e7;
+  border-radius:18px;
+  background:#fff;
+}
+#trackingDetails .delivery-heading{
+  font-size:26px;
+  line-height:1.35;
+  font-weight:600;
+}
+#trackingDetails .weekday{font-size:24px;font-weight:400}
+#trackingDetails .delivery-date{
+  margin:16px 0 12px;
+  text-align:right;
+  font-size:clamp(48px,7vw,88px);
+  line-height:1.05;
+  letter-spacing:-3px;
+  font-weight:800;
+  color:#050505;
+}
+#trackingDetails .status-row{
+  position:absolute;
+  top:132px;
+  left:40px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:0;
+  border:0;
+  font-size:24px;
+}
+#trackingDetails .status-pill{
+  padding:12px 24px;
+  border-radius:40px;
+  background:#fff9e9;
+  color:#d49b00;
+  font-size:24px;
+  white-space:nowrap;
+}
+#trackingDetails .status-pill i{width:10px;height:10px;background:#e2ae00}
+#trackingDetails .tracking-id{
+  min-height:92px;
+  padding:18px 0;
+  border-top:1px solid #dedede;
+  border-bottom:1px solid #dedede;
+}
+#trackingDetails .tracking-id>span{font-size:18px;color:#999}
+#trackingDetails .tracking-id strong{font-size:24px;font-weight:500}
+#trackingDetails .courier-logo{
+  width:210px;
+  max-height:52px;
+  bottom:24px;
+}
+#trackingDetails .latest-update{padding-top:20px;gap:8px}
+#trackingDetails .latest-update strong{font-size:24px;font-weight:600}
+#trackingDetails .latest-update>span,
+#trackingDetails .latest-update small{font-size:20px;color:#222}
+#trackingDetails .journey{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  align-items:start;
+  gap:0;
+  position:relative;
+  padding:24px 0 18px;
+  margin:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  overflow:visible;
+}
+#trackingDetails .journey-line{
+  z-index:0;
+  top:105px;
+  left:4.3%;
+  right:4.3%;
+  height:0;
+  border:0;
+  border-top:6px dotted #d5d5d5;
+}
+#trackingDetails .journey-line:after{
+  top:-6px;
+  left:0;
+  width:60%;
+  border-top:6px dotted #20bd78;
+}
+#trackingDetails .journey-step{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:12px;
+  min-width:0;
+  text-align:left;
+  z-index:1;
+}
+#trackingDetails .journey-step small{
+  min-height:48px;
+  color:#171717;
+  font-size:17px;
+  line-height:1.65;
+  font-weight:500;
+}
+#trackingDetails .journey-step .step-icon{
+  width:40px;height:40px;flex:0 0 40px;
+  align-self:flex-start;
+  border:1px solid #e9e9e9;
+  border-radius:50%;
+  background:#fff;
+  color:#9aa1aa;
+  box-shadow:none;
+}
+#trackingDetails .journey-step.complete .step-icon{
+  background:#20bd78;color:#fff;border-color:#20bd78;
+}
+#trackingDetails .journey-step.active .step-icon{
+  background:#ffeadf;color:#ff6600;border-color:#ffd8c3;
+}
+#trackingDetails .journey-step b{
+  font-size:17px;
+  font-weight:500;
+  white-space:nowrap;
+  color:#171717;
+}
+#trackingDetails .journey-step.active b{color:#ff6600}
+#trackingDetails .journey-step:not(.complete):not(.active) b{color:#888}
+#trackingDetails .journey-step b .ph{font-size:15px;margin-left:3px}
+#trackingDetails .journey-step .step-icon .ph{font-size:20px}
+#trackingDetails .history{
+  padding:50px;
+  border-radius:18px;
+  background:#f8f8f8;
+}
+#trackingDetails .history-head{display:none}
+#trackingDetails .history-inner{
+  padding:26px;
+  border-radius:10px;
+  background:linear-gradient(110deg,#fbefec 0%,#f8edf5 100%);
+}
+#trackingDetails .history-table-wrap{
+  height:auto;
+  max-height:260px;
+  overflow:auto;
+  border:1px solid #e6e6e6;
+  border-radius:5px;
+  padding:0;
+  background:#fff;
+}
+#trackingDetails .history table{
+  width:100%;
+  min-width:680px;
+  table-layout:fixed;
+  border-collapse:collapse;
+}
+#trackingDetails .history th{
+  position:sticky;
+  top:0;
+  z-index:2;
+  padding:14px 16px;
+  font-size:17px;
+  font-weight:600;
+  color:#171717;
+  background:#fff;
+  border-bottom:1px solid #e5e5e5;
+}
+#trackingDetails .history td{
+  padding:18px 16px;
+  font-size:17px;
+  color:#222;
+  border:0;
+  white-space:nowrap;
+}
+#trackingDetails .history th:nth-child(1),#trackingDetails .history td:nth-child(1){width:26%}
+#trackingDetails .history th:nth-child(2),#trackingDetails .history td:nth-child(2){width:40%}
+#trackingDetails .history th:nth-child(3),#trackingDetails .history td:nth-child(3){width:34%}
+@media(max-width:900px){
+  #trackingDetails{width:calc(100% - 40px)}
+  #trackingDetails .shipment-card{padding:28px}
+  #trackingDetails .status-row{left:28px;top:112px;font-size:18px}
+  #trackingDetails .status-pill{font-size:18px;padding:9px 16px}
+  #trackingDetails .delivery-heading{font-size:20px}
+  #trackingDetails .weekday{font-size:18px}
+  #trackingDetails .delivery-date{font-size:clamp(42px,8vw,68px)}
+  #trackingDetails .journey{overflow-x:auto;min-width:0;grid-template-columns:repeat(6,minmax(120px,1fr));padding:20px 8px}
+  #trackingDetails .journey-line{top:100px}
+  #trackingDetails .history{padding:24px}
+  #trackingDetails .history-inner{padding:16px}
+}
+@media(max-width:600px){
+  #trackingDetails{width:calc(100% - 24px);margin:16px auto 24px}
+  #trackingDetails .tracking-main{gap:24px}
+  #trackingDetails .shipment-card{padding:20px 16px;border-radius:12px}
+  #trackingDetails .delivery-heading{font-size:16px}
+  #trackingDetails .weekday{font-size:15px}
+  #trackingDetails .delivery-date{margin:22px 0 14px;font-size:clamp(38px,10vw,54px);letter-spacing:-1.5px}
+  #trackingDetails .status-row{position:static;margin:0 0 16px;font-size:15px;gap:9px}
+  #trackingDetails .status-pill{font-size:14px;padding:7px 12px}
+  #trackingDetails .tracking-id{min-height:82px;padding:12px 0}
+  #trackingDetails .tracking-id>span{font-size:14px}
+  #trackingDetails .tracking-id strong{font-size:17px}
+  #trackingDetails .courier-logo{width:105px;max-height:32px;bottom:20px}
+  #trackingDetails .latest-update strong{font-size:17px}
+  #trackingDetails .latest-update>span,#trackingDetails .latest-update small{font-size:14px}
+  #trackingDetails .journey{grid-template-columns:repeat(6,112px);padding:10px 4px 14px;gap:0}
+  #trackingDetails .journey-line{top:91px}
+  #trackingDetails .journey-step small{font-size:14px;min-height:42px}
+  #trackingDetails .journey-step b{font-size:14px}
+  #trackingDetails .journey-step .step-icon{width:36px;height:36px;flex-basis:36px}
+  #trackingDetails .history{padding:16px;border-radius:12px}
+  #trackingDetails .history-inner{padding:10px;border-radius:8px}
+  #trackingDetails .history-table-wrap{max-height:230px}
+  #trackingDetails .history th,#trackingDetails .history td{font-size:14px;padding:12px 10px}
+}
+
+/* Keep status and delivery date side-by-side, as in the Figma hero card */
+#trackingDetails .shipment-card{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  align-items:center;
+  column-gap:24px;
+}
+#trackingDetails .delivery-heading{grid-column:1 / -1;grid-row:1}
+#trackingDetails .delivery-date{
+  grid-column:2;grid-row:2;
+  align-self:center;
+  margin:16px 0 12px;
+}
+#trackingDetails .status-row{
+  position:static;
+  grid-column:1;grid-row:2;
+  align-self:center;
+  justify-self:start;
+  margin:16px 0 12px;
+}
+#trackingDetails .tracking-id{grid-column:1 / -1;grid-row:3}
+#trackingDetails .latest-update{grid-column:1 / -1;grid-row:4}
+@media(max-width:600px){
+  #trackingDetails .shipment-card{display:block}
+  #trackingDetails .delivery-date{text-align:left;margin:18px 0 14px}
+  #trackingDetails .status-row{margin:0 0 16px}
+}
