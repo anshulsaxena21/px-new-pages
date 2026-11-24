@@ -118,7 +118,17 @@ async function fetchInstagramPosts(username: string): Promise<InstagramPost[]> {
   });
   const payload = await metaResponse.json().catch(() => ({}));
   if (!metaResponse.ok || payload?.error) {
-    console.error("Instagram Business Discovery request failed", metaResponse.status, payload?.error?.code ?? "unknown");
+    const apiError = payload?.error ?? {};
+    console.error("Instagram Business Discovery request failed", JSON.stringify({
+      status: metaResponse.status,
+      type: apiError.type ?? null,
+      code: apiError.code ?? null,
+      subcode: apiError.error_subcode ?? null,
+      message: String(apiError.message ?? "").slice(0, 400),
+      userTitle: String(apiError.error_user_title ?? "").slice(0, 200),
+      userMessage: String(apiError.error_user_msg ?? "").slice(0, 300),
+      fbtraceId: apiError.fbtrace_id ?? null
+    }));
     throw new Error("INSTAGRAM_LOOKUP_FAILED");
   }
 
