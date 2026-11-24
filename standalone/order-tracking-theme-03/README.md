@@ -34,7 +34,7 @@ This theme is a separate standalone implementation. It does not share styles or 
 | Product image 3 | `image-2802-10155.png` | 781 × 660 |
 | Product image 4 | `image-2802-10161.png` | 659 × 640 |
 
-The page reads original images from the repository's root-level `px-custom-tracking-ds-website-wq3c-aefwrds-bundle.zip` archive at runtime. `app.js` extracts only the referenced artwork and creates temporary browser object URLs; the source archive remains unchanged.
+The supplied ZIP is the source of these assets. The page no longer requests the ZIP at runtime. `app.js` maps each referenced filename to its original Figma-exported image URL, removing the broken repository-root ZIP dependency. Images load directly in the browser; if an upstream Figma asset URL becomes unavailable, the mapping can be switched to locally hosted repository assets.
 
 ## Page sections
 
