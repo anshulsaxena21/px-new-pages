@@ -1,0 +1,42 @@
+name: Validate page organization
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - name: Install dependencies
+        run: npm install --include=optional
+      - name: Ensure Rollup native binary is installed
+        shell: bash
+        run: |
+          if ! node -e "require.resolve('@rollup/rollup-linux-x64-gnu')" >/dev/null 2>&1; then
+            ROLLUP_VERSION="$(node -p "require('rollup/package.json').version")"
+            npm install --no-save --include=optional --no-audit --no-fund "@rollup/rollup-linux-x64-gnu@$ROLLUP_VERSION"
+          fi
+          node -e "require('@rollup/rollup-linux-x64-gnu')"
+      - name: Build
+        run: npm run build
+      - name: Include standalone themes
+        run: cp -R standalone dist/standalone
+      - name: Verify generated page entries
+        shell: bash
+        run: |
+          for page in fulfillment amazon-self-ship figma-importer parcelx-iq parcelx-iq-demo parcelx-iq-product knowledge-base; do
+            test -f "dist/pages/$page/index.html"
+          done
+          test -d dist/standalone
