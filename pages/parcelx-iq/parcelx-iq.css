@@ -8,9 +8,8 @@
  --iq-violet:#7666dd;--iq-blue:#397fd4;--iq-teal:#21a995;--iq-mint:#2eae87;--iq-amber:#d99a3a;
  --iq-gutter:clamp(18px,5vw,76px);--iq-max:1320px;
  position:relative;overflow:clip;color:var(--iq-ink);background:#fff;
- font-family:"Instrument Sans",Inter,ui-sans-serif,system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;
+ font-family:var(--font-primary);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;
 }
-.iq-page *,.iq-page *::before,.iq-page *::after{box-sizing:border-box}
 .iq-page a{text-decoration:none}
 .iq-page button,.iq-page input{font:inherit}
 .iq-page button{cursor:pointer}
@@ -21,9 +20,9 @@
 .iq-page>.sticky-top .navbar{min-height:76px;padding:10px var(--iq-gutter);background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border-bottom:1px solid #eef0f3}
 .iq-page>.sticky-top .navbar .container-fluid{max-width:1480px;margin:auto}
 .iq-page>.sticky-top .navbar-nav{gap:clamp(12px,1.6vw,24px)}
-.iq-page>.sticky-top .navbar-nav a{font-family:"Instrument Sans",sans-serif;color:#515b69;font-size:13px;font-weight:600;transition:color .2s}
+.iq-page>.sticky-top .navbar-nav a{font-family:var(--font-primary);color:#515b69;font-size:13px;font-weight:600;transition:color .2s}
 .iq-page>.sticky-top .navbar-nav a:hover{color:var(--iq-orange)}
-.iq-page>.sticky-top .btn{border-radius:10px;font-family:"Instrument Sans",sans-serif;font-weight:700;padding:10px 16px}
+.iq-page>.sticky-top .btn{border-radius:10px;font-family:var(--font-primary);font-weight:700;padding:10px 16px}
 .iq-page>.sticky-top .btn-primary{background:var(--iq-orange);border-color:var(--iq-orange)}
 .iq-page>.sticky-top .btn-secondary{color:#293240;background:#fff;border-color:#dfe3e8}
 
@@ -389,7 +388,7 @@
 .iq-page .iq-final-decoration>i:nth-of-type(2){top:95px;right:18px;background:#38b69b}
 .iq-page .iq-final-decoration>i:nth-of-type(3){bottom:34px;left:70px;background:#e7ad5a}
 .iq-page>div:last-child .footer-bg{background:#f7f8fa}
-.iq-page>div:last-child footer{font-family:"Instrument Sans",sans-serif}
+.iq-page>div:last-child footer{font-family:var(--font-primary);}
 
 /* Responsive layouts */
 @media(max-width:1120px){

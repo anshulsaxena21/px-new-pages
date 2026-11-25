@@ -1,12 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700;800&display=swap');
-
 .pxq-product{
   --pxq-orange:#ff6600;--pxq-ink:#192230;--pxq-muted:#687484;--pxq-line:#e8ebf0;
   --pxq-violet:#7568d8;--pxq-blue:#397fd4;--pxq-teal:#1e9e8e;--pxq-amber:#c18b35;
-  color:var(--pxq-ink);background:#fff;font-family:"Instrument Sans",Inter,system-ui,sans-serif;
+  color:var(--pxq-ink);background:#fff;font-family:var(--font-primary);
   font-size:16px;line-height:1.55;overflow:clip;-webkit-font-smoothing:antialiased
 }
-.pxq-product *,.pxq-product *::before,.pxq-product *::after{box-sizing:border-box}
 .pxq-product a{text-decoration:none}
 .pxq-product button{font:inherit;cursor:pointer}
 .pxq-product a:focus-visible,.pxq-product button:focus-visible{outline:3px solid rgba(255,102,0,.3);outline-offset:3px}
@@ -301,7 +298,7 @@
 .pxq-final-decoration>i{position:absolute;width:10px;height:10px;border:2px solid #fff;border-radius:50%;background:#786ce0}
 .pxq-final-decoration>i:nth-child(2){top:25px;left:54px}.pxq-final-decoration>i:nth-child(3){top:80px;right:10px;background:#36b69a}.pxq-final-decoration>i:nth-child(4){bottom:28px;left:60px;background:#e4ae5d}
 .pxq-product>div:last-child .footer-bg{background:#f7f8fa}
-.pxq-product footer{font-family:"Instrument Sans",sans-serif}
+.pxq-product footer{font-family:var(--font-primary);}
 
 /* Responsive */
 @media(max-width:1080px){
@@ -517,7 +514,7 @@ html:has(.pxq-product){scroll-behavior:smooth}
 .pxq-product .pxq-cap-top>span:first-child{transition:letter-spacing .3s,color .3s}
 .pxq-product .pxq-cap-card:hover .pxq-cap-top>span:first-child{letter-spacing:1.45px;color:#6b7483}
 .pxq-product .pxq-report-tabs{gap:6px}
-.pxq-product .pxq-report-tabs button{padding:7px 10px;border:0;border-radius:7px;color:#7e8997;background:#f6f7f9;font:700 14px "Instrument Sans",sans-serif;transition:color .25s,background .25s,transform .25s,box-shadow .25s}
+.pxq-product .pxq-report-tabs button{padding:7px 10px;border:0;border-radius:7px;color:#7e8997;background:#f6f7f9;font:700 14px var(--font-primary);transition:color .25s,background .25s,transform .25s,box-shadow .25s}
 .pxq-product .pxq-report-tabs button:hover{transform:translateY(-2px);color:#6256c7}
 .pxq-product .pxq-report-tabs button.active{color:#6659c8;background:#f0eeff;box-shadow:inset 0 0 0 1px #e5e1ff}
 .pxq-product .pxq-report-rows>div{animation:pxqRowEnter .45s var(--pxq-ease) both}

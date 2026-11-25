@@ -1,6 +1,5 @@
 :root { --ash-orange:#ff6600; --ash-ink:#161616; --ash-muted:#747781; --ash-line:#e9e9ee; }
-.amazon-self-ship-page { overflow:clip; background:#fff; color:var(--ash-ink); font-family:"Instrument Sans",Inter,ui-sans-serif,system-ui,sans-serif; font-size:16px; line-height:1.5; }
-.amazon-self-ship-page *, .amazon-self-ship-page *::before, .amazon-self-ship-page *::after { box-sizing:border-box; }
+.amazon-self-ship-page { overflow:clip; background:#fff; color:var(--ash-ink); font-family:var(--font-primary); font-size:16px; line-height:1.5; }
 .amazon-self-ship-page img { max-width:100%; }
 .amazon-self-ship-page a { text-decoration:none; }
 .amazon-self-ship-page h1, .amazon-self-ship-page h2, .amazon-self-ship-page h3, .amazon-self-ship-page p { margin-top:0; }
