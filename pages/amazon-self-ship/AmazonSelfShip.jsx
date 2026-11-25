@@ -346,7 +346,7 @@ export default function AmazonSelfShip() {
             <a className="ash-primary-button" href={registerUrl}>Get Started <ArrowUpRight size={17} /></a>
           </div>
           <div className="ash-hero-visual">
-            <img className="ash-hero-figma-art ash-parcel-hero-image" src="./assets/amazon-parcel-hero.webp" alt="Open yellow parcel box representing Amazon Self-Ship deliveries" />
+            <img className="ash-hero-figma-art ash-parcel-hero-image" src="./Rectangle%2034624557.png" alt="Open yellow parcel box representing Amazon Self-Ship deliveries" />
           </div>
         </div>
         <div className="ash-metrics">
@@ -359,7 +359,7 @@ export default function AmazonSelfShip() {
       <section className="ash-intro" id="about">
         <div className="ash-intro-visual">
           <div className="ash-intro-glow" />
-          <img className="ash-about-illustration" src="./assets/amazon-self-ship-about.webp" alt="Amazon delivery associate holding a parcel, with Amazon delivery vehicles and shipping graphics" loading="lazy" />
+          <img className="ash-about-illustration" src="./ChatGPT%20Image%20Dec%2024%2C%202025%2C%2001_50_14%20PM%201.png" alt="Amazon delivery associate holding a parcel, with Amazon delivery vehicles and shipping graphics" loading="lazy" />
           <span className="ash-intro-orbit ash-intro-orbit-one" />
           <span className="ash-intro-orbit ash-intro-orbit-two" />
         </div>
