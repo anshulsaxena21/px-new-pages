@@ -346,7 +346,7 @@ export default function AmazonSelfShip() {
             <a className="ash-primary-button" href={registerUrl}>Get Started <ArrowUpRight size={17} /></a>
           </div>
           <div className="ash-hero-visual">
-            <img className="ash-hero-figma-art" src="https://ovdxipfxychotaspfccl.supabase.co/storage/v1/object/sign/figma-assets/cbfb3151-0270-4f26-a6bc-e88cdbaf8599/FRtqWyEPeiiblJpk0E2wjk/take-complete-control-of-your-amazon-deliveries-with-flexibl-1169-25600.png?token=eyJraWQiOiJlMWY4NzliMC04NWY4LTRkZDYtYmVhMC1jNTU5OTdmNWU5YzEiLCJhbGciOiJFUzI1NiJ9.eyJ1cmwiOiJmaWdtYS1hc3NldHMvY2JmYjMxNTEtMDI3MC00ZjI2LWE2YmMtZTg4Y2RiYWY4NTk5L0ZSdHFXeUVQZWlpYmxKcGswRTJ3amsvdGFrZS1jb21wbGV0ZS1jb250cm9sLW9mLXlvdXItYW1hem9uLWRlbGl2ZXJpZXMtd2l0aC1mbGV4aWJsLTExNjktMjU2MDAucG5nIiwic2NvcGUiOiJkb3dubG9hZCIsImlhdCI6MTc5NTYwMjMwOCwiZXhwIjoxNzk2MjA3MTA4fQ.koqc59pSp-NtJZbXwQZjFepcfGS06SpCW6HuxeJnDJtEGYKmoNM9hdDKowB-f6sibn8aofjpWznwPcj7WS-L6A" alt="Amazon Self-Ship delivery illustration" />
+            <img className="ash-hero-figma-art ash-parcel-hero-image" src="./assets/amazon-parcel-hero.png" alt="Open yellow parcel box representing Amazon Self-Ship deliveries" />
           </div>
         </div>
         <div className="ash-metrics">

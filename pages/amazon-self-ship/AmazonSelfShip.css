@@ -555,3 +555,8 @@
     line-height: 14px;
   }
 }
+
+/* Uploaded parcel artwork for the Amazon Self-Ship hero */
+.ash-hero-visual{display:flex;align-items:center;justify-content:center;overflow:visible}
+.ash-parcel-hero-image{width:min(100%,425px);height:auto;max-height:none;object-fit:contain;border-radius:16px}
+@media(max-width:767.98px){.ash-parcel-hero-image{width:min(100%,390px);max-height:250px}}
