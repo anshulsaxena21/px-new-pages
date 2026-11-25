@@ -1456,7 +1456,6 @@
   background: transparent;
   text-align: center;
 }
-.fulfillment-page .benefits .feature-card:nth-child(3n) { border-right: 0; }
 .fulfillment-page .benefits .feature-card:nth-child(n+4) { padding-top: 34px; border-bottom: 0; }
 .fulfillment-page .benefits .feature-top {
   display: flex;
@@ -1574,7 +1573,6 @@
   line-height: 1.65;
   letter-spacing: -0.1px;
 }
-.fulfillment-page .technology-edge-copy p:last-child { margin-bottom: 0; }
 
 /* 4. DASHBOARD / PRODUCT DETAIL — 40px medium heading and edge-to-edge visual. */
 .fulfillment-page .dashboard-reference-section {
@@ -1626,7 +1624,6 @@
   margin: 0;
   padding: 0;
 }
-.fulfillment-page .dashboard-reference-list article { margin: 0; padding: 0; }
 .fulfillment-page .dashboard-reference-list h3 {
   margin: 0 0 4px;
   color: #111116;
