@@ -1,5 +1,4 @@
-:root { --ash-orange:var(--color-primary); --ash-ink:#161616; --ash-muted:#747781; --ash-line:#e9e9ee; }
-.amazon-self-ship-page { overflow:clip; background:#fff; color:var(--ash-ink); font-family:var(--font-primary); font-size:16px; line-height:1.5; }
+.amazon-self-ship-page { overflow:clip; background:#fff; color:var(--color-text); font-family:var(--font-primary); font-size:16px; line-height:1.5; }
 .amazon-self-ship-page img { max-width:100%; }
 .amazon-self-ship-page a { text-decoration:none; }
 .amazon-self-ship-page h1, .amazon-self-ship-page h2, .amazon-self-ship-page h3, .amazon-self-ship-page p { margin-top:0; }
@@ -233,7 +232,7 @@
 .ash-dashboard-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:9px; margin:14px 0; font-size:10px; }
 .ash-dashboard-toolbar b { margin-right:auto; font-size:12px; }
 .ash-dashboard-toolbar > span { color:#818796; }
-.ash-dashboard-toolbar button { padding:7px 10px; border:0; border-radius:6px; background:var(--ash-orange); color:#fff; font-size:9px; }
+.ash-dashboard-toolbar button { padding:7px 10px; border:0; border-radius:6px; background:var(--color-primary); color:#fff; font-size:9px; }
 .ash-dashboard-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-bottom:15px; }
 .ash-dashboard-stats > div { display:flex; min-width:0; flex-direction:column; gap:4px; padding:10px; border:1px solid #eef0f4; border-radius:8px; background:#fcfcfd; }
 .ash-dashboard-stats small { color:#8a91a0; font-size:8px; white-space:nowrap; }
@@ -254,7 +253,7 @@
 .ash-integration-kicker { display:inline-flex; align-items:center; gap:8px; margin-bottom:18px; color:#ff9b70; font-size:10px; font-weight:700; letter-spacing:1.1px; }
 .ash-integration-copy h2 { margin:0 0 15px; color:#fff; font-size:clamp(30px,3.25vw,46px); font-weight:600; line-height:1.1; letter-spacing:-1.2px; }
 .ash-integration-copy p { max-width:470px; margin:0 0 24px; color:#c7c8ce; font-size:13px; line-height:1.75; }
-.ash-integration-button { display:inline-flex; min-height:45px; align-items:center; gap:12px; padding:0 18px; border-radius:8px; background:var(--ash-orange); color:#fff!important; font-size:12px; font-weight:600; transition:transform .2s ease,background .2s ease; }
+.ash-integration-button { display:inline-flex; min-height:45px; align-items:center; gap:12px; padding:0 18px; border-radius:8px; background:var(--color-primary); color:#fff!important; font-size:12px; font-weight:600; transition:transform .2s ease,background .2s ease; }
 .ash-integration-button:hover { transform:translateY(-2px); background:#ff7a3b; }
 
 /* The shared FAQ and testimonial components remain unmodified. */
@@ -270,8 +269,8 @@
 .ash-insights { width:min(1440px,calc(100% - 128px)); margin:0 auto; padding:26px 0 82px; }
 .ash-insights-heading { display:flex; align-items:center; justify-content:space-between; gap:24px; margin-bottom:26px; }
 .ash-insights-heading h2 { margin:0; color:#26262c; font-size:clamp(23px,2.25vw,32px); font-weight:600; line-height:1.3; letter-spacing:-.7px; }
-.ash-insights-heading h2 span { color:var(--ash-orange); }
-.ash-all-insights { display:inline-flex; flex:0 0 auto; align-items:center; gap:7px; padding:12px 18px; border-radius:8px; background:var(--ash-orange); color:#fff!important; font-size:12px; font-weight:600; transition:background .2s ease; }
+.ash-insights-heading h2 span { color:var(--color-primary); }
+.ash-all-insights { display:inline-flex; flex:0 0 auto; align-items:center; gap:7px; padding:12px 18px; border-radius:8px; background:var(--color-primary); color:#fff!important; font-size:12px; font-weight:600; transition:background .2s ease; }
 .ash-all-insights:hover { background:#e94c0c; }
 .ash-article-grid { display:grid; grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr); gap:34px; }
 .ash-article-card { min-width:0; overflow:hidden; border-radius:13px; }
@@ -458,7 +457,11 @@
 }
 .ash-tag-select-field {
   display: flex;
+  width: 100%;
+  height: 52px;
   min-height: 52px;
+  max-height: 52px;
+  overflow: hidden;
   align-items: center;
   gap: 10px;
   width: 100%;
@@ -480,14 +483,28 @@
 .ash-tag-selected-values {
   display: flex;
   flex: 1 1 auto;
+  align-self: center;
+  width: 0;
   min-width: 0;
+  height: 36px;
+  min-height: 36px;
+  max-height: 36px;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
+  align-content: flex-start;
   gap: 5px 7px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #a1a3aa #f1f1f2;
+  padding: 1px 5px 1px 0;
 }
 .ash-tag-chip {
   display: inline-flex;
+  flex: 0 0 auto;
   min-width: 0;
+  max-width: calc(100% - 7px);
   max-width: 100%;
   min-height: 30px;
   align-items: center;
@@ -614,6 +631,7 @@
   display: grid;
   width: 52px;
   height: 52px;
+  min-height: 52px;
   flex: 0 0 52px;
   place-items: center;
   border: 0;
@@ -645,6 +663,9 @@
   .ash-tag-search-section { width: calc(100% - 56px); margin-left: 28px; }
 }
 @media (max-width: 767.98px) {
+  .ash-tag-select-field { height:50px; min-height:50px; max-height:50px; }
+  .ash-tag-selected-values { height:34px; min-height:34px; max-height:34px; }
+  .ash-tag-search-button { height:50px; min-height:50px; }
   .ash-tag-search-section { width: calc(100% - 40px); margin: 4px auto 22px; }
   .ash-tag-search-label { font-size: 14px; margin-bottom: 8px; }
   .ash-tag-search-controls { gap: 8px; }
@@ -654,92 +675,4 @@
   .ash-tag-dropdown { max-height: 330px; }
   .ash-tag-options-list { max-height: 230px; }
   .ash-tag-search-button { width: 48px; height: 50px; flex-basis: 48px; }
-}
-
-
-/* Match the select field height exactly to the search button.
-   Selected chips wrap onto rows and scroll vertically inside the fixed field. */
-.ash-tag-select-field {
-  width: 100%;
-  height: 52px;
-  min-height: 52px;
-  max-height: 52px;
-  align-items: center;
-  overflow: hidden;
-}
-.ash-tag-selected-values {
-  display: flex;
-  flex: 1 1 auto;
-  align-self: center;
-  width: 0;
-  min-width: 0;
-  height: 36px;
-  min-height: 36px;
-  max-height: 36px;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  align-content: flex-start;
-  gap: 5px 7px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
-  scrollbar-width: thin;
-  scrollbar-color: #a1a3aa #f1f1f2;
-  padding: 1px 5px 1px 0;
-}
-.ash-tag-selected-values::-webkit-scrollbar {
-  width: 5px;
-}
-.ash-tag-selected-values::-webkit-scrollbar-track {
-  border-radius: 8px;
-  background: #f1f1f2;
-}
-.ash-tag-selected-values::-webkit-scrollbar-thumb {
-  border-radius: 8px;
-  background: #a1a3aa;
-}
-.ash-tag-chip {
-  flex: 0 0 auto;
-  max-width: calc(100% - 7px);
-}
-.ash-tag-chip > span {
-  white-space: nowrap;
-}
-.ash-tag-dropdown {
-  max-height: 360px;
-}
-.ash-tag-options-list {
-  max-height: 260px;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}
-.ash-tag-search-button {
-  height: 52px;
-  min-height: 52px;
-}
-
-@media (max-width: 767.98px) {
-  .ash-tag-select-field {
-    height: 50px;
-    min-height: 50px;
-    max-height: 50px;
-  }
-  .ash-tag-selected-values {
-    height: 34px;
-    min-height: 34px;
-    max-height: 34px;
-  }
-  .ash-tag-chip {
-    max-width: calc(100% - 7px);
-  }
-  .ash-tag-dropdown {
-    max-height: 330px;
-  }
-  .ash-tag-options-list {
-    max-height: 230px;
-  }
-  .ash-tag-search-button {
-    height: 50px;
-    min-height: 50px;
-  }
 }
