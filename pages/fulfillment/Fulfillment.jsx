@@ -8,7 +8,7 @@ import Faq from "../../src/component/Faq.jsx";
 import MainTestimonial from "../../src/component/slider/MainTestimonial.jsx";
 
 const imageAssets = import.meta.glob("./assets/*", { eager: true, query: "?url", import: "default" });
-const A = (name) => imageAssets[`../images/fullfillment/${name}`] || "";
+const A = (name) => imageAssets[`./assets/${name}`] || "";
 const features = [
   {icon:"icon-support.svg", title:"Support", text:"Seamless assistance whenever you need it from onboarding to daily operations, our team ensures smooth fulfilment without slowdowns."},
   {icon:"icon-sales.svg", title:"Sales", text:"Boost conversions with faster deliveries, lower shipping costs, and smarter fulfilment that helps you sell more, effortlessly."},
