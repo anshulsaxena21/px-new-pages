@@ -1,20 +1,23 @@
 import React from "react";
-import { Check, ChevronDown, Search, X } from "lucide-react";
 import {
+  Check,
+  CaretDown,
+  MagnifyingGlass,
+  X,
   ArrowUpRight,
-  BarChart3,
-  Boxes,
-  CalendarDays,
-  CircleDollarSign,
-  ClipboardCheck,
-  Clock3,
+  ChartBar,
+  Stack,
+  CalendarBlank,
+  CurrencyDollarSimple,
+  ClipboardText,
+  Clock,
   Package,
-  PackageCheck,
-  RefreshCw,
+  PackageOpen,
+  ArrowsClockwise,
   ShoppingBag,
-  Store,
+  Storefront,
   Truck,
-} from "lucide-react";
+} from "@phosphor-icons/react";
 import "../../src/styles/shared-faq.css";
 import "./AmazonSelfShip.css";
 import "./AmazonTagMultiSelect.css";
@@ -26,20 +29,20 @@ import MainTestimonial from "../../src/component/slider/MainTestimonial.jsx";
 const registerUrl = "https://seller.parcelx.in/register";
 
 const workflowSteps = [
-  { icon: Store, title: "Connect your amazon seller account", step: "Step 1" },
+  { icon: Storefront, title: "Connect your amazon seller account", step: "Step 1" },
   { icon: Package, title: "Auto-import Self-Ship orders", step: "Step 2" },
-  { icon: ClipboardCheck, title: "Select courier of your choice", step: "Step 3" },
-  { icon: CalendarDays, title: "Schedule Pickup & Ship", step: "Step 4" },
-  { icon: PackageCheck, title: "Tracking updates synced to Amazon → Delivered", step: "Step 5" }
+  { icon: ClipboardText, title: "Select courier of your choice", step: "Step 3" },
+  { icon: CalendarBlank, title: "Schedule Pickup & Ship", step: "Step 4" },
+  { icon: PackageOpen, title: "Tracking updates synced to Amazon → Delivered", step: "Step 5" }
 ];
 
 const benefits = [
-  { icon: CircleDollarSign, title: "Save more on every shipment", text: "Avoid platform markups and ship at competitive, volume-based rates." },
+  { icon: CurrencyDollarSimple, title: "Save more on every shipment", text: "Avoid platform markups and ship at competitive, volume-based rates." },
   { icon: Truck, title: "Freedom to Choose Couriers", text: "Pick the best courier for every order based on cost, speed, or service quality." },
-  { icon: Clock3, title: "Faster Dispatch, Better SLAs", text: "Ship orders on your schedule and meet Amazon SLA timelines with ease." },
-  { icon: Boxes, title: "One Dashboard, Full Control", text: "Generate labels, track shipments, manage NDRs and billing from one place." },
-  { icon: RefreshCw, title: "Reduced RTO & Delivery Failures", text: "Smart courier selection and performance insights help cut returns." },
-  { icon: BarChart3, title: "Scales as You Grow", text: "From a few orders to high volumes — no limits, no dependency." }
+  { icon: Clock, title: "Faster Dispatch, Better SLAs", text: "Ship orders on your schedule and meet Amazon SLA timelines with ease." },
+  { icon: Stack, title: "One Dashboard, Full Control", text: "Generate labels, track shipments, manage NDRs and billing from one place." },
+  { icon: ArrowsClockwise, title: "Reduced RTO & Delivery Failures", text: "Smart courier selection and performance insights help cut returns." },
+  { icon: ChartBar, title: "Scales as You Grow", text: "From a few orders to high volumes — no limits, no dependency." }
 ];
 
 const faqs = [
@@ -137,7 +140,7 @@ function IntegrationPreview() {
         </div>
         <div className="ash-channel-row">
           <span className="ash-channel-logo ash-channel-shop">S</span>
-          <span><b>Shopify</b><small>Store orders</small></span><strong>184 orders</strong><span className="ash-connected">Connected</span>
+          <span><b>Shopify</b><small>Storefront orders</small></span><strong>184 orders</strong><span className="ash-connected">Connected</span>
         </div>
         <div className="ash-channel-row">
           <span className="ash-channel-logo ash-channel-web"><ShoppingBag size={15} /></span>
@@ -219,10 +222,10 @@ function AmazonTagMultiSelect() {
   };
 
   return (
-    <section className="ash-tag-search-section" aria-label="Search shipments by tag">
+    <section className="ash-tag-search-section" aria-label="MagnifyingGlass shipments by tag">
       <div className="ash-tag-search-inner">
         <label className="ash-tag-search-label" id="ash-tag-search-label">
-          Search By Tag
+          MagnifyingGlass By Tag
         </label>
         <div className="ash-tag-search-controls">
           <div className="ash-tag-select-wrap" ref={dropdownRef}>
@@ -256,7 +259,7 @@ function AmazonTagMultiSelect() {
                         aria-label={"Remove " + tag}
                         onClick={(event) => removeTag(event, tag)}
                       >
-                        <X size={15} strokeWidth={2} />
+                        <X size={15} weight="bold" />
                       </button>
                     </span>
                   ))
@@ -264,7 +267,7 @@ function AmazonTagMultiSelect() {
                   <span className="ash-tag-placeholder">Select one or more tags</span>
                 )}
               </div>
-              <ChevronDown
+              <CaretDown
                 className={"ash-tag-chevron" + (isOpen ? " is-open" : "")}
                 size={20}
                 aria-hidden="true"
@@ -300,7 +303,7 @@ function AmazonTagMultiSelect() {
                       >
                         <span>{tag}</span>
                         <span className="ash-tag-option-check">
-                          {selected ? <Check size={17} strokeWidth={2.3} /> : null}
+                          {selected ? <Check size={17} weight="bold" /> : null}
                         </span>
                       </button>
                     );
@@ -316,11 +319,11 @@ function AmazonTagMultiSelect() {
           <button
             type="button"
             className="ash-tag-search-button"
-            aria-label="Search selected tags"
-            title="Search selected tags"
+            aria-label="MagnifyingGlass selected tags"
+            title="MagnifyingGlass selected tags"
             onClick={applySearch}
           >
-            <Search size={21} strokeWidth={2.2} />
+            <MagnifyingGlass size={21} weight="bold" />
           </button>
         </div>
         <div className="ash-tag-search-feedback" aria-live="polite">
@@ -382,7 +385,7 @@ export default function AmazonSelfShip() {
           {workflowSteps.map(({ icon: Icon, title, step }, index) => (
             <article className="ash-workflow-step" key={step}>
               <div className={"ash-workflow-icon ash-workflow-icon-" + index}>
-                {index === 0 ? <span className="ash-amazon-a">a<small>⌣</small></span> : <Icon size={36} strokeWidth={1.65} />}
+                {index === 0 ? <span className="ash-amazon-a">a<small>⌣</small></span> : <Icon size={36} weight="regular" />}
               </div>
               <h3>{title}</h3><span>{step}</span>
             </article>
@@ -397,7 +400,7 @@ export default function AmazonSelfShip() {
         <div className="ash-benefit-grid">
           {benefits.map(({ icon: Icon, title, text }) => (
             <article className="ash-benefit-card" key={title}>
-              <span className="ash-benefit-icon"><Icon size={20} strokeWidth={1.8} /></span>
+              <span className="ash-benefit-icon"><Icon size={20} weight="regular" /></span>
               <h3>{title}</h3><p>{text}</p>
             </article>
           ))}
@@ -407,7 +410,7 @@ export default function AmazonSelfShip() {
       <section className="ash-audience" aria-label="Built for growing businesses">
         <div className="ash-audience-copy">
           <span className="ash-eyebrow">ONE PLATFORM. MORE POSSIBILITIES.</span>
-          <h2>One Shipping System for Every Store You Run</h2>
+          <h2>One Shipping System for Every Storefront You Run</h2>
           <p>Connect Amazon, Shopify, and your website into one unified shipping workflow with real-time sync and less manual effort.</p>
           <a href={registerUrl} className="ash-primary-button">Get Started <ArrowUpRight size={16} /></a>
         </div>
