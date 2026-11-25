@@ -356,10 +356,25 @@ export default function AmazonSelfShip() {
         </div>
       </section>
 
-      <AmazonTagMultiSelect />
-
-      <section className="ash-media-strip" aria-label="Amazon Self-Ship preview">
-        <div className="ash-media-placeholder" />
+      <section className="ash-intro" id="about">
+        <div className="ash-intro-visual">
+          <div className="ash-intro-glow" />
+          <AmazonBoxArt />
+          <span className="ash-intro-orbit ash-intro-orbit-one" />
+          <span className="ash-intro-orbit ash-intro-orbit-two" />
+        </div>
+        <div className="ash-intro-copy">
+          <span className="ash-eyebrow">AMAZON SELF-SHIP, SIMPLIFIED</span>
+          <h2>What is Amazon Self-Ship?</h2>
+          <p>Amazon Self-Ship allows sellers to fulfil orders using their own courier partners instead of Amazon logistics.</p>
+          <p>With ParcelX, you get full flexibility to:</p>
+          <ul>
+            <li><Check size={17} /> Choose couriers based on cost &amp; speed</li>
+            <li><Check size={17} /> Manage pickups and returns independently</li>
+            <li><Check size={17} /> Maintain Amazon SLA compliance</li>
+            <li><Check size={17} /> Reduce shipping costs significantly</li>
+          </ul>
+        </div>
       </section>
 
       <section className="ash-workflow" aria-label="How ParcelX Amazon Self-Ship works">
@@ -389,13 +404,23 @@ export default function AmazonSelfShip() {
         </div>
       </section>
 
+      <section className="ash-audience" aria-label="Built for growing businesses">
+        <div className="ash-audience-copy">
+          <span className="ash-eyebrow">ONE PLATFORM. MORE POSSIBILITIES.</span>
+          <h2>One Shipping System for Every Store You Run</h2>
+          <p>Connect Amazon, Shopify, and your website into one unified shipping workflow with real-time sync and less manual effort.</p>
+          <a href={registerUrl} className="ash-primary-button">Get Started <ArrowUpRight size={16} /></a>
+        </div>
+        <div className="ash-audience-visual"><IntegrationPreview /></div>
+      </section>
+
       <section className="ash-integration-banner" id="integrations">
         <div className="ash-integration-visual"><IntegrationPreview /></div>
         <div className="ash-integration-copy">
           <span className="ash-integration-kicker"><Boxes size={14} /> CONNECT EVERY CHANNEL</span>
-          <h2>One Shipping System for Every Store You Run</h2>
-          <p>Connect Amazon, Shopify, and your website into one unified shipping workflow. Manage orders, compare couriers, and keep tracking updates moving from a single place.</p>
-          <a href="#benefits" className="ash-integration-button">Explore Integration <ArrowUpRight size={16} /></a>
+          <h2>Everything You Need to Ship with Confidence</h2>
+          <p>Manage orders, compare courier services, generate labels and keep tracking updates moving from a single place.</p>
+          <a href={registerUrl} className="ash-integration-button">Get Started <ArrowUpRight size={16} /></a>
         </div>
       </section>
 

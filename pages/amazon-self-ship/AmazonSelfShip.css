@@ -425,3 +425,32 @@
 @media (prefers-reduced-motion:reduce) {
   .amazon-self-ship-page *, .amazon-self-ship-page *::before, .amazon-self-ship-page *::after { transition:none!important; scroll-behavior:auto!important; }
 }
+
+
+/* Figma-aligned page structure and responsive refinements */
+.ash-intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:76px;width:min(1312px,calc(100% - 128px));margin:48px auto 108px}
+.ash-intro-visual{position:relative;display:grid;min-height:390px;place-items:center;overflow:hidden;border-radius:24px;background:linear-gradient(145deg,#fff8f3,#fff 62%);isolation:isolate}
+.ash-intro-glow{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(255,102,0,.16),transparent 68%);filter:blur(12px)}
+.ash-intro-visual .ash-box-art{position:relative;z-index:2;width:min(90%,480px);height:auto}
+.ash-intro-orbit{position:absolute;z-index:1;border:1px solid rgba(255,102,0,.14);border-radius:50%;transform:rotate(-22deg)}
+.ash-intro-orbit-one{width:460px;height:210px}.ash-intro-orbit-two{width:540px;height:270px}
+.ash-intro-copy{max-width:590px}
+.ash-eyebrow{display:inline-flex;margin-bottom:17px;color:#ff6600;font-size:11px;font-weight:700;letter-spacing:1.4px}
+.ash-intro-copy h2,.ash-audience-copy h2{margin:0 0 20px;color:#17191f;font-size:clamp(32px,3.2vw,46px);font-weight:600;line-height:1.12;letter-spacing:-1.3px}
+.ash-intro-copy p,.ash-audience-copy p{margin:0 0 16px;color:#696d76;font-size:15px;line-height:1.8}
+.ash-intro-copy ul{display:grid;gap:14px;margin:25px 0 0;padding:0;list-style:none}
+.ash-intro-copy li{display:flex;align-items:center;gap:12px;color:#30333a;font-size:14px}
+.ash-intro-copy li svg{display:grid;flex:0 0 auto;box-sizing:content-box;padding:4px;border-radius:50%;background:#fff0e7;color:#ff6600}
+.ash-audience{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:center;gap:46px;width:min(1312px,calc(100% - 128px));margin:0 auto 90px;padding:48px;border-radius:24px;background:#fff7f1}
+.ash-audience-copy{max-width:480px}.ash-audience-visual{min-width:0}
+.ash-audience .ash-dashboard-window{width:100%;transform:none;box-shadow:0 24px 65px rgba(26,30,42,.13)}
+.ash-audience .ash-primary-button{width:auto;min-width:142px;height:46px;margin-top:10px;background:#ff6600}
+.ash-benefits{padding-top:12px}
+.ash-workflow{padding-bottom:110px}
+.ash-section-heading{margin-bottom:34px}
+.ash-benefit-card{background:#fff;border-color:#ececf0}
+.ash-benefit-icon{background:#fff0e7;color:#ff6600}
+.ash-integration-banner{margin-bottom:86px}
+.ash-insights{padding-top:26px}
+@media(max-width:991.98px){.ash-intro{gap:30px;width:calc(100% - 56px);margin:35px auto 72px}.ash-intro-visual{min-height:300px}.ash-audience{width:calc(100% - 56px);grid-template-columns:1fr;padding:32px;gap:24px}}
+@media(max-width:767.98px){.ash-intro{grid-template-columns:1fr;gap:20px;width:calc(100% - 32px);margin:24px auto 58px}.ash-intro-visual{min-height:245px;border-radius:16px}.ash-intro-visual .ash-box-art{width:min(88%,340px)}.ash-intro-copy h2,.ash-audience-copy h2{font-size:30px;letter-spacing:-.8px}.ash-intro-copy p,.ash-audience-copy p{font-size:13px;line-height:1.7}.ash-intro-copy ul{gap:11px;margin-top:18px}.ash-intro-copy li{font-size:12px}.ash-audience{width:calc(100% - 32px);margin-bottom:56px;padding:22px 16px;border-radius:16px}.ash-audience .ash-dashboard-window{padding:10px}.ash-workflow{padding-bottom:56px}}
