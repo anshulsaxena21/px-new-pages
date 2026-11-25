@@ -346,7 +346,7 @@ export default function AmazonSelfShip() {
             <a className="ash-primary-button" href={registerUrl}>Get Started <ArrowUpRight size={17} /></a>
           </div>
           <div className="ash-hero-visual">
-            <AmazonBoxArt />
+            <img className="ash-hero-figma-art" src="https://ovdxipfxychotaspfccl.supabase.co/storage/v1/object/sign/figma-assets/cbfb3151-0270-4f26-a6bc-e88cdbaf8599/FRtqWyEPeiiblJpk0E2wjk/take-complete-control-of-your-amazon-deliveries-with-flexibl-1169-25600.png?token=eyJraWQiOiJlMWY4NzliMC04NWY4LTRkZDYtYmVhMC1jNTU5OTdmNWU5YzEiLCJhbGciOiJFUzI1NiJ9.eyJ1cmwiOiJmaWdtYS1hc3NldHMvY2JmYjMxNTEtMDI3MC00ZjI2LWE2YmMtZTg4Y2RiYWY4NTk5L0ZSdHFXeUVQZWlpYmxKcGswRTJ3amsvdGFrZS1jb21wbGV0ZS1jb250cm9sLW9mLXlvdXItYW1hem9uLWRlbGl2ZXJpZXMtd2l0aC1mbGV4aWJsLTExNjktMjU2MDAucG5nIiwic2NvcGUiOiJkb3dubG9hZCIsImlhdCI6MTc5NTYwMjMwOCwiZXhwIjoxNzk2MjA3MTA4fQ.koqc59pSp-NtJZbXwQZjFepcfGS06SpCW6HuxeJnDJtEGYKmoNM9hdDKowB-f6sibn8aofjpWznwPcj7WS-L6A" alt="Amazon Self-Ship delivery illustration" />
           </div>
         </div>
         <div className="ash-metrics">
@@ -411,17 +411,7 @@ export default function AmazonSelfShip() {
           <p>Connect Amazon, Shopify, and your website into one unified shipping workflow with real-time sync and less manual effort.</p>
           <a href={registerUrl} className="ash-primary-button">Get Started <ArrowUpRight size={16} /></a>
         </div>
-        <div className="ash-audience-visual"><IntegrationPreview /></div>
-      </section>
-
-      <section className="ash-integration-banner" id="integrations">
-        <div className="ash-integration-visual"><IntegrationPreview /></div>
-        <div className="ash-integration-copy">
-          <span className="ash-integration-kicker"><Boxes size={14} /> CONNECT EVERY CHANNEL</span>
-          <h2>Everything You Need to Ship with Confidence</h2>
-          <p>Manage orders, compare courier services, generate labels and keep tracking updates moving from a single place.</p>
-          <a href={registerUrl} className="ash-integration-button">Get Started <ArrowUpRight size={16} /></a>
-        </div>
+        <div className="ash-audience-visual"><img className="ash-figma-dashboard-art" src="https://ovdxipfxychotaspfccl.supabase.co/storage/v1/object/sign/figma-assets/cbfb3151-0270-4f26-a6bc-e88cdbaf8599/FRtqWyEPeiiblJpk0E2wjk/one-shipping-system-for-every-store-you-run-connect-amazon-s-1169-26097.png?token=eyJraWQiOiJlMWY4NzliMC04NWY4LTRkZDYtYmVhMC1jNTU5OTdmNWU5YzEiLCJhbGciOiJFUzI1NiJ9.eyJ1cmwiOiJmaWdtYS1hc3NldHMvY2JmYjMxNTEtMDI3MC00ZjI2LWE2YmMtZTg4Y2RiYWY4NTk5L0ZSdHFXeUVQZWlpYmxKcGswRTJ3amsvb25lLXNoaXBwaW5nLXN5c3RlbS1mb3ItZXZlcnktc3RvcmUteW91LXJ1bi1jb25uZWN0LWFtYXpvbi1zLTExNjktMjYwOTcucG5nIiwic2NvcGUiOiJkb3dubG9hZCIsImlhdCI6MTc5NTYwMjMyOSwiZXhwIjoxNzk2MjA3MTI5fQ.r8gEiX4ni234oFZDdH44XbvsNr9DK0g6PY5BVRTWujk45-hLidstUPsBE6jQYNYJK-k5rmRxSNfqJh0p321KLA" alt="ParcelX shipping dashboard connected with Amazon and other sales channels" /></div>
       </section>
 
       <div className="shared-faq-section ash-faq-section">
