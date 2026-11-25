@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import "../../src/styles/shared-faq.css";
 import "./AmazonSelfShip.css";
+import "./AmazonTagMultiSelect.css";
 import Header from "../../src/includes/Header.jsx";
 import Footer from "../../src/includes/Footer.jsx";
 import Faq from "../../src/component/Faq.jsx";
