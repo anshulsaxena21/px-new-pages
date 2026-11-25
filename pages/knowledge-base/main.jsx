@@ -9,7 +9,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "../../src/styles/global.css";
 import "../../src/styles/legacy-header-footer.css";
 
-import KnowledgeBase from "../../src/pages/KnowledgeBase.jsx";
+import KnowledgeBase from "./KnowledgeBase.jsx";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>

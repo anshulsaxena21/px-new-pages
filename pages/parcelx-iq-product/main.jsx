@@ -6,7 +6,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "../../src/styles/global.css";
 import "../../src/styles/legacy-header-footer.css";
-import ParcelXIQProduct from "../../src/pages/ParcelXIQProduct.jsx";
+import ParcelXIQProduct from "./ParcelXIQProduct.jsx";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>

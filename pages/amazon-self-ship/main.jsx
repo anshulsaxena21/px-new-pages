@@ -8,7 +8,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "../../src/styles/global.css";
 import "../../src/styles/legacy-header-footer.css";
 
-import AmazonSelfShip from "../../src/pages/AmazonSelfShip.jsx";
+import AmazonSelfShip from "./AmazonSelfShip.jsx";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>

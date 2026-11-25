@@ -10,7 +10,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 // Landing-page styles load after Bootstrap; the legacy stylesheet styles only the shared chrome.
 import "../../src/styles/global.css";
 import "../../src/styles/legacy-header-footer.css";
-import Fulfillment from "../../src/pages/Fulfillment.jsx";
+import Fulfillment from "./Fulfillment.jsx";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
