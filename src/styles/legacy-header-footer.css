@@ -2,7 +2,7 @@
    The React component source remains unchanged. */
 
 body {
-  font-family: "Instrument Sans", sans-serif;
+  font-family: var(--font-primary);
 }
 
 /* Header */
@@ -13,7 +13,7 @@ body {
 }
 
 .sticky-top .navbar {
-  width: min(1600px, calc(100% - 144px));
+  width: min(1600px, calc(100% - (var(--container-gutter) * 2)));
   margin: 0 auto;
   padding: 13px 0;
 }
@@ -51,7 +51,7 @@ body {
 
 .sticky-top .navbar-nav .nav-item > a:not(.btn):hover,
 .sticky-top .navbar-nav .nav-item > a.nav-active {
-  color: #ff6600;
+  color: var(--color-primary);
 }
 
 .sticky-top .navbar .btn {
@@ -67,8 +67,8 @@ body {
 
 .sticky-top .navbar .btn-primary {
   color: #fff;
-  background: #ff6600;
-  border-color: #ff6600;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
 }
 
 .sticky-top .navbar .btn-primary:hover {
@@ -115,7 +115,7 @@ body {
 
 .footer-bg .container-fluid > .col-md-11 {
   flex: 0 0 auto;
-  width: min(1600px, calc(100% - 160px));
+  width: min(1600px, calc(100% - (var(--container-gutter) * 2)));
   max-width: none;
   margin-inline: auto !important;
 }
@@ -175,7 +175,7 @@ body {
 }
 
 .footer-bg form.d-flex .form-control:focus {
-  border-color: #ff6600;
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.09);
 }
 
@@ -184,8 +184,8 @@ body {
   min-height: 54px;
   border-radius: 12px;
   padding: 12px 23px;
-  border-color: #ff6600;
-  background: #ff6600;
+  border-color: var(--color-primary);
+  background: var(--color-primary);
   color: #fff;
   font-size: 16px;
   font-weight: 500;
@@ -231,7 +231,7 @@ body {
 
 .footer-bg .social > a:hover .social-media {
   transform: translateY(-2px);
-  border-color: #ff6600;
+  border-color: var(--color-primary);
   background: #fff2e9;
 }
 
@@ -253,7 +253,7 @@ body {
 
 .footer-bg .link-heading {
   margin: 0 0 13px;
-  color: #ff6600;
+  color: var(--color-primary);
   font-size: 20px;
   font-weight: 500;
   white-space: nowrap;
@@ -276,7 +276,7 @@ body {
 }
 
 .footer-bg .social-link .nav-link:hover {
-  color: #ff6600;
+  color: var(--color-primary);
 }
 
 .footer-bg .col-md-11 > p.mb-0 {
