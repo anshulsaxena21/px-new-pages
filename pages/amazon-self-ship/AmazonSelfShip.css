@@ -454,3 +454,8 @@
 .ash-insights{padding-top:26px}
 @media(max-width:991.98px){.ash-intro{gap:30px;width:calc(100% - 56px);margin:35px auto 72px}.ash-intro-visual{min-height:300px}.ash-audience{width:calc(100% - 56px);grid-template-columns:1fr;padding:32px;gap:24px}}
 @media(max-width:767.98px){.ash-intro{grid-template-columns:1fr;gap:20px;width:calc(100% - 32px);margin:24px auto 58px}.ash-intro-visual{min-height:245px;border-radius:16px}.ash-intro-visual .ash-box-art{width:min(88%,340px)}.ash-intro-copy h2,.ash-audience-copy h2{font-size:30px;letter-spacing:-.8px}.ash-intro-copy p,.ash-audience-copy p{font-size:13px;line-height:1.7}.ash-intro-copy ul{gap:11px;margin-top:18px}.ash-intro-copy li{font-size:12px}.ash-audience{width:calc(100% - 32px);margin-bottom:56px;padding:22px 16px;border-radius:16px}.ash-audience .ash-dashboard-window{padding:10px}.ash-workflow{padding-bottom:56px}}
+
+.ash-hero-figma-art{display:block;width:min(100%,520px);height:auto;max-height:360px;object-fit:contain}
+.ash-audience-visual{display:flex;align-items:center;justify-content:center;min-width:0}
+.ash-figma-dashboard-art{display:block;width:100%;height:auto;max-height:340px;object-fit:contain;border-radius:12px}
+@media(max-width:767.98px){.ash-hero-figma-art{width:min(100%,420px);max-height:260px}.ash-figma-dashboard-art{max-height:none}}
